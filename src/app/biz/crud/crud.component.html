@@ -1,0 +1,26 @@
+<p>crud works!</p>
+{{prjctId}} {{scrinId}}
+
+{{menus}}
+{{scrin}}
+{{compns}}
+
+<div *ngIf="'C' === scrin?.scrinSeCode">등록</div>
+
+<div class="row">
+  <div class="col-4"></div>
+  <div class="col-8">
+    <div #mainMenuRef id="mainMenu"></div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-4">
+    <div #subMenuRef id="subMenu"></div>
+  </div>
+  <div class="col-8">
+    <div #contentRef id="content"></div>
+  </div>
+</div>
+
+
+

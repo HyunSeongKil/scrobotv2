@@ -9,17 +9,11 @@ import { FooterComponent } from './footer/footer.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
 import { RightComponent } from './right/right.component';
 import { HttpClientModule } from '@angular/common/http';
+import { BizModule } from './biz/biz.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    EditorComponent,
-    HeaderComponent,
-    FooterComponent,
-    SideBarComponent,
-    RightComponent,
-  ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  declarations: [AppComponent, EditorComponent, HeaderComponent, FooterComponent, SideBarComponent, RightComponent],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, BizModule],
   providers: [],
   bootstrap: [AppComponent],
 })
