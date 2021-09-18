@@ -1,24 +1,27 @@
 <p>crud works!</p>
 {{prjctId}} {{scrinId}}
 
-{{menus}}
-{{scrin}}
-{{compns}}
 
-<div *ngIf="'C' === scrin?.scrinSeCode">등록</div>
+
 
 <div class="row">
-  <div class="col-4"></div>
-  <div class="col-8">
+  <div class="col-2"></div>
+  <div class="col-10">
     <div #mainMenuRef id="mainMenu"></div>
   </div>
 </div>
 <div class="row">
-  <div class="col-4">
+  <div class="col-2">
     <div #subMenuRef id="subMenu"></div>
   </div>
-  <div class="col-8">
-    <div #contentRef id="content"></div>
+  <div class="col-10" style="height: 600px;background-color: #efefef;">
+    <h1 *ngIf="'C' === scrin?.scrin_se_code" style="color: blue;">등록</h1>
+    <h1 *ngIf="'U' === scrin?.scrin_se_code" style="color: orange;">수정</h1>
+    <h1 *ngIf="'R' === scrin?.scrin_se_code">조회</h1>
+    <h1 *ngIf="'L' === scrin?.scrin_se_code">목록</h1>
+    <form id="form">
+      <div #contentRef id="content"></div>
+    </form>
   </div>
 </div>
 
