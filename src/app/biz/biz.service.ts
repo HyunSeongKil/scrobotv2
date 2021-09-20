@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ScrinGroup } from '../service/item';
+import { Scrin, ScrinGroup } from '../service/item';
 
 @Injectable({
   providedIn: 'root',
@@ -74,14 +74,40 @@ export class BizService {
   }
 
   /**
-   * 데이터 상세조회
+   * 데이터 목록 조회
+   * @param prjctId 프로젝트아이디
+   * @param scrinId 화면아이디
+   * @returns promise
+   */
+  getDatas(prjctId: string, scrinId: string): Promise<any> {
+    return this.http.get(`${this.BIZ_URI}/${prjctId}/${scrinId}`).toPromise();
+  }
+
+  /**
+   * 데이터 목록 조회 or 상세조회
    * @param prjctId 프로젝트아이디
    * @param scrinId 화면아이디
    * @param id (데이터)아이디
    * @returns promise
    */
-  getData(prjctId: string, scrinId: string, id: string): Promise<any> {
-    return this.http.get(`${this.BIZ_URI}/${prjctId}/${scrinId}/${id}`).toPromise();
+  getData(prjctId: string, scrinId: string, id?: string): Promise<any> {
+    if (undefined === id) {
+      // 목록
+      return this.http.get(`${this.BIZ_URI}/${prjctId}/${scrinId}`).toPromise();
+    } else {
+      // 조회
+      return this.http.get(`${this.BIZ_URI}/${prjctId}/${scrinId}/${id}`).toPromise();
+    }
+  }
+
+  /**
+   * 메타정보 목록조회
+   * @param prjctId 프로젝트아이디
+   * @param scrinId 화면아이디
+   * @returns promise
+   */
+  getMetas(prjctId: string, scrinId: string): Promise<any> {
+    return this.http.get(`${this.BIZ_URI}/${prjctId}/${scrinId}/metas`).toPromise();
   }
 
   /**
@@ -129,5 +155,27 @@ export class BizService {
    */
   getCompns(prjctId: string, scrinId: string): Promise<any> {
     return this.http.get(`${this.BIZ_URI}/${prjctId}/${scrinId}/compns`).toPromise();
+  }
+
+  /**
+   * se에 맞는 화면아이디 구하기
+   * @param prjctId 프로젝트아이디
+   * @param scrinGroup 화면그룹
+   * @param se 구분
+   * @param fn 콜백함수
+   */
+  getScrinId(prjctId: string, scrinGroup: ScrinGroup | undefined, se: string, fn: (scrinId: string) => void): void {
+    if (undefined === scrinGroup) {
+      throw new Error('NULL SCRIN_GROUP');
+    }
+
+    this.getScrins(prjctId, scrinGroup.scrin_group_id).then((res: any) => {
+      for (let i = 0; i < res.data.length; i++) {
+        const scrin = res.data[i] as Scrin;
+        if (se === scrin.scrin_se_code) {
+          fn(scrin.scrin_id);
+        }
+      }
+    });
   }
 }
