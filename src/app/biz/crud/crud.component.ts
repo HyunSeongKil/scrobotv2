@@ -3,8 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BizService } from '../biz.service';
 import * as $ from 'jquery';
 import 'jqueryui';
-import { CmmnCode, Compn, Menu, Scrin, ScrinGroup } from 'src/app/service/item';
 import { CmmnCodeService } from 'src/app/service/cmmn-code.service';
+import { TrgetSys } from 'src/app/@types/trgetSys';
 
 @Component({
   selector: 'app-crud',
@@ -29,16 +29,16 @@ export class CrudComponent implements OnInit, AfterViewInit {
   // 메타정보 목록
   metas: any[] = [];
   // 메뉴 목록
-  menus: Menu[] = [];
+  menus: TrgetSys.Menu[] = [];
   // 화면
-  scrin: Scrin | undefined;
+  scrin: TrgetSys.Scrin | undefined;
   // 화면그룹
-  scrinGroup: ScrinGroup | undefined;
+  scrinGroup: TrgetSys.ScrinGroup | undefined;
   // 콤포넌트 목록
-  compns: Compn[] = [];
+  compns: TrgetSys.Compn[] = [];
   // 공통코드 맵
   cmmnCode: {
-    [key: string]: CmmnCode[];
+    [key: string]: TrgetSys.CmmnCode[];
   } = {};
 
   constructor(route: ActivatedRoute, private router: Router, private bizService: BizService, private cmmnCodeService: CmmnCodeService) {
@@ -256,7 +256,7 @@ export class CrudComponent implements OnInit, AfterViewInit {
    * @param cmmnCode  공통코드
    * @returns 공통코드 명
    */
-  private getCmmnCodeNm(cmmnCodes: CmmnCode[], cmmnCode: string): any {
+  private getCmmnCodeNm(cmmnCodes: TrgetSys.CmmnCode[], cmmnCode: string): any {
     for (let i = 0; i < cmmnCodes.length; i++) {
       if (cmmnCodes[i].cmmnCode === cmmnCode) {
         return cmmnCodes[i].cmmnCodeNm;

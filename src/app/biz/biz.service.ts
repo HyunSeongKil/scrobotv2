@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Scrin, ScrinGroup } from '../service/item';
+import { TrgetSys } from '../@types/trgetSys';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +22,7 @@ export class BizService {
    * @param scrinGroup 화면그룹
    * @returns pk 컬럼 명
    */
-  getPkColmnName(scrinGroup: ScrinGroup | undefined): string {
+  getPkColmnName(scrinGroup: TrgetSys.ScrinGroup | undefined): string {
     return scrinGroup?.eng_abrv_nm + '_pk';
   }
 
@@ -164,14 +164,14 @@ export class BizService {
    * @param se 구분
    * @param fn 콜백함수
    */
-  getScrinId(prjctId: string, scrinGroup: ScrinGroup | undefined, se: string, fn: (scrinId: string) => void): void {
+  getScrinId(prjctId: string, scrinGroup: TrgetSys.ScrinGroup | undefined, se: string, fn: (scrinId: string) => void): void {
     if (undefined === scrinGroup) {
       throw new Error('NULL SCRIN_GROUP');
     }
 
     this.getScrins(prjctId, scrinGroup.scrin_group_id).then((res: any) => {
       for (let i = 0; i < res.data.length; i++) {
-        const scrin = res.data[i] as Scrin;
+        const scrin = res.data[i] as TrgetSys.Scrin;
         if (se === scrin.scrin_se_code) {
           fn(scrin.scrin_id);
         }

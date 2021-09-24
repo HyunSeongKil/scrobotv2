@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import * as $ from 'jquery';
 import 'jqueryui';
+import { EditorService } from '../service/editor.service';
 import { SelectedElService } from '../service/selected-el.service';
 
 @Component({
@@ -24,7 +26,17 @@ export class EditorComponent implements OnInit {
 
   properties: Property[] = [];
 
-  constructor(private selectedElService: SelectedElService) {}
+  prjctId: string | undefined;
+
+  constructor(route: ActivatedRoute, private selectedElService: SelectedElService, private editorService: EditorService) {
+    this.prjctId = route.snapshot.paramMap.get('prjctId') ?? undefined;
+
+    if (undefined === this.prjctId) {
+      return;
+    }
+
+    editorService.getAllByPrjctId(this.prjctId).then((res: any) => {});
+  }
 
   ngOnInit(): void {
     $('div.content').on('click', (event) => {
@@ -221,13 +233,9 @@ export class EditorComponent implements OnInit {
     const w = this.rand(100, 400);
     const h = this.rand(100, 300);
 
-    const $el = $(
-      `<div id="${this.createId()}" style="width:${w}px; height:${h}px; background-color:${this.randColor()}; position:absolute;"></div>`
-    );
+    const $el = $(`<div id="${this.createId()}" style="width:${w}px; height:${h}px; background-color:${this.randColor()}; position:absolute;"></div>`);
 
-    $el
-      .draggable({ containment: 'div.content' })
-      .resizable({ containment: 'div.content', handles: 'se' });
+    $el.draggable({ containment: 'div.content' }).resizable({ containment: 'div.content', handles: 'se' });
 
     $el.on('click', (event, ui) => {
       event.stopPropagation();
@@ -249,13 +257,9 @@ export class EditorComponent implements OnInit {
   }
 
   createSpan(): JQuery<HTMLElement> {
-    const $el = $(
-      `<span id="${this.createId()}" style="width:100px; height:21px; position:absolute; background-color:#efefef;">LABEL</span>`
-    );
+    const $el = $(`<span id="${this.createId()}" style="width:100px; height:21px; position:absolute; background-color:#efefef;">LABEL</span>`);
 
-    $el
-      .draggable({ containment: 'div.content' })
-      .resizable({ containment: 'div.content', handles: 'se' });
+    $el.draggable({ containment: 'div.content' }).resizable({ containment: 'div.content', handles: 'se' });
 
     $el.on('click', (event, ui) => {
       event.stopPropagation();
@@ -278,15 +282,9 @@ export class EditorComponent implements OnInit {
 
   createInput(): JQuery<HTMLElement> {
     const id = this.createId();
-    const $wrapper = $(
-      `<div id="${id}_wrapper" class="wrapper" style="position:absolute; width:150px; height:30px;"></div>`
-    );
+    const $wrapper = $(`<div id="${id}_wrapper" class="wrapper" style="position:absolute; width:150px; height:30px;"></div>`);
 
-    $wrapper.append(
-      $(
-        `<input type="text" id="${id}" style="width:100px; height:25px; padding:0.5em; background-color:#efefef;" readonly focus ></input>`
-      )
-    );
+    $wrapper.append($(`<input type="text" id="${id}" style="width:100px; height:25px; padding:0.5em; background-color:#efefef;" readonly focus ></input>`));
 
     $wrapper
       .draggable({
@@ -318,23 +316,7 @@ export class EditorComponent implements OnInit {
       .on('mousedown', function (e) {
         var mdown = document.createEvent('MouseEvents');
         console.log(mdown);
-        mdown.initMouseEvent(
-          'mousedown',
-          false,
-          true,
-          window,
-          0,
-          e.screenX,
-          e.screenY,
-          e.clientX,
-          e.clientY,
-          true,
-          false,
-          false,
-          true,
-          0,
-          null
-        );
+        mdown.initMouseEvent('mousedown', false, true, window, 0, e.screenX, e.screenY, e.clientX, e.clientY, true, false, false, true, 0, null);
         $(this).closest('.wrapper')[0].dispatchEvent(mdown);
       })
       .on('click', function (e) {
@@ -350,13 +332,9 @@ export class EditorComponent implements OnInit {
   }
 
   createH1(): JQuery<HTMLElement> {
-    const $el = $(
-      `<h1 id="${this.createId()}" style="position:absolute; width:200px; height:50px;">제목1</h1>`
-    );
+    const $el = $(`<h1 id="${this.createId()}" style="position:absolute; width:200px; height:50px;">제목1</h1>`);
 
-    $el
-      .draggable({ containment: 'div.content' })
-      .resizable({ containment: 'div.content', handles: 'se' });
+    $el.draggable({ containment: 'div.content' }).resizable({ containment: 'div.content', handles: 'se' });
 
     $el.on('click', (event, ui) => {
       event.stopPropagation();
@@ -378,13 +356,9 @@ export class EditorComponent implements OnInit {
   }
 
   createH2(): JQuery<HTMLElement> {
-    const $el = $(
-      `<h2 id="${this.createId()}" style="position:absolute; width:200px; height:50px;">제목2</h2>`
-    );
+    const $el = $(`<h2 id="${this.createId()}" style="position:absolute; width:200px; height:50px;">제목2</h2>`);
 
-    $el
-      .draggable({ containment: 'div.content' })
-      .resizable({ containment: 'div.content', handles: 'se' });
+    $el.draggable({ containment: 'div.content' }).resizable({ containment: 'div.content', handles: 'se' });
 
     $el.on('click', (event, ui) => {
       event.stopPropagation();
@@ -406,13 +380,9 @@ export class EditorComponent implements OnInit {
   }
 
   createH3(): JQuery<HTMLElement> {
-    const $el = $(
-      `<h3 id="${this.createId()}" style="position:absolute; width:200px; height:50px;">제목3</h3>`
-    );
+    const $el = $(`<h3 id="${this.createId()}" style="position:absolute; width:200px; height:50px;">제목3</h3>`);
 
-    $el
-      .draggable({ containment: 'div.content' })
-      .resizable({ containment: 'div.content', handles: 'se' });
+    $el.draggable({ containment: 'div.content' }).resizable({ containment: 'div.content', handles: 'se' });
 
     $el.on('click', (event, ui) => {
       event.stopPropagation();
@@ -435,19 +405,11 @@ export class EditorComponent implements OnInit {
 
   createButton(): JQuery<HTMLElement> {
     const id = this.createId();
-    const $wrapper = $(
-      `<span id="${id}_wrapper" class="wrapper" data-wrapper="true" style="position:absolute; width:110px; height:60px;"></span>`
-    );
+    const $wrapper = $(`<span id="${id}_wrapper" class="wrapper" data-wrapper="true" style="position:absolute; width:110px; height:60px;"></span>`);
 
-    $wrapper.append(
-      $(
-        `<button id="${this.createId()}" type="button" class="btn btn-primary" style="position:absolute; width:100px; height:50px; font-size:medium;" disabled>버튼</button>`
-      )
-    );
+    $wrapper.append($(`<button id="${this.createId()}" type="button" class="btn btn-primary" style="position:absolute; width:100px; height:50px; font-size:medium;" disabled>버튼</button>`));
 
-    $wrapper
-      .draggable({ containment: 'div.content' })
-      .resizable({ containment: 'div.content', handles: 'se' });
+    $wrapper.draggable({ containment: 'div.content' }).resizable({ containment: 'div.content', handles: 'se' });
 
     $wrapper.on('click', (event, ui) => {
       event.stopPropagation();
@@ -477,14 +439,7 @@ export class EditorComponent implements OnInit {
   }
 
   randColor(): string {
-    const colors: string[] = [
-      'red',
-      'orange',
-      'yellow',
-      'green',
-      'blue',
-      'purple',
-    ];
+    const colors: string[] = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
 
     return colors[this.rand(0, colors.length - 1)];
   }
