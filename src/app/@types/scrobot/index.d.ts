@@ -2,6 +2,7 @@ export namespace Scrobot {
   export interface Prjct {
     prjctId: string;
     prjctNm: string;
+    prjctCn: string;
     userId: string;
     scrinGroups: ScrinGroup[];
   }

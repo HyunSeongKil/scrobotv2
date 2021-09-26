@@ -10,10 +10,13 @@ import { SideBarComponent } from './side-bar/side-bar.component';
 import { RightComponent } from './right/right.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BizModule } from './biz/biz.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PrjctModule } from './prjct/prjct.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, EditorComponent, HeaderComponent, FooterComponent, SideBarComponent, RightComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, BizModule],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, BizModule, PrjctModule, FormsModule, NgbModule],
   providers: [],
   bootstrap: [AppComponent],
 })

@@ -1,6 +1,15 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~jqueryui/jquery-ui.min.css";
 
-head, body {
-  height:100%;
+head,
+body {
+  height: 100%;
+}
+
+div.header {
+  background-color: whitesmoke;
+}
+
+.w-45 {
+  width: 45% !important;
 }

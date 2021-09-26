@@ -1,0 +1,20 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">프로젝트 등록</h4>
+    <button type="button" class="btn btn-sm close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form">
+      <label for="prjctNm">프로젝트 명</label>
+      <input type="text" class="form-control" id="prjctNm" formControlName="prjctNm" />
+      <label for="prjctCn">내용</label>
+      <textarea class="form-control" id="prjctCn" rows="5" formControlName="prjctCn"></textarea>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="modal.close('Save click')">저장</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.close('Close click')">닫기</button>
+  </div>
+</ng-template>

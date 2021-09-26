@@ -1,0 +1,26 @@
+<div>
+  <div class="row">
+    <div class="col"></div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="card w-45" *ngFor="let x of prjcts">
+        <div class="card-body">
+          <h5 class="card-title">{{ x.prjctNm }}</h5>
+          <p class="card-text">{{ x.prjctCn }}</p>
+          <button class="btn btn-outline-secondary btn-sm" (click)="loadPrjct(x.prjctId)">LOAD</button>
+          <button class="btn btn-outline-secondary btn-sm" (click)="copyPrjct(x.prjctId)">복사</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <button type="button" class="btn btn-secondary" (click)="regist()">등록</button>
+    </div>
+  </div>
+</div>
+
+<app-prjct-regist-dialog #prjctRegistDialogRef></app-prjct-regist-dialog>
