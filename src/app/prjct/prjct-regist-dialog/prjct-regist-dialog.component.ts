@@ -24,9 +24,7 @@ export class PrjctRegistDialogComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
+  ngOnInit(): void {}
 
   open() {
     this.modalService.open(this.content, { ariaLabelledBy: 'modal-basic-title' }).result.then(

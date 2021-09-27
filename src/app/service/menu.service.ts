@@ -9,5 +9,7 @@ export class MenuService {
 
   constructor(private http: HttpClient) {}
 
-  listByPrjctId(prjctId: string): Promise<any> {}
+  listByPrjctId(prjctId: string): Promise<any> {
+    return this.http.get(`${this.BIZ_URI}/by-prjct?prjctId=${prjctId}`).toPromise();
+  }
 }

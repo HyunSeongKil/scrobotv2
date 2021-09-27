@@ -12,4 +12,8 @@ export class ScrinService {
   listByScrinGroupId(scrinGroupId: string): Promise<any> {
     return this.http.get(`${this.BIZ_URI}/by-scrin-group?scrinGroupId=${scrinGroupId}`).toPromise();
   }
+
+  listByPrjctId(prjctId: string): Promise<any> {
+    return this.http.get(`${this.BIZ_URI}/by-prjct?prjctId=${prjctId}`).toPromise();
+  }
 }

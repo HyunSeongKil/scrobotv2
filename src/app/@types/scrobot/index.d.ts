@@ -4,6 +4,8 @@ export namespace Scrobot {
     prjctNm: string;
     prjctCn: string;
     userId: string;
+    registDt: string;
+    updtDt: string;
     scrinGroups: ScrinGroup[];
   }
 
