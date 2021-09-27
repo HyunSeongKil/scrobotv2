@@ -30,10 +30,10 @@ export class PrjctRegistDialogComponent implements OnInit {
 
   open() {
     this.modalService.open(this.content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
-      (result) => {
+      (result: any) => {
         this.closeResult = `Closed with: ${result}`;
       },
-      (reason) => {
+      (reason: any) => {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       }
     );

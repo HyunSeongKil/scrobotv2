@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Scrobot } from 'src/app/@types/scrobot';
+import { MenuService } from 'src/app/service/menu.service';
 import { PrjctService } from 'src/app/service/prjct.service';
 import { PrjctRegistDialogComponent } from '../prjct-regist-dialog/prjct-regist-dialog.component';
 
@@ -13,7 +14,7 @@ export class PrjctListComponent implements OnInit {
 
   prjcts: Scrobot.Prjct[] = [];
 
-  constructor(private service: PrjctService) {}
+  constructor(private service: PrjctService, private menuService: MenuService) {}
 
   ngOnInit(): void {
     this.listByUserId();
@@ -34,6 +35,9 @@ export class PrjctListComponent implements OnInit {
 
     this.service.copy(prjctId).then((res: any) => {
       this.listByUserId();
+
+      // 메뉴 목록
+      // 화면 목록
     });
   }
 
