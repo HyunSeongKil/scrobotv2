@@ -3,12 +3,12 @@
     <div class="col"></div>
   </div>
 
-  <div class="mt-2">
-    <div class="card-columns ">
-      <div class="card  " *ngFor="let x of prjcts">
+  <div class="mt-2 mx-2">
+    <div class="card-deck ">
+      <div class="card mx-2 mb-2" style="min-width: 500px;" *ngFor="let x of prjcts">
         <div class="card-header">
           <div class="row">
-            <div class="col-6">{{ x.prjctNm }}</div>
+            <div class="col-6 fw-bold">{{ x.prjctNm }}</div>
             <div class="col-6 text-right text-end">
               <button type="button" class="btn btn-outline-primary btn-sm" title="배포" (click)="openDeployDialog(x.prjctId)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-upload" viewBox="0 0 16 16">
@@ -42,10 +42,11 @@
         </div>
         <div class="card-body">
           <h5 class="card-title"></h5>
-          <p class="card-text">{{ x.prjctCn }}</p>
+          <p class="card-text ">{{ x.prjctCn }}</p>
           <div class="d-inline"><span class="fw-bold">메뉴</span> : {{ menuCo[x.prjctId] }}개,</div>
           <div class="d-inline mx-2"><span class="fw-bold">화면</span> : {{ scrinCo[x.prjctId] }}개,</div>
           <div class="d-inline"><span class="fw-bold">생성일시</span> : {{ x.registDt | date: "yyyy-MM-dd HH:mm" }}</div>
+          
         </div>
       </div>
 

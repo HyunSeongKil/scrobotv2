@@ -15,12 +15,16 @@ div.header {
 }
 
 .card-columns {
-  -webkit-column-count: 3;
-  -moz-column-count: 3;
   column-count: 3;
-  -webkit-column-gap: 1.25rem;
-  -moz-column-gap: 1.25rem;
   column-gap: 1.25rem;
   orphans: 1;
   widows: 1;
+}
+
+.card-deck {
+  -ms-flex-flow: row wrap;
+  flex-flow: row wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+  display: flex;
 }
