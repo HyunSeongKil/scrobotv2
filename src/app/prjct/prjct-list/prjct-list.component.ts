@@ -1,10 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Scrobot } from 'src/app/@types/scrobot';
+import { DeployService } from 'src/app/service/deploy.service';
 import { MenuService } from 'src/app/service/menu.service';
 import { PrjctService } from 'src/app/service/prjct.service';
 import { ScrinService } from 'src/app/service/scrin.service';
+import { SelectTrgetSysDialogComponent } from '../select-trget-sys-dialog/select-trget-sys-dialog.component';
 import { PrjctRegistDialogComponent } from '../prjct-regist-dialog/prjct-regist-dialog.component';
 
+/**
+ * 프로젝트 목록
+ */
 @Component({
   selector: 'app-prjct-list',
   templateUrl: './prjct-list.component.html',
@@ -12,6 +17,7 @@ import { PrjctRegistDialogComponent } from '../prjct-regist-dialog/prjct-regist-
 })
 export class PrjctListComponent implements OnInit {
   @ViewChild('prjctRegistDialogRef') prjctRegistDialogRef!: PrjctRegistDialogComponent;
+  @ViewChild('deployDialogRef') deployDialogRef!: SelectTrgetSysDialogComponent;
 
   prjcts: Scrobot.Prjct[] = [];
   menuCo: {
@@ -21,7 +27,7 @@ export class PrjctListComponent implements OnInit {
     [key: string]: number;
   } = {};
 
-  constructor(private service: PrjctService, private menuService: MenuService, private scrinService: ScrinService) {}
+  constructor(private service: PrjctService, private menuService: MenuService, private scrinService: ScrinService, private deployService: DeployService) {}
 
   ngOnInit(): void {
     this.listByUserId();
@@ -86,5 +92,33 @@ export class PrjctListComponent implements OnInit {
     this.service.delete(prjctId).then((res: any) => {
       this.listByUserId();
     });
+  }
+
+  /**
+   * 배포 창 실행
+   */
+  openDeployDialog(prjctId: string): void {
+    this.deployDialogRef.open(prjctId);
+  }
+
+  /**
+   * 대상 시스템 선택됨
+   * @param deploy
+   * @returns void
+   */
+  trgetSysSelected(deploy: Scrobot.Deploy): void {
+    console.log(deploy);
+    if (!confirm('배포하시겠습니까?')) {
+      return;
+    }
+
+    this.deployService
+      .deploy(deploy)
+      .then((res: any) => {
+        alert('배포되었습니다.');
+      })
+      .catch((reason: any) => {
+        alert('배포중 오류가 발생했습니다.');
+      });
   }
 }

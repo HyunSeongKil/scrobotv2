@@ -42,4 +42,14 @@ export namespace Scrobot {
     prntsCmmnCode: string;
     useAt: string;
   }
+
+  export interface TrgetSys {
+    trgetSysId: string;
+    trgetSysNm: string;
+  }
+
+  export interface Deploy {
+    prjctId: string;
+    trgetSysId: string;
+  }
 }
