@@ -6,6 +6,7 @@ import { PrjctService } from 'src/app/service/prjct.service';
 import { ScrinService } from 'src/app/service/scrin.service';
 import { SelectTrgetSysDialogComponent } from '../select-trget-sys-dialog/select-trget-sys-dialog.component';
 import { PrjctRegistDialogComponent } from '../prjct-regist-dialog/prjct-regist-dialog.component';
+import { ConfigService } from 'src/app/service/config.service';
 
 /**
  * 프로젝트 목록
@@ -27,14 +28,14 @@ export class PrjctListComponent implements OnInit {
     [key: string]: number;
   } = {};
 
-  constructor(private service: PrjctService, private menuService: MenuService, private scrinService: ScrinService, private deployService: DeployService) {}
+  constructor(private configService: ConfigService, private service: PrjctService, private menuService: MenuService, private scrinService: ScrinService, private deployService: DeployService) {}
 
   ngOnInit(): void {
     this.listByUserId();
   }
 
   listByUserId(): void {
-    this.service.listByUserId('dummy').then((res: any) => {
+    this.service.listByUserId(this.configService.userId).then((res: any) => {
       this.prjcts = res.data;
 
       this.prjcts.forEach((x) => {
@@ -76,7 +77,7 @@ export class PrjctListComponent implements OnInit {
    * 프로젝트 등록 창 실행
    */
   regist(): void {
-    this.prjctRegistDialogRef.open();
+    this.prjctRegistDialogRef.open(this.configService.userId);
   }
 
   /**
@@ -120,5 +121,12 @@ export class PrjctListComponent implements OnInit {
       .catch((reason: any) => {
         alert('배포중 오류가 발생했습니다.');
       });
+  }
+
+  /**
+   * 프로젝트 저장됨
+   */
+  prjctSaved(): void {
+    this.listByUserId();
   }
 }

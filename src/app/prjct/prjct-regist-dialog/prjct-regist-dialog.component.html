@@ -7,14 +7,16 @@
   </div>
   <div class="modal-body">
     <form [formGroup]="form">
-      <label for="prjctNm">프로젝트 명</label>
+      <label for="prjctNm">프로젝트 명<span class="req">*</span></label>
       <input type="text" class="form-control" id="prjctNm" formControlName="prjctNm" />
       <label for="prjctCn">내용</label>
       <textarea class="form-control" id="prjctCn" rows="5" formControlName="prjctCn"></textarea>
     </form>
+    
+    <div class="mt-1 font-italic"><span class="req">*</span> 필수입력 항목입니다.</div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-primary" (click)="modal.close('Save click')">저장</button>
-    <button type="button" class="btn btn-outline-secondary" (click)="modal.close('Close click')">닫기</button>
+    <button type="button" class="btn btn-outline-primary" (click)="modal.close('SAVE')">저장</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.close('CLOSE')">닫기</button>
   </div>
 </ng-template>

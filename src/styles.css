@@ -28,3 +28,11 @@ div.header {
   margin-left: -15px;
   display: flex;
 }
+
+.req {
+  color: red;
+}
+
+.font-italic {
+  font-style: italic;
+}

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Scrobot } from '../@types/scrobot';
 
 /**
  * 프로젝트
@@ -36,8 +37,8 @@ export class PrjctService {
    * @param form 폼
    * @returns promise
    */
-  regist(form: FormGroup): Promise<any> {
-    return this.http.post(`${this.BIZ_URI}`, form.value).toPromise();
+  regist(prjct: Scrobot.Prjct): Promise<any> {
+    return this.http.post(`${this.BIZ_URI}`, prjct).toPromise();
   }
 
   /**

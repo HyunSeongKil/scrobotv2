@@ -50,7 +50,15 @@
         </div>
       </div>
 
-      <div *ngIf="0 === prjcts.length">데이터가 없습니다.</div>
+      <ng-container *ngIf="0 === prjcts.length">
+        <div class="card mx-2 mb-2" >
+          <div class="card-header"></div>
+          <div class="card-body">
+            <h5 class="card-title">데이터가 없습니다.</h5>
+          </div>
+        </div>
+
+      </ng-container>
     </div>
   </div>
 
@@ -61,5 +69,5 @@
   </div>
 </div>
 
-<app-prjct-regist-dialog #prjctRegistDialogRef></app-prjct-regist-dialog>
+<app-prjct-regist-dialog #prjctRegistDialogRef (savedEvent)="prjctSaved()"></app-prjct-regist-dialog>
 <app-select-trget-sys-dialog #deployDialogRef (selectedEvent)="trgetSysSelected($event)"></app-select-trget-sys-dialog>
