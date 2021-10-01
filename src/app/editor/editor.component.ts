@@ -29,13 +29,17 @@ export class EditorComponent implements OnInit {
   prjctId: string | undefined;
 
   constructor(route: ActivatedRoute, private selectedElService: SelectedElService, private editorService: EditorService) {
-    this.prjctId = route.snapshot.paramMap.get('prjctId') ?? undefined;
+    route.queryParams.subscribe((params) => {
+      this.prjctId = params['prjctId'];
+    });
 
     if (undefined === this.prjctId) {
       return;
     }
 
-    editorService.getAllByPrjctId(this.prjctId).then((res: any) => {});
+    editorService.getAllByPrjctId(this.prjctId).then((res: any) => {
+      console.log(res);
+    });
   }
 
   ngOnInit(): void {

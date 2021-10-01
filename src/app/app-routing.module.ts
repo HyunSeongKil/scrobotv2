@@ -7,7 +7,7 @@ import { XxxComponent } from './run/xxx/xxx.component';
 
 const routes: Routes = [
   {
-    path: 'editor/:prjctId',
+    path: 'editor',
     component: EditorComponent,
   },
   {

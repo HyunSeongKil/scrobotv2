@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Scrobot } from '../@types/scrobot';
 import { CompnService } from './compn.service';
+import { MenuService } from './menu.service';
 import { PrjctService } from './prjct.service';
 import { ScrinGroupService } from './scrin-group.service';
 import { ScrinService } from './scrin.service';
@@ -10,7 +11,7 @@ import { ScrinService } from './scrin.service';
   providedIn: 'root',
 })
 export class EditorService {
-  constructor(private prjctService: PrjctService, private scrinGroupService: ScrinGroupService, private scrinService: ScrinService, private compnService: CompnService) {}
+  constructor(private prjctService: PrjctService, private menuService: MenuService, private scrinGroupService: ScrinGroupService, private scrinService: ScrinService, private compnService: CompnService) {}
 
   /**
    * 모든 정보 조회
@@ -23,6 +24,11 @@ export class EditorService {
     // 프로젝트
     const prms1 = await this.prjctService.get(prjctId);
     prjct = prms1.data as Scrobot.Prjct;
+
+    // 메뉴
+    this.menuService.listByPrjctId(prjctId).then((res: any) => {
+      prjct.menus = res.data as Scrobot.Menu[];
+    });
 
     // 화면 그룹
     const prms2 = await this.scrinGroupService.listByPrjctId(prjctId);
@@ -44,7 +50,7 @@ export class EditorService {
       }
     }
 
-    console.log(prjct);
+    // console.log(prjct);
 
     return prjct;
   }

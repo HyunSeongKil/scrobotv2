@@ -37,8 +37,8 @@ export class PrjctService {
    * @param form 폼
    * @returns promise
    */
-  regist(prjct: Scrobot.Prjct): Promise<any> {
-    return this.http.post(`${this.BIZ_URI}`, prjct).toPromise();
+  regist(dto: Scrobot.Prjct): Promise<any> {
+    return this.http.post(`${this.BIZ_URI}`, dto).toPromise();
   }
 
   /**
@@ -46,8 +46,8 @@ export class PrjctService {
    * @param form 폼
    * @returns promise
    */
-  updt(form: FormGroup): Promise<any> {
-    return this.http.put(`${this.BIZ_URI}`, form.value).toPromise();
+  updt(dto: Scrobot.Prjct): Promise<any> {
+    return this.http.put(`${this.BIZ_URI}`, dto).toPromise();
   }
 
   /**

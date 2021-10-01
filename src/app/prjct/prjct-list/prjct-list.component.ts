@@ -7,6 +7,8 @@ import { ScrinService } from 'src/app/service/scrin.service';
 import { SelectTrgetSysDialogComponent } from '../select-trget-sys-dialog/select-trget-sys-dialog.component';
 import { PrjctRegistDialogComponent } from '../prjct-regist-dialog/prjct-regist-dialog.component';
 import { ConfigService } from 'src/app/service/config.service';
+import { PrjctUpdtDialogComponent } from '../prjct-updt-dialog/prjct-updt-dialog.component';
+import { Router } from '@angular/router';
 
 /**
  * 프로젝트 목록
@@ -18,6 +20,7 @@ import { ConfigService } from 'src/app/service/config.service';
 })
 export class PrjctListComponent implements OnInit {
   @ViewChild('prjctRegistDialogRef') prjctRegistDialogRef!: PrjctRegistDialogComponent;
+  @ViewChild('prjctUpdtDialogRef') prjctUpdtDialogRef!: PrjctUpdtDialogComponent;
   @ViewChild('deployDialogRef') deployDialogRef!: SelectTrgetSysDialogComponent;
 
   prjcts: Scrobot.Prjct[] = [];
@@ -28,7 +31,7 @@ export class PrjctListComponent implements OnInit {
     [key: string]: number;
   } = {};
 
-  constructor(private configService: ConfigService, private service: PrjctService, private menuService: MenuService, private scrinService: ScrinService, private deployService: DeployService) {}
+  constructor(private router: Router, private configService: ConfigService, private service: PrjctService, private menuService: MenuService, private scrinService: ScrinService, private deployService: DeployService) {}
 
   ngOnInit(): void {
     this.listByUserId();
@@ -56,7 +59,13 @@ export class PrjctListComponent implements OnInit {
    * 편집 화면으로 이동
    * @param prjctId 프로젝트 아이디
    */
-  loadPrjct(prjctId: string): void {}
+  loadPrjct(prjctId: string): void {
+    if (!confirm('편집화면으로 이동하시겠습니까?')) {
+      return;
+    }
+
+    this.router.navigate(['/editor'], { queryParams: { prjctId } });
+  }
 
   /**
    * 프로젝트 복사
@@ -128,5 +137,13 @@ export class PrjctListComponent implements OnInit {
    */
   prjctSaved(): void {
     this.listByUserId();
+  }
+
+  /**
+   * 프로젝트 수정 팝업 창 실행
+   * @param prjctId 프로젝트 아이디
+   */
+  openUpdtPrjctDialog(prjctId: string): void {
+    this.prjctUpdtDialogRef.open(this.configService.userId, prjctId);
   }
 }

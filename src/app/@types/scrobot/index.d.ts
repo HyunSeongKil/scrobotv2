@@ -7,6 +7,7 @@ export namespace Scrobot {
     registDt: string;
     updtDt: string;
     scrinGroups: ScrinGroup[];
+    menus: Menu[];
   }
 
   export interface ScrinGroup {
@@ -51,5 +52,12 @@ export namespace Scrobot {
   export interface Deploy {
     prjctId: string;
     trgetSysId: string;
+  }
+
+  export interface Menu {
+    menuId: string;
+    menuNm: string;
+    prntsMenuId: string;
+    prjctId: string;
   }
 }
