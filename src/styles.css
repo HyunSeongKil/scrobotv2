@@ -36,3 +36,13 @@ div.header {
 .font-italic {
   font-style: italic;
 }
+
+/* 상위 메뉴 */
+div.editor.menu[data-prnts-menu-id="-"] {
+  margin-left: 0px;
+}
+
+/* 하위 메뉴 */
+div.editor.menu:not([data-prnts-menu-id="-"]) {
+  margin-left: 30px;
+}

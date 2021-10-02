@@ -14,6 +14,24 @@ export class EditorService {
   constructor(private prjctService: PrjctService, private menuService: MenuService, private scrinGroupService: ScrinGroupService, private scrinService: ScrinService, private compnService: CompnService) {}
 
   /**
+   * 콤포넌트 목록
+   * @param scrinId 화면 아이디
+   * @returns promise
+   */
+  listCompnByScrinId(scrinId: string): Promise<any> {
+    return this.compnService.listByScrinId(scrinId);
+  }
+
+  /**
+   * 메뉴 목록
+   * @param prjctId 프로젝트 아이디
+   * @returns promise
+   */
+  listMenuByPrjctId(prjctId: string): Promise<any> {
+    return this.menuService.listByPrjctId(prjctId);
+  }
+
+  /**
    * 모든 정보 조회
    * @param prjctId 프로젝트 아이디
    * @returns promise

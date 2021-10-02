@@ -12,11 +12,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { BizModule } from './biz/biz.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PrjctModule } from './prjct/prjct.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MenuComponent } from './editor/menu/menu.component';
+import { MenuRegistDialogComponent } from './editor/menu/menu-regist-dialog/menu-regist-dialog.component';
+import { ScrinGroupComponent } from './editor/scrin-group/scrin-group.component';
+import { ScrinGroupRegistDialogComponent } from './editor/scrin-group/scrin-group-regist-dialog/scrin-group-regist-dialog.component';
+import { ScrinRegistDialogComponent } from './editor/scrin-group/scrin-regist-dialog/scrin-regist-dialog.component';
 
 @NgModule({
-  declarations: [AppComponent, EditorComponent, HeaderComponent, FooterComponent, SideBarComponent, RightComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, BizModule, PrjctModule, FormsModule, NgbModule],
+  declarations: [AppComponent, EditorComponent, HeaderComponent, FooterComponent, SideBarComponent, RightComponent, MenuComponent, MenuRegistDialogComponent, ScrinGroupComponent, ScrinGroupRegistDialogComponent, ScrinRegistDialogComponent],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, BizModule, PrjctModule, FormsModule, NgbModule, ReactiveFormsModule],
   providers: [],
   bootstrap: [AppComponent],
 })

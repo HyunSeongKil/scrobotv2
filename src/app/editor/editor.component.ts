@@ -1,16 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as $ from 'jquery';
 import 'jqueryui';
+import { Scrobot } from '../@types/scrobot';
 import { EditorService } from '../service/editor.service';
 import { SelectedElService } from '../service/selected-el.service';
+import { MenuComponent } from './menu/menu.component';
+import { ScrinGroupComponent } from './scrin-group/scrin-group.component';
 
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.css'],
 })
-export class EditorComponent implements OnInit {
+export class EditorComponent implements OnInit, AfterViewInit {
+  @ViewChild('tabMenuRef') tabMenuRef!: ElementRef<HTMLAnchorElement>;
+  @ViewChild('tabScrinRef') tabScrinRef!: ElementRef<HTMLAnchorElement>;
+  @ViewChild('tabCompnRef') tabCompnRef!: ElementRef<HTMLAnchorElement>;
+  @ViewChild('areaMenuRef') areaMenuRef!: ElementRef<HTMLAnchorElement>;
+  @ViewChild('areaScrinRef') areaScrinRef!: ElementRef<HTMLAnchorElement>;
+  @ViewChild('areaCompnRef') areaCompnRef!: ElementRef<HTMLAnchorElement>;
+
+  @ViewChild('menuRef') menuRef!: MenuComponent;
+  @ViewChild('scrinGroupRef') scrinGroupRef!: ScrinGroupComponent;
+
   TAG_NAME_DIV = `div`;
   TAG_NAME_SPAN = `span`;
   TAG_NAME_INPUT_TEXT = `input`;
@@ -26,9 +39,17 @@ export class EditorComponent implements OnInit {
 
   properties: Property[] = [];
 
-  prjctId: string | undefined;
+  /**
+   * 프로젝트 아이디
+   */
+  prjctId = '';
 
-  constructor(route: ActivatedRoute, private selectedElService: SelectedElService, private editorService: EditorService) {
+  /**
+   * 편집중인 화면 아이디
+   */
+  editingScrinId = '';
+
+  constructor(route: ActivatedRoute, private renderer: Renderer2, private selectedElService: SelectedElService, private editorService: EditorService) {
     route.queryParams.subscribe((params) => {
       this.prjctId = params['prjctId'];
     });
@@ -40,6 +61,23 @@ export class EditorComponent implements OnInit {
     editorService.getAllByPrjctId(this.prjctId).then((res: any) => {
       console.log(res);
     });
+  }
+  ngAfterViewInit(): void {
+    // 탭-메뉴 클릭 이벤트 등록
+    this.renderer.listen(this.tabMenuRef.nativeElement, 'click', (e: any) => {
+      this.onMenu();
+    });
+    // 탭 - 화면 클릭 이벤트 등록
+    this.renderer.listen(this.tabScrinRef.nativeElement, 'click', (e: any) => {
+      this.onScrin();
+    });
+    // 탭 - 콤포넌트 클릭 이벤트 등록
+    this.renderer.listen(this.tabCompnRef.nativeElement, 'click', (e: any) => {
+      this.onCompn();
+    });
+
+    // default on 화면 탭
+    this.onScrin();
   }
 
   ngOnInit(): void {
@@ -60,6 +98,43 @@ export class EditorComponent implements OnInit {
         return false;
       })
       .on('rightclick', () => {});
+  }
+
+  /**
+   * on 메뉴 탭
+   */
+  onMenu(): void {
+    this.unactiveAllTab();
+    this.activeTab([this.tabMenuRef.nativeElement]);
+
+    this.hideAllArea();
+    this.showArea([this.areaMenuRef.nativeElement]);
+
+    this.menuRef.on();
+  }
+
+  /**
+   * on 화면 탭
+   */
+  onScrin(): void {
+    this.unactiveAllTab();
+    this.activeTab([this.tabScrinRef.nativeElement]);
+
+    this.hideAllArea();
+    this.showArea([this.areaScrinRef.nativeElement]);
+
+    this.scrinGroupRef.on();
+  }
+
+  /**
+   * on 콤포넌트 탭
+   */
+  onCompn(): void {
+    this.unactiveAllTab();
+    this.activeTab([this.tabCompnRef.nativeElement]);
+
+    this.hideAllArea();
+    this.showArea([this.areaCompnRef.nativeElement]);
   }
 
   /**
@@ -99,7 +174,13 @@ export class EditorComponent implements OnInit {
     this.selectedElService.clearAll();
   }
 
-  createEl(tagName: string): JQuery<HTMLElement> {
+  /**
+   * 엘리먼트 생성
+   * @param tagName 태그명
+   * @param cn 엘리먼트 내용
+   * @returns 생성된 엘리먼트
+   */
+  createEl(tagName: string, cn: string = ''): JQuery<HTMLElement> {
     switch (tagName) {
       case this.TAG_NAME_DIV:
         return this.createDiv();
@@ -108,7 +189,7 @@ export class EditorComponent implements OnInit {
         return this.createSpan();
 
       case this.TAG_NAME_INPUT_TEXT:
-        return this.createInput();
+        return this.createInput(cn);
 
       case this.TAG_NAME_H1:
         return this.createH1();
@@ -120,11 +201,28 @@ export class EditorComponent implements OnInit {
         return this.createH3();
 
       case this.TAG_NAME_BUTTON:
-        return this.createButton();
+        return this.createButton(cn);
 
       default:
         throw new Error('not impl ' + tagName);
     }
+  }
+
+  /**
+   * 엘리먼트 추가
+   * @param compn 콤포넌트
+   */
+  addElByCompn(compn: Scrobot.Compn): void {
+    this.clearAllDraggable();
+    this.clearAllResizable();
+    this.clearAllBorder();
+
+    const $el = this.createEl(compn.compnSeCode, compn.compnCn);
+
+    this.allElMap.set($el.attr('id') ?? '', $el);
+    this.selectedElService.add($el);
+
+    $('div.content').append($el);
   }
 
   /**
@@ -284,11 +382,22 @@ export class EditorComponent implements OnInit {
     return $el;
   }
 
-  createInput(): JQuery<HTMLElement> {
-    const id = this.createId();
-    const $wrapper = $(`<div id="${id}_wrapper" class="wrapper" style="position:absolute; width:150px; height:30px;"></div>`);
+  /**
+   * 인풋 엘리먼트 생성
+   * @param cn 태그 내용
+   * @returns 엘리먼트
+   */
+  createInput(cn: string = ''): JQuery<HTMLElement> {
+    let $wrapper = null;
 
-    $wrapper.append($(`<input type="text" id="${id}" style="width:100px; height:25px; padding:0.5em; background-color:#efefef;" readonly focus ></input>`));
+    if (0 === cn.length) {
+      const id = this.createId();
+      $wrapper = $(`<div id="${id}_wrapper" class="wrapper" style="position:absolute; width:150px; height:30px;"></div>`);
+
+      $wrapper.append($(`<input type="text" id="${id}" style="width:100px; height:25px; padding:0.5em; background-color:#efefef;" readonly focus ></input>`));
+    } else {
+      $wrapper = $(cn);
+    }
 
     $wrapper
       .draggable({
@@ -407,11 +516,22 @@ export class EditorComponent implements OnInit {
     return $el;
   }
 
-  createButton(): JQuery<HTMLElement> {
-    const id = this.createId();
-    const $wrapper = $(`<span id="${id}_wrapper" class="wrapper" data-wrapper="true" style="position:absolute; width:110px; height:60px;"></span>`);
+  /**
+   * 버튼 엘리먼트 생성
+   * @param cn 내용
+   * @returns 버튼 엘리먼트
+   */
+  createButton(cn: string = ''): JQuery<HTMLElement> {
+    let $wrapper = null;
 
-    $wrapper.append($(`<button id="${this.createId()}" type="button" class="btn btn-primary" style="position:absolute; width:100px; height:50px; font-size:medium;" disabled>버튼</button>`));
+    if (0 === cn.length) {
+      const id = this.createId();
+      $wrapper = $(`<span id="${id}_wrapper" class="wrapper" data-wrapper="true" style="position:absolute; width:110px; height:60px;"></span>`);
+
+      $wrapper.append($(`<button id="${this.createId()}" type="button" class="btn btn-primary" style="position:absolute; width:100px; height:50px; font-size:medium;" disabled>버튼</button>`));
+    } else {
+      $wrapper = $(cn);
+    }
 
     $wrapper.draggable({ containment: 'div.content' }).resizable({ containment: 'div.content', handles: 'se' });
 
@@ -432,30 +552,6 @@ export class EditorComponent implements OnInit {
     });
 
     return $wrapper;
-  }
-
-  /**
-   * 랜덤한 id 문자열 생성
-   * @returns string
-   */
-  createId(): string {
-    return 'id_' + new Date().getTime();
-  }
-
-  randColor(): string {
-    const colors: string[] = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
-
-    return colors[this.rand(0, colors.length - 1)];
-  }
-
-  /**
-   * 랜덤 숫자
-   * @param min 최소 값
-   * @param max 최대 값
-   * @returns 숫자
-   */
-  rand(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   showProperty(el: JQuery<HTMLElement> | undefined): void {
@@ -555,6 +651,122 @@ export class EditorComponent implements OnInit {
         $el?.val(v.value);
       }
     });
+  }
+
+  /**
+   * 클래스 추가
+   * @param els 엘리먼트 목록
+   * @param className 클래스 명
+   */
+  addClass(els: any[], className: string): void {
+    els.forEach((el) => {
+      this.renderer.addClass(el, className);
+    });
+  }
+
+  /**
+   * 클래스 제거
+   * @param els 엘리먼트 목록
+   * @param className 클래스 명
+   */
+  removeClass(els: any[], className: string): void {
+    els.forEach((el) => {
+      this.renderer.removeClass(el, className);
+    });
+  }
+
+  /**
+   * 엘리먼트 표시하기
+   * @param els 엘리먼트 목록
+   */
+  show(els: any[]): void {
+    els.forEach((el) => {
+      this.renderer.setStyle(el, 'display', 'block');
+    });
+  }
+
+  /**
+   * 엘리먼트 숨기기
+   * @param els 엘리먼트 목록
+   */
+  hide(els: any[]): void {
+    els.forEach((el) => {
+      this.renderer.setStyle(el, 'display', 'none');
+    });
+  }
+
+  /**
+   * 탭 활성화 시키기
+   * @param els 엘리먼트 목록
+   */
+  activeTab(els: any[]): void {
+    this.addClass(els, 'active');
+  }
+
+  /**
+   * 모든 탭 비활성화 시키기
+   */
+  unactiveAllTab(): void {
+    this.removeClass([this.tabMenuRef.nativeElement, this.tabScrinRef.nativeElement, this.tabCompnRef.nativeElement], 'active');
+  }
+
+  /**
+   * 영역 표시하기
+   * @param els 엘리먼트 목록
+   */
+  showArea(els: any[]): void {
+    this.removeClass(els, 'd-none');
+  }
+
+  /**
+   * 모든 영역 숨기기
+   */
+  hideAllArea(): void {
+    this.addClass([this.areaMenuRef.nativeElement, this.areaScrinRef.nativeElement, this.areaCompnRef.nativeElement], 'd-none');
+  }
+
+  /**
+   * 화면 선택됨. 편집을 위한 데이터 로드
+   * @param scrinId 화면 아이디
+   */
+  scrinSelected(scrinId: string): void {
+    this.editingScrinId = scrinId;
+
+    // 콤포넌트 목록 조회
+    this.editorService.listCompnByScrinId(scrinId).then((res: any) => {
+      // 화면에 콤포넌트 표시
+      (res.data as Scrobot.Compn[]).forEach((x) => {
+        this.addElByCompn(x);
+      });
+    });
+  }
+
+  /**
+   * 랜덤한 id 문자열 생성
+   * @returns string
+   */
+  createId(): string {
+    return 'id_' + new Date().getTime();
+  }
+
+  /**
+   *
+   * @returns
+   */
+  randColor(): string {
+    const colors: string[] = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
+
+    return colors[this.rand(0, colors.length - 1)];
+  }
+
+  /**
+   * 랜덤 숫자
+   * @param min 최소 값
+   * @param max 최대 값
+   * @returns 숫자
+   */
+  rand(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 }
 

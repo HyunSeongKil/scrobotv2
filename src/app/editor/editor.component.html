@@ -1,73 +1,96 @@
 <div class="row">
-  <div class="col-1">
-    <ul>
-      <li>
-        <button
-          type="button"
-          class="btn btn-outline-secondary btn-sm"
-          (click)="addEl(TAG_NAME_H1)"
-        >
-          제목1
-        </button>
+  
+  <div class="col-2">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a #tabScrinRef class="nav-link active" aria-current="page" href="javascript:;">화면</a>
       </li>
-      <li>
-        <button
-          type="button"
-          class="btn btn-outline-secondary btn-sm"
-          (click)="addEl(TAG_NAME_H2)"
-        >
-          제목2
-        </button>
-      </li>
-      <li>
-        <button
-          type="button"
-          class="btn btn-outline-secondary btn-sm"
-          (click)="addEl(TAG_NAME_H3)"
-        >
-          제목3
-        </button>
-      </li>
-      <li>
-        <button
-          type="button"
-          class="btn btn-outline-secondary btn-sm"
-          (click)="addEl(TAG_NAME_DIV)"
-        >
-          영역
-        </button>
-      </li>
-      <li>
-        <button
-          type="button"
-          class="btn btn-outline-secondary btn-sm"
-          (click)="addEl(TAG_NAME_SPAN)"
-        >
-          레이블
-        </button>
-      </li>
-      <li>
-        <button
-          type="button"
-          class="btn btn-outline-secondary btn-sm"
-          (click)="addEl(TAG_NAME_INPUT_TEXT)"
-        >
-          값입력
-        </button>
-      </li>
-      <li>
-        <button
-          type="button"
-          class="btn btn-outline-secondary btn-sm"
-          (click)="addEl(TAG_NAME_BUTTON)"
-        >
-          버튼
-        </button>
+      <li class="nav-item">
+        <a #tabCompnRef class="nav-link" href="javascript:;">콤포넌트</a>
+      </li>      
+      <li class="nav-item">
+        <a #tabMenuRef class="nav-link "  href="javascript:;">메뉴</a>
       </li>
     </ul>
+
+    <div #areaMenuRef class="d-none">
+      <app-menu #menuRef [prjctId]="prjctId"></app-menu>
+    </div>
+    <div #areaScrinRef class="d-none">
+      <app-scrin-group #scrinGroupRef [prjctId]="prjctId" (scrinSelectEvent)="scrinSelected($event)"></app-scrin-group>
+    </div>
+    <div #areaCompnRef class="d-none">
+      <ul>
+        <li>
+          <button
+            type="button"
+            class="btn btn-outline-secondary btn-sm"
+            (click)="addEl(TAG_NAME_H1)"
+          >
+            제목1
+          </button>
+        </li>
+        <li>
+          <button
+            type="button"
+            class="btn btn-outline-secondary btn-sm"
+            (click)="addEl(TAG_NAME_H2)"
+          >
+            제목2
+          </button>
+        </li>
+        <li>
+          <button
+            type="button"
+            class="btn btn-outline-secondary btn-sm"
+            (click)="addEl(TAG_NAME_H3)"
+          >
+            제목3
+          </button>
+        </li>
+        <li>
+          <button
+            type="button"
+            class="btn btn-outline-secondary btn-sm"
+            (click)="addEl(TAG_NAME_DIV)"
+          >
+            영역
+          </button>
+        </li>
+        <li>
+          <button
+            type="button"
+            class="btn btn-outline-secondary btn-sm"
+            (click)="addEl(TAG_NAME_SPAN)"
+          >
+            레이블
+          </button>
+        </li>
+        <li>
+          <button
+            type="button"
+            class="btn btn-outline-secondary btn-sm"
+            (click)="addEl(TAG_NAME_INPUT_TEXT)"
+          >
+            값입력
+          </button>
+        </li>
+        <li>
+          <button
+            type="button"
+            class="btn btn-outline-secondary btn-sm"
+            (click)="addEl(TAG_NAME_BUTTON)"
+          >
+            버튼
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    
   </div>
-  <div class="col-8">
-    <div class="content"></div>
+  <div class="col">
+    <div class="content" style="position: relative;"></div>
   </div>
   <div class="col-3">
     <div>
