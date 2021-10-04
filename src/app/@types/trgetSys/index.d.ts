@@ -7,6 +7,7 @@ export namespace TrgetSys {
     scrin_id: string;
     eng_abrv_nm: string;
     hngl_abrv_nm: string;
+    ordr_value: number;
   }
 
   export interface Menu {

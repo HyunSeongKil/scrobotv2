@@ -75,6 +75,9 @@ export class CrudComponent implements OnInit, AfterViewInit {
     // 콤포넌트
     const p2 = await this.bizService.getCompns(this.prjctId, this.scrinId);
     this.compns = p2.data;
+    this.compns.sort((a, b) => {
+      return a.ordr_value - b.ordr_value;
+    });
     this.showCompns();
     // 버튼 이벤트 등록
     this.addBtnEvent(this.scrin?.scrin_se_code);
@@ -130,7 +133,7 @@ export class CrudComponent implements OnInit, AfterViewInit {
     // 조회 버튼 클릭 이벤트 추가
     const pkColumnName = this.bizService.getPkColmnName(this.scrinGroup);
     $table.find('button.detail').each((i, button) => {
-      const index = $(button).data('index') as number;
+      const index = Number($(button).attr('data-index') ?? '');
       const data = this.datas[index];
 
       $(button).on('click', () => {
@@ -172,7 +175,7 @@ export class CrudComponent implements OnInit, AfterViewInit {
   async showDatas($table: JQuery<HTMLElement>): Promise<void> {
     // 제목
     $table.find('thead > tr > th').each((i, item) => {
-      const engAbrvNm = $(item).data('eng-abrv-nm');
+      const engAbrvNm = $(item).attr('data-eng-abrv-nm');
       this.metas.forEach((x) => {
         if (x.column_name === engAbrvNm) {
           $(item).html(x.column_comment);
@@ -228,10 +231,10 @@ export class CrudComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const key = $td.data('eng-abrv-nm');
+    const key = $td.attr('data-eng-abrv-nm') ?? '';
 
     // 부모공통코드 없으면
-    const prntsCmmnCode = $td.data('prnts-cmmn-code');
+    const prntsCmmnCode = $td.attr('data-prnts-cmmn-code');
     if (null === prntsCmmnCode || undefined === prntsCmmnCode || 0 === prntsCmmnCode.length) {
       $td.html(data[key]);
       return;
@@ -326,7 +329,7 @@ export class CrudComponent implements OnInit, AfterViewInit {
       }
 
       if ('SELECT' === x.compn_se_code) {
-        const prntsCmmnCode = $el.data('prnts-cmmn-code');
+        const prntsCmmnCode = $el.attr('data-prnts-cmmn-code');
         if (null === prntsCmmnCode || undefined === prntsCmmnCode || 0 === prntsCmmnCode.length) {
           return;
         }
@@ -352,7 +355,7 @@ export class CrudComponent implements OnInit, AfterViewInit {
    */
   addBtnEvent(scrinSeCode: string | undefined): void {
     $('#form button').each((i, item) => {
-      switch ($(item).data('btn-se')) {
+      switch ($(item).attr('data-btn-se')) {
         case BizService.SE_C:
           this.addCBtnEvent(scrinSeCode, $(item));
           break;

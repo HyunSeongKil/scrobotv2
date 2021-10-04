@@ -28,12 +28,14 @@ export namespace Scrobot {
 
   export interface Compn {
     compnCn: string;
-    compnId: string;
+    compnId?: string;
     compnNm: string;
     compnSeCode: string;
     engAbrvNm: string;
     hnglAbrvNm: string;
     scrinId: string;
+    ordrValue: number;
+    registDt?: string;
   }
 
   export interface CmmnCode {
@@ -52,6 +54,7 @@ export namespace Scrobot {
   export interface Deploy {
     prjctId: string;
     trgetSysId: string;
+    isDeploy: boolean;
   }
 
   export interface Menu {

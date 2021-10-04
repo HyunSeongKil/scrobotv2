@@ -1,0 +1,29 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">표준 용어 선택</h4>
+    <button type="button" class="btn btn-sm close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <form [formGroup]="form">
+        <label for="wordNm" class="d-block">용어</label>
+        <input type="text" id="wordNm" class="form-control w-75 d-inline" formControlName="wordNm" />
+        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="search()">조회</button>
+        <div>※ 여러 용어 입력시 공백 사용 예)코드 한글 명칭</div>
+      </form>
+    </div>
+
+    <ng-container *ngFor="let kv of map | keyvalue">
+      <label>{{ kv.key }}</label>
+      <select class="form-control">
+        <option *ngFor="let x of kv.value" [value]="x.engAbrvNm">{{ x.wordNm }}</option>
+      </select>
+    </ng-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="modal.close('SELECT')">선택</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.close('CLOSE')">닫기</button>
+  </div>
+</ng-template>

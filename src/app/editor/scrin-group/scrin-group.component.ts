@@ -15,10 +15,31 @@ export class ScrinGroupComponent implements OnInit {
   @ViewChild('scrinGroupRegistDialogRef') scrinGroupRegistDialogRef!: ScrinGroupRegistDialogComponent;
   @ViewChild('scrinRegistDialogRef') scrinRegistDialogRef!: ScrinRegistDialogComponent;
 
+  /**
+   * 프로젝트 아이디
+   */
   @Input() prjctId = '';
+  /**
+   * 현재 편집중인 화면 아이디
+   */
+  @Input() editingScrinId = '';
+  /**
+   * 화면 선택 완료 이벤트
+   */
   @Output() scrinSelectEvent = new EventEmitter<any>();
+  /**
+   * 닫기 이벤트
+   */
+  @Output() closeEvent = new EventEmitter<any>();
+  @Output() saveEvent = new EventEmitter<any>();
 
+  /**
+   * 화면 그룹 목록
+   */
   scrinGroups: Scrobot.ScrinGroup[] = [];
+  /**
+   * 화면 목록
+   */
   scrins: Scrobot.Scrin[] = [];
 
   constructor(private service: ScrinGroupService, private scrinService: ScrinService, private compnService: CompnService) {}
@@ -138,5 +159,21 @@ export class ScrinGroupComponent implements OnInit {
     }
 
     this.scrinSelectEvent.emit(scrinId);
+  }
+
+  save(): void {
+    if (!confirm('저장하시겠습니까?')) {
+      return;
+    }
+
+    this.saveEvent.emit('');
+  }
+
+  close(): void {
+    if (!confirm('닫으시겠습니까?\n※ 저장하지 않은 자료는 삭제됩니다.')) {
+      return;
+    }
+
+    this.closeEvent.emit('');
   }
 }

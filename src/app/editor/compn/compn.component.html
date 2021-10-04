@@ -1,0 +1,27 @@
+<div *ngIf="0 === editingScrinId.length">화면 편집 상태가 아닙니다.</div>
+
+<div *ngIf="0 < editingScrinId.length">
+  <ul>
+    <li>
+      <button type="button" class="btn btn-outline-secondary btn-sm" (click)="selectTag(TAG_NAME_H1)">제목1</button>
+    </li>
+    <li>
+      <button type="button" class="btn btn-outline-secondary btn-sm" (click)="selectTag(TAG_NAME_H2)">제목2</button>
+    </li>
+    <li>
+      <button type="button" class="btn btn-outline-secondary btn-sm" (click)="selectTag(TAG_NAME_H3)">제목3</button>
+    </li>
+    <li>
+      <button type="button" class="btn btn-outline-secondary btn-sm" (click)="selectTag(TAG_NAME_DIV)">영역</button>
+    </li>
+    <li>
+      <button type="button" class="btn btn-outline-secondary btn-sm" (click)="selectTag(TAG_NAME_SPAN)">레이블</button>
+    </li>
+    <li>
+      <button type="button" class="btn btn-outline-secondary btn-sm" (click)="selectTag(TAG_NAME_INPUT_TEXT)">값입력</button>
+    </li>
+    <li>
+      <button type="button" class="btn btn-outline-secondary btn-sm" (click)="selectTag(TAG_NAME_BUTTON)">버튼</button>
+    </li>
+  </ul>
+</div>

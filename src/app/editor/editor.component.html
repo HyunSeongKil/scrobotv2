@@ -1,15 +1,25 @@
 <div class="row">
-  
   <div class="col-2">
-    <ul class="nav nav-tabs">
+    <div class="mt-2">
+      <button type="button" class="btn btn-outline-secondary" (click)="linkPrjcts()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-reply" viewBox="0 0 16 16">
+          <path
+            d="M6.598 5.013a.144.144 0 0 1 .202.134V6.3a.5.5 0 0 0 .5.5c.667 0 2.013.005 3.3.822.984.624 1.99 1.76 2.595 3.876-1.02-.983-2.185-1.516-3.205-1.799a8.74 8.74 0 0 0-1.921-.306 7.404 7.404 0 0 0-.798.008h-.013l-.005.001h-.001L7.3 9.9l-.05-.498a.5.5 0 0 0-.45.498v1.153c0 .108-.11.176-.202.134L2.614 8.254a.503.503 0 0 0-.042-.028.147.147 0 0 1 0-.252.499.499 0 0 0 .042-.028l3.984-2.933zM7.8 10.386c.068 0 .143.003.223.006.434.02 1.034.086 1.7.271 1.326.368 2.896 1.202 3.94 3.08a.5.5 0 0 0 .933-.305c-.464-3.71-1.886-5.662-3.46-6.66-1.245-.79-2.527-.942-3.336-.971v-.66a1.144 1.144 0 0 0-1.767-.96l-3.994 2.94a1.147 1.147 0 0 0 0 1.946l3.994 2.94a1.144 1.144 0 0 0 1.767-.96v-.667z"
+          />
+        </svg>
+        프로젝트 목록
+      </button>
+    </div>
+
+    <ul class="nav nav-tabs mt-2">
       <li class="nav-item">
         <a #tabScrinRef class="nav-link active" aria-current="page" href="javascript:;">화면</a>
       </li>
       <li class="nav-item">
         <a #tabCompnRef class="nav-link" href="javascript:;">콤포넌트</a>
-      </li>      
+      </li>
       <li class="nav-item">
-        <a #tabMenuRef class="nav-link "  href="javascript:;">메뉴</a>
+        <a #tabMenuRef class="nav-link" href="javascript:;">메뉴</a>
       </li>
     </ul>
 
@@ -17,235 +27,19 @@
       <app-menu #menuRef [prjctId]="prjctId"></app-menu>
     </div>
     <div #areaScrinRef class="d-none">
-      <app-scrin-group #scrinGroupRef [prjctId]="prjctId" (scrinSelectEvent)="scrinSelected($event)"></app-scrin-group>
+      <app-scrin-group #scrinGroupRef [prjctId]="prjctId" [editingScrinId]="editingScrinId" (scrinSelectEvent)="scrinSelected($event)" (saveEvent)="scrinSaved()" (closeEvent)="scrinClosed()"></app-scrin-group>
     </div>
     <div #areaCompnRef class="d-none">
-      <ul>
-        <li>
-          <button
-            type="button"
-            class="btn btn-outline-secondary btn-sm"
-            (click)="addEl(TAG_NAME_H1)"
-          >
-            제목1
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            class="btn btn-outline-secondary btn-sm"
-            (click)="addEl(TAG_NAME_H2)"
-          >
-            제목2
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            class="btn btn-outline-secondary btn-sm"
-            (click)="addEl(TAG_NAME_H3)"
-          >
-            제목3
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            class="btn btn-outline-secondary btn-sm"
-            (click)="addEl(TAG_NAME_DIV)"
-          >
-            영역
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            class="btn btn-outline-secondary btn-sm"
-            (click)="addEl(TAG_NAME_SPAN)"
-          >
-            레이블
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            class="btn btn-outline-secondary btn-sm"
-            (click)="addEl(TAG_NAME_INPUT_TEXT)"
-          >
-            값입력
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            class="btn btn-outline-secondary btn-sm"
-            (click)="addEl(TAG_NAME_BUTTON)"
-          >
-            버튼
-          </button>
-        </li>
-      </ul>
+      <app-compn #compnRef [prjctId]="prjctId" [editingScrinId]="editingScrinId" (tagSelectedEvent)="tagSelected($event)"></app-compn>
     </div>
-
-    
   </div>
   <div class="col">
-    <div class="content" style="position: relative;"></div>
+    <div class="content" style="position: relative"></div>
   </div>
   <div class="col-3">
-    <div>
-      <button
-        type="button"
-        class="btn btn-outline-danger btn-sm"
-        (click)="deleteEls()"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          class="bi bi-trash"
-          viewBox="0 0 16 16"
-        >
-          <path
-            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
-          />
-          <path
-            fill-rule="evenodd"
-            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
-          />
-        </svg>
-        삭제
-      </button>
-    </div>
-    <div class="mt-1">
-      <button
-        type="button"
-        class="btn btn-outline-secondary btn-sm"
-        (click)="selectAllEl()"
-      >
-        모두선택
-      </button>
+    <app-tool [prjctId]="prjctId" [editingScrinId]="editingScrinId"></app-tool>
 
-      <button
-        type="button"
-        class="btn btn-outline-secondary btn-sm mx-1"
-        (click)="clearAllSelectedEl()"
-      >
-        선택해제
-      </button>
-
-      <button
-        type="button"
-        class="btn btn-outline-secondary btn-sm"
-        (click)="updateZIndex('front')"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          class="bi bi-front"
-          viewBox="0 0 16 16"
-        >
-          <path
-            d="M0 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2H2a2 2 0 0 1-2-2V2zm5 10v2a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-2v5a2 2 0 0 1-2 2H5z"
-          />
-        </svg>
-        앞으로
-      </button>
-
-      <button
-        type="button"
-        class="btn btn-outline-secondary btn-sm mx-1"
-        (click)="updateZIndex('back')"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          class="bi bi-back"
-          viewBox="0 0 16 16"
-        >
-          <path
-            d="M0 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2z"
-          />
-        </svg>
-        뒤로
-      </button>
-    </div>
-
-    <div>
-      <table class="table property">
-        <thead>
-          <tr>
-            <th>속성</th>
-            <th>값</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let x of properties">
-            <td>{{ x.text }}</td>
-            <td>
-              <input
-                type="text"
-                class="form-control"
-                [name]="x.key"
-                [value]="x.value"
-              />
-            </td>
-          </tr>
-
-          <tr *ngIf="0 === properties.length">
-            <td colspan="2" class="text-center">선택된 엘리먼트가 없습니다.</td>
-          </tr>
-        </tbody>
-        <tfoot *ngIf="0 < properties.length">
-          <tr>
-            <td colspan="2">
-              <button
-                type="button"
-                class="btn btn-outline-primary btn-sm"
-                (click)="applyProperty()"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-save"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"
-                  />
-                </svg>
-                적용
-              </button>
-              <button
-                type="button"
-                class="btn btn-outline-secondary btn-sm mx-1"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-x"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
-                  />
-                </svg>
-                취소
-              </button>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
+    <app-property [prjctId]="prjctId" [editingScrinId]="editingScrinId" [$selectedEl]="$selectedEl" (elChangedEvent)="elChanged($event)"></app-property>
   </div>
 </div>
 

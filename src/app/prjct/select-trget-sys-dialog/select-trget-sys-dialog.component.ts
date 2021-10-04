@@ -26,6 +26,7 @@ export class SelectTrgetSysDialogComponent implements OnInit {
     this.form = new FormGroup({
       prjctId: new FormControl('', [Validators.required]),
       trgetSysId: new FormControl('', [Validators.required]),
+      isDeploy: new FormControl(true, [Validators.required]),
     });
   }
 
@@ -35,9 +36,12 @@ export class SelectTrgetSysDialogComponent implements OnInit {
     });
   }
 
-  open(prjctId: string) {
-    this.form.controls.prjctId.setValue(prjctId);
+  open(prjctId: string, isDeploy = true) {
+    this.ngOnInit();
 
+    this.form.patchValue({ prjctId, isDeploy });
+
+    //
     this.modalService.open(this.content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
       (result: any) => {
         this.closeResult = `Closed with: ${result}`;

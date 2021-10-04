@@ -112,12 +112,32 @@ export class PrjctListComponent implements OnInit {
   }
 
   /**
+   * 배포 취소
+   * @param prjctId 프로젝트 아이디
+   */
+  undeploy(prjctId: string): void {
+    this.deployDialogRef.open(prjctId, false);
+  }
+
+  /**
    * 대상 시스템 선택됨
    * @param deploy
    * @returns void
    */
   trgetSysSelected(deploy: Scrobot.Deploy): void {
-    console.log(deploy);
+    if (deploy.isDeploy) {
+      this.doDeploy(deploy);
+    } else {
+      this.doUndeploy(deploy);
+    }
+  }
+
+  /**
+   * 배포
+   * @param deploy 값
+   * @returns void
+   */
+  doDeploy(deploy: Scrobot.Deploy): void {
     if (!confirm('배포하시겠습니까?')) {
       return;
     }
@@ -130,6 +150,26 @@ export class PrjctListComponent implements OnInit {
       .catch((reason: any) => {
         alert('배포중 오류가 발생했습니다.');
       });
+  }
+
+  /**
+   * TODO 배포 취소
+   * @param deploy 값
+   * @returns void
+   */
+  doUndeploy(deploy: Scrobot.Deploy): void {
+    if (!confirm('배포 취소하시겠습니까?')) {
+      return;
+    }
+
+    // this.deployService
+    //   .undeploy(deploy)
+    //   .then((res: any) => {
+    //     alert('배포 취소되었습니다.');
+    //   })
+    //   .catch((reason: any) => {
+    //     alert('배포 취소중 오류가 발생했습니다.');
+    //   });
   }
 
   /**

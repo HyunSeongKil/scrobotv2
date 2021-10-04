@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Scrobot } from 'src/app/@types/scrobot';
 import { ScrinGroupService } from 'src/app/service/scrin-group.service';
+import { WordDicarySelectDialogComponent } from '../../word-dicary-select-dialog/word-dicary-select-dialog.component';
 
 /**
  * 화면 그룹 등록 팝업
@@ -14,6 +15,7 @@ import { ScrinGroupService } from 'src/app/service/scrin-group.service';
 })
 export class ScrinGroupRegistDialogComponent implements OnInit {
   @ViewChild('content') content!: ElementRef<HTMLDivElement>;
+  @ViewChild('wordDicarySelectDialogRef') wordDicarySelectDialogRef!: WordDicarySelectDialogComponent;
 
   @Output() savingEvent = new EventEmitter<any>();
   @Output() savedEvent = new EventEmitter<any>();
@@ -31,6 +33,13 @@ export class ScrinGroupRegistDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  /**
+   * 용어 사전 선택 팝업창 실행
+   */
+  openWordDicarySelectDialog(): void {
+    this.wordDicarySelectDialogRef.open();
+  }
 
   /**
    * 팝업창 실행

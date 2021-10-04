@@ -18,9 +18,13 @@ import { MenuRegistDialogComponent } from './editor/menu/menu-regist-dialog/menu
 import { ScrinGroupComponent } from './editor/scrin-group/scrin-group.component';
 import { ScrinGroupRegistDialogComponent } from './editor/scrin-group/scrin-group-regist-dialog/scrin-group-regist-dialog.component';
 import { ScrinRegistDialogComponent } from './editor/scrin-group/scrin-regist-dialog/scrin-regist-dialog.component';
+import { CompnComponent } from './editor/compn/compn.component';
+import { ToolComponent } from './editor/tool/tool.component';
+import { PropertyComponent } from './editor/property/property.component';
+import { WordDicarySelectDialogComponent } from './editor/word-dicary-select-dialog/word-dicary-select-dialog.component';
 
 @NgModule({
-  declarations: [AppComponent, EditorComponent, HeaderComponent, FooterComponent, SideBarComponent, RightComponent, MenuComponent, MenuRegistDialogComponent, ScrinGroupComponent, ScrinGroupRegistDialogComponent, ScrinRegistDialogComponent],
+  declarations: [AppComponent, EditorComponent, HeaderComponent, FooterComponent, SideBarComponent, RightComponent, MenuComponent, MenuRegistDialogComponent, ScrinGroupComponent, ScrinGroupRegistDialogComponent, ScrinRegistDialogComponent, CompnComponent, ToolComponent, PropertyComponent, WordDicarySelectDialogComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, BizModule, PrjctModule, FormsModule, NgbModule, ReactiveFormsModule],
   providers: [],
   bootstrap: [AppComponent],

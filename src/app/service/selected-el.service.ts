@@ -6,36 +6,29 @@ import 'jqueryui';
   providedIn: 'root',
 })
 export class SelectedElService {
-  map: Map<string | undefined, JQuery<HTMLElement> | undefined> = new Map<
-    string,
-    JQuery<HTMLElement> | undefined
-  >();
+  private map = new Map<string, JQuery<HTMLElement>>();
 
   constructor() {}
 
-  add($el: JQuery<HTMLElement> | undefined): void {
-    if (undefined === $el) {
+  /**
+   * 엘리먼트 추가
+   * @param id 아이디
+   * @param $el 엘리먼트
+   */
+  add(id: string | undefined, $el: JQuery<HTMLElement>): void {
+    if (undefined === id) {
       return;
     }
 
-    this.map.set($el.attr('id'), $el);
+    this.map.set(id, $el);
   }
 
-  get(id: string | undefined = undefined): JQuery<HTMLElement> | undefined {
-    if (undefined !== id) {
-      return this.map.get(id);
-    }
+  get(id: string): JQuery<HTMLElement> | undefined {
+    return this.map.get(id);
+  }
 
-    let a = undefined;
-    this.map.forEach(($el, k) => {
-      if ($el?.hasClass('wrapper')) {
-        a = $el.children().first();
-      } else {
-        a = $el;
-      }
-    });
-
-    return a;
+  getAll(): IterableIterator<[string, JQuery<HTMLElement>]> {
+    return this.map.entries();
   }
 
   delete(id: string | undefined): void {
