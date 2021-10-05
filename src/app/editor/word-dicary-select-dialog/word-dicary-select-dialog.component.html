@@ -10,14 +10,14 @@
       <form [formGroup]="form">
         <label for="wordNm" class="d-block">용어</label>
         <input type="text" id="wordNm" class="form-control w-75 d-inline" formControlName="wordNm" />
-        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="search()">조회</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm mx-1" (click)="search()">조회</button>
         <div>※ 여러 용어 입력시 공백 사용 예)코드 한글 명칭</div>
       </form>
     </div>
 
     <ng-container *ngFor="let kv of map | keyvalue">
       <label>{{ kv.key }}</label>
-      <select class="form-control">
+      <select class="form-control word-nm" [name]="kv.key">
         <option *ngFor="let x of kv.value" [value]="x.engAbrvNm">{{ x.wordNm }}</option>
       </select>
     </ng-container>

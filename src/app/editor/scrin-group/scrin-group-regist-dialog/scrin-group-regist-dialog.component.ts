@@ -17,8 +17,8 @@ export class ScrinGroupRegistDialogComponent implements OnInit {
   @ViewChild('content') content!: ElementRef<HTMLDivElement>;
   @ViewChild('wordDicarySelectDialogRef') wordDicarySelectDialogRef!: WordDicarySelectDialogComponent;
 
-  @Output() savingEvent = new EventEmitter<any>();
-  @Output() savedEvent = new EventEmitter<any>();
+  @Output() scrinGroupSavingEvent = new EventEmitter<any>();
+  @Output() scrinGroupSavedEvent = new EventEmitter<any>();
 
   form: FormGroup;
 
@@ -71,14 +71,15 @@ export class ScrinGroupRegistDialogComponent implements OnInit {
         }
 
         if (!confirm('저장하시겠습니까?')) {
+          this.open(prjctId, scrinGroups);
           return;
         }
 
-        this.savingEvent.emit('');
+        this.scrinGroupSavingEvent.emit('');
 
         //
         this.service.regist(this.form.value as Scrobot.ScrinGroup).then((res: any) => {
-          this.savedEvent.emit('');
+          this.scrinGroupSavedEvent.emit('');
         });
       },
       (reason: any) => {
@@ -111,5 +112,24 @@ export class ScrinGroupRegistDialogComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  /**
+   * 용어 사전 선택됨 이벤트 호출됨
+   * @param arr [{kor,eng}]
+   */
+  wordDicarySelected(arr: any[]): void {
+    console.log(arr);
+
+    let kors: string[] = [];
+    let engs: string[] = [];
+
+    arr.forEach((x) => {
+      kors.push(x.kor);
+      engs.push(x.eng);
+    });
+
+    this.form.controls.scrinGroupNm.setValue(kors.join(' '));
+    this.form.controls.engAbrvNm.setValue(engs.join('_'));
   }
 }

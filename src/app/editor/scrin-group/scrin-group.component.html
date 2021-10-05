@@ -40,7 +40,7 @@
 
     <!-- 화면 목록-->
     <div class="row scrin" style="margin-left: 20px" *ngFor="let x2 of x.scrins">
-      <div class="col-6">
+      <div class="col-6" [attr.data-scrin-id]="x2.scrinId">
         {{ x2.scrinNm }} <span class="fw-bold">({{ x2.scrinSeCode }})</span>
       </div>
       <div class="col-6 text-end">

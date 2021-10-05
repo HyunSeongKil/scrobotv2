@@ -1,14 +1,13 @@
-<p>crud works!</p>
-{{ prjctId }} {{ scrinId }}
-
 <div class="row">
   <div class="col-2"></div>
   <div class="col-10">
+    <app-main-menu [prjctId]="prjctId" [mainMenuId]="mainMenuId" (mainMenuClickedEvent)="mainMenuClicked($event)"></app-main-menu>
     <div #mainMenuRef id="mainMenu"></div>
   </div>
 </div>
 <div class="row">
   <div class="col-2">
+    <app-sub-menu [prjctId]="prjctId" [mainMenuId]="mainMenuId" [subMenuId]="subMenuId" (subMenuInitedEvent)="subMenuInited()" (subMenuClickedEvent)="subMenuClicked($event)"></app-sub-menu>
     <div #subMenuRef id="subMenu"></div>
   </div>
   <div class="col-10" style="height: 600px; background-color: #efefef; position: relative">

@@ -10,7 +10,7 @@
       <div>
         <label for="scrinGroupNm" class="d-block">화면 그룹 명<span class="req">*</span></label>
         <input type="text" class="form-control w-75 d-inline" id="scrinGroupNm" formControlName="scrinGroupNm" />
-        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="openWordDicarySelectDialog()">선택...</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm mx-1" (click)="openWordDicarySelectDialog()">선택...</button>
       </div>
 
       <label for="engAbrvNm">영문 약어 명<span class="req">*</span></label>
@@ -25,4 +25,4 @@
   </div>
 </ng-template>
 
-<app-word-dicary-select-dialog #wordDicarySelectDialogRef></app-word-dicary-select-dialog>
+<app-word-dicary-select-dialog #wordDicarySelectDialogRef (wordDicarySelectedEvent)="wordDicarySelected($event)"></app-word-dicary-select-dialog>

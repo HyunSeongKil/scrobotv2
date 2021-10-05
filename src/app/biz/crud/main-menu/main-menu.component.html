@@ -1,0 +1,8 @@
+<div>
+  <ng-container *ngFor="let x of menus">
+    <ng-container *ngIf="'-' === x.prnts_menu_id" (click)="mainMenuClicked(x)">
+      <a href="javascript:;" class="mx-1 fw-bold" *ngIf="x.menu_id === mainMenuId">{{ x.menu_nm }}</a>
+      <a href="javascript:;" class="mx-1" *ngIf="x.menu_id !== mainMenuId">{{ x.menu_nm }}</a>
+    </ng-container>
+  </ng-container>
+</div>

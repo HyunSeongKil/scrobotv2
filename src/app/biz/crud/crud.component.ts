@@ -29,7 +29,7 @@ export class CrudComponent implements OnInit, AfterViewInit {
   // 메타정보 목록
   metas: any[] = [];
   // 메뉴 목록
-  menus: TrgetSys.Menu[] = [];
+  // menus: TrgetSys.Menu[] = [];
   // 화면
   scrin: TrgetSys.Scrin | undefined;
   // 화면그룹
@@ -41,10 +41,22 @@ export class CrudComponent implements OnInit, AfterViewInit {
     [key: string]: TrgetSys.CmmnCode[];
   } = {};
 
+  mainMenuId = '';
+  subMenuId = '';
+
+  m1 = '';
+  m2 = '';
+
   constructor(route: ActivatedRoute, private router: Router, private bizService: BizService, private cmmnCodeService: CmmnCodeService) {
     this.prjctId = route.snapshot.paramMap.get('prjctId') ?? '';
     this.scrinId = route.snapshot.queryParamMap.get('scrinId') ?? '';
     this.id = route.snapshot.queryParamMap.get('id') ?? '';
+    // 파라미터로 받은 메인 메뉴 아이디
+    this.m1 = route.snapshot.queryParamMap.get('m1') ?? '';
+    // 파라미터로 받은 하위 메뉴 아이디
+    this.m2 = route.snapshot.queryParamMap.get('m2') ?? '';
+
+    console.log('<<ctr');
   }
 
   ngAfterViewInit(): void {
@@ -57,12 +69,6 @@ export class CrudComponent implements OnInit, AfterViewInit {
    * 초기 처리
    */
   async init(): Promise<void> {
-    // 메뉴
-    this.bizService.getMenus(this.prjctId).then((res: any) => {
-      this.menus = res.data;
-      this.showMainMenus();
-    });
-
     // 화면
     this.bizService.getScrin(this.prjctId, this.scrinId).then((res: any) => {
       this.scrin = res.data;
@@ -106,6 +112,36 @@ export class CrudComponent implements OnInit, AfterViewInit {
       const p3 = await this.bizService.getData(this.prjctId, this.scrinId, this.id);
       this.data = p3.data;
       this.showData();
+    }
+  }
+
+  /**
+   * 메인 메뉴 클릭됨 이벤트 처리
+   * @param menu 메뉴
+   */
+  mainMenuClicked(menu: TrgetSys.Menu): void {
+    // TODO 링크 존재시 해당 링크로 이동
+
+    this.mainMenuId = menu.menu_id;
+  }
+
+  /**
+   * 하위 메뉴 콤포넌트 준비 완료
+   */
+  subMenuInited(): void {
+    this.mainMenuId = this.m1;
+    this.subMenuId = this.m2;
+  }
+
+  /**
+   * 하위 메뉴 클릭됨 이벤트 처리
+   * @param menu 하위메뉴 인스턴스
+   */
+  subMenuClicked(menu: TrgetSys.Menu): void {
+    // TODO 링크 존재시 해당 링크로 이동
+
+    if (0 < menu.scrin_id.length) {
+      location.href = `biz/crud/${this.prjctId}?scrinId=${menu.scrin_id}&m1=${this.mainMenuId}&m2=${menu.menu_id}`;
     }
   }
 
@@ -298,20 +334,20 @@ export class CrudComponent implements OnInit, AfterViewInit {
   /**
    * 메인 메뉴 표시
    */
-  showMainMenus(): void {
-    $('#mainMenu').html('');
+  // showMainMenus(): void {
+  //   $('#mainMenu').html('');
 
-    this.menus.forEach((x) => {
-      if ('-' !== x.prnts_menu_id) {
-        return;
-      }
+  //   this.menus.forEach((x) => {
+  //     if ('-' !== x.prnts_menu_id) {
+  //       return;
+  //     }
 
-      const s = `<button type="button" class="btn btn-outline-secondary mx-5 main-menu" data-menu-id="${x.menu_id}" data-prnts-menu-id="${x.prnts_menu_id}">${x.menu_nm}</button>`;
-      $('#mainMenu').append(s);
-    });
+  //     const s = `<button type="button" class="btn btn-outline-secondary mx-5 main-menu" data-menu-id="${x.menu_id}" data-prnts-menu-id="${x.prnts_menu_id}">${x.menu_nm}</button>`;
+  //     $('#mainMenu').append(s);
+  //   });
 
-    // 이벤트 등록
-  }
+  //   // 이벤트 등록
+  // }
 
   /**
    * 콤포넌트 표시
