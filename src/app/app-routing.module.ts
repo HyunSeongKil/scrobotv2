@@ -4,8 +4,10 @@ import { CrudComponent } from './biz/crud/crud.component';
 import { EditorComponent } from './editor/editor.component';
 import { PrjctListComponent } from './prjct/prjct-list/prjct-list.component';
 import { XxxComponent } from './run/xxx/xxx.component';
+import { SigninComponent } from './signin/signin.component';
 
 const routes: Routes = [
+  { path: 'signin', component: SigninComponent },
   {
     path: 'editor',
     component: EditorComponent,

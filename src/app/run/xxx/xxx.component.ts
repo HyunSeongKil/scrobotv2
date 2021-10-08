@@ -85,7 +85,7 @@ export class XxxComponent implements OnInit, AfterViewInit {
       .post(`http://localhost/api/scrinUuid`, fd)
       .toPromise()
       .then(() => {
-        this.router.navigate(['mbId/scrinGroupUuid/scrinUuid']);
+        this.router.navigate(['userId/scrinGroupUuid/scrinUuid']);
       })
       .catch(() => {
         alert('오류가 발생했습니다.');

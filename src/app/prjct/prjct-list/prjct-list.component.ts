@@ -9,6 +9,7 @@ import { PrjctRegistDialogComponent } from '../prjct-regist-dialog/prjct-regist-
 import { ConfigService } from 'src/app/service/config.service';
 import { PrjctUpdtDialogComponent } from '../prjct-updt-dialog/prjct-updt-dialog.component';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/service/auth.service';
 
 /**
  * 프로젝트 목록
@@ -31,14 +32,14 @@ export class PrjctListComponent implements OnInit {
     [key: string]: number;
   } = {};
 
-  constructor(private router: Router, private configService: ConfigService, private service: PrjctService, private menuService: MenuService, private scrinService: ScrinService, private deployService: DeployService) {}
+  constructor(private router: Router, private authService: AuthService, private service: PrjctService, private menuService: MenuService, private scrinService: ScrinService, private deployService: DeployService) {}
 
   ngOnInit(): void {
     this.listByUserId();
   }
 
   listByUserId(): void {
-    this.service.listByUserId(this.configService.userId).then((res: any) => {
+    this.service.listByUserId(this.authService.getUserId()).then((res: any) => {
       this.prjcts = res.data;
 
       this.prjcts.forEach((x) => {
@@ -86,7 +87,7 @@ export class PrjctListComponent implements OnInit {
    * 프로젝트 등록 창 실행
    */
   regist(): void {
-    this.prjctRegistDialogRef.open(this.configService.userId);
+    this.prjctRegistDialogRef.open(this.authService.getUserId());
   }
 
   /**
@@ -184,6 +185,6 @@ export class PrjctListComponent implements OnInit {
    * @param prjctId 프로젝트 아이디
    */
   openUpdtPrjctDialog(prjctId: string): void {
-    this.prjctUpdtDialogRef.open(this.configService.userId, prjctId);
+    this.prjctUpdtDialogRef.open(this.authService.getUserId(), prjctId);
   }
 }

@@ -8,7 +8,7 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
 import { RightComponent } from './right/right.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BizModule } from './biz/biz.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PrjctModule } from './prjct/prjct.module';
@@ -22,11 +22,22 @@ import { CompnComponent } from './editor/compn/compn.component';
 import { ToolComponent } from './editor/tool/tool.component';
 import { PropertyComponent } from './editor/property/property.component';
 import { WordDicarySelectDialogComponent } from './editor/word-dicary-select-dialog/word-dicary-select-dialog.component';
+import { SigninComponent } from './signin/signin.component';
+import { AuthInterceptor } from './service/auth-interceptor.service';
+import { JwtModule, JwtModuleOptions } from '@auth0/angular-jwt';
+
+const JWT_Module_Options: JwtModuleOptions = {
+  config: { tokenGetter },
+};
+
+export function tokenGetter() {
+  return localStorage.getItem('jws_token');
+}
 
 @NgModule({
-  declarations: [AppComponent, EditorComponent, HeaderComponent, FooterComponent, SideBarComponent, RightComponent, MenuComponent, MenuRegistDialogComponent, ScrinGroupComponent, ScrinGroupRegistDialogComponent, ScrinRegistDialogComponent, CompnComponent, ToolComponent, PropertyComponent, WordDicarySelectDialogComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, BizModule, PrjctModule, FormsModule, NgbModule, ReactiveFormsModule],
-  providers: [],
+  declarations: [AppComponent, EditorComponent, HeaderComponent, FooterComponent, SideBarComponent, RightComponent, MenuComponent, MenuRegistDialogComponent, ScrinGroupComponent, ScrinGroupRegistDialogComponent, ScrinRegistDialogComponent, CompnComponent, ToolComponent, PropertyComponent, WordDicarySelectDialogComponent, SigninComponent],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, BizModule, PrjctModule, FormsModule, NgbModule, ReactiveFormsModule, JwtModule.forRoot(JWT_Module_Options)],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
