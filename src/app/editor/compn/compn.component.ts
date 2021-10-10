@@ -19,6 +19,7 @@ export class CompnComponent implements OnInit {
   TAG_NAME_H1 = ElService.TAG_NAME_H1;
   TAG_NAME_H2 = ElService.TAG_NAME_H2;
   TAG_NAME_H3 = ElService.TAG_NAME_H3;
+  TAG_NAME_TABLE = ElService.TAG_NAME_TABLE;
 
   constructor() {}
 

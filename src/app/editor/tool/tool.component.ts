@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ElService } from 'src/app/service/el.service';
 import { SelectedElService } from 'src/app/service/selected-el.service';
 
@@ -7,11 +7,31 @@ import { SelectedElService } from 'src/app/service/selected-el.service';
   templateUrl: './tool.component.html',
   styleUrls: ['./tool.component.css'],
 })
-export class ToolComponent implements OnInit {
+export class ToolComponent implements OnInit, OnDestroy {
   @Input() prjctId = '';
   @Input() editingScrinId = '';
 
-  constructor(private elService: ElService, private selectedElService: SelectedElService) {}
+  tableSelected: boolean = false;
+
+  constructor(private elService: ElService, private selectedElService: SelectedElService) {
+    selectedElService.selectedEvent.subscribe(($el) => {
+      const tagName = $el?.attr('data-tag-name');
+      if (ElService.TAG_NAME_TABLE === tagName) {
+        this.tableSelected = true;
+      } else {
+        this.tableSelected = false;
+      }
+    });
+
+    selectedElService.unselectedEVent.subscribe(() => {
+      this.tableSelected = false;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.selectedElService.selectedEvent.unsubscribe();
+    this.selectedElService.unselectedEVent.unsubscribe();
+  }
 
   ngOnInit(): void {}
 
@@ -39,8 +59,11 @@ export class ToolComponent implements OnInit {
       this.selectedElService.add($el.attr('id'), $el);
 
       $el.draggable('enable');
-      $el.resizable('disable');
       $el.css('border', '2px dashed red');
+
+      if ($el.hasClass('ui-resizable')) {
+        $el.resizable('disable');
+      }
     });
   }
 
@@ -74,5 +97,124 @@ export class ToolComponent implements OnInit {
     });
 
     this.elService.rebind($('div.content').children());
+  }
+
+  /**
+   * 테이블 행 추가
+   * TODO 행이 1도 없을때 추가 처리 필요
+   */
+  addTableRow(): void {
+    const $el: JQuery<HTMLElement> | undefined = this.selectedElService.getOne();
+    if (undefined === $el) {
+      return;
+    }
+
+    if (ElService.TAG_NAME_TABLE !== $el.attr('data-tag-name')) {
+      return;
+    }
+
+    const $table = $el.children().first();
+    const $tr = $table.find('tbody > tr:last');
+    $table.find('tbody').append($tr.clone());
+
+    const h = $table.css('height');
+    $el.css('height', h);
+  }
+
+  /**
+   * 테이블 행 삭제
+   */
+  deleteTableRow(): void {
+    const $el: JQuery<HTMLElement> | undefined = this.selectedElService.getOne();
+    if (undefined === $el) {
+      return;
+    }
+
+    if (ElService.TAG_NAME_TABLE !== $el.attr('data-tag-name')) {
+      return;
+    }
+
+    const $table = $el.children().first();
+    // 삭제 전 행 갯수
+    const trCo = $table.find('tbody > tr').length;
+
+    if (1 === trCo) {
+      alert('행을 삭제할 수 없습니다.\n남은 행이 1개 일때는 삭제할 수 없습니다.');
+      return;
+    }
+
+    $table.find('tbody > tr:last').remove();
+
+    const h = $table.css('height');
+    $el.css('height', h);
+  }
+
+  /**
+   * 테이블 열 추가
+   */
+  addTableCol(): void {
+    const $el: JQuery<HTMLElement> | undefined = this.selectedElService.getOne();
+    if (undefined === $el) {
+      return;
+    }
+
+    if (ElService.TAG_NAME_TABLE !== $el.attr('data-tag-name')) {
+      return;
+    }
+
+    const $table = $el.children().first();
+    // 추가 전 th 1개의 넓이
+    const thWidth: number = Number($table.find('thead > tr:last > th:last').css('width').replace(/px/gi, ''));
+
+    const $th = $table.find('thead > tr:last > th:last');
+    $table.find('thead > tr:last').append($th.clone());
+
+    // 추가 후 전체 th 갯수
+    const thCo = $table.find('thead > tr:last > th').length;
+
+    // tr 갯수만큼 td 추가
+    $table.find('tbody > tr').each((i, item) => {
+      const $tr = $(item);
+      const $td = $tr.find('td:last');
+      $tr.append($td.clone());
+    });
+
+    $el.css('width', thWidth * thCo);
+  }
+
+  /**
+   * 테이블 열 삭제
+   */
+  deleteTableCol(): void {
+    const $el: JQuery<HTMLElement> | undefined = this.selectedElService.getOne();
+    if (undefined === $el) {
+      return;
+    }
+
+    if (ElService.TAG_NAME_TABLE !== $el.attr('data-tag-name')) {
+      return;
+    }
+
+    //
+    const $table = $el.children().first();
+    // 삭제 전 th 1개의 넓이
+    const thWidth: number = Number($table.find('thead > tr:last > th:last').css('width').replace(/px/gi, ''));
+    // 삭제 전 전체 th 갯수
+    let thCo: number = $table.find('thead > tr:last > th').length;
+
+    if (1 === thCo) {
+      alert('열을 삭제할 수 없습니다.\n남은 열이 1개일 때는 삭제할 수 없습니다.');
+      return;
+    }
+
+    $table.find('thead > tr:last > th:last').remove();
+
+    // tr 갯수만큼 td 삭제
+    $table.find('tbody > tr').each((i, item) => {
+      const $tr = $(item);
+      $tr.find('td:last').remove();
+    });
+
+    $el.css('width', (thCo - 1) * thWidth);
   }
 }

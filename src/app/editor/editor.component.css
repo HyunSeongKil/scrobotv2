@@ -4,10 +4,9 @@
   background-color: white;
   border: darkgray 1px solid;
 
-  background: 
-  repeating-linear-gradient(0deg, transparent 0px, transparent 8px, #efefef 9px, #efefef 10px),
-  repeating-linear-gradient(90deg, transparent 0px, transparent 8px, #efefef 9px, #efefef 10px),
-  repeating-linear-gradient(0deg, transparent 0px, transparent 48px, gray 49px, gray 50px),
-  repeating-linear-gradient(90deg, transparent 0px, transparent 48px, gray 49px, gray 50px)  ;
+  background: repeating-linear-gradient(0deg, transparent 0px, transparent 8px, #efefef 9px, #efefef 10px), repeating-linear-gradient(90deg, transparent 0px, transparent 8px, #efefef 9px, #efefef 10px), repeating-linear-gradient(0deg, transparent 0px, transparent 48px, gray 49px, gray 50px), repeating-linear-gradient(90deg, transparent 0px, transparent 48px, gray 49px, gray 50px);
+}
 
+.content div table.table {
+  border: 1px solid black !important;
 }

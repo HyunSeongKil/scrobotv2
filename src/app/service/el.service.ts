@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { htmlPrefilter } from 'jquery';
 import { Observable, Subject } from 'rxjs';
 import { Scrobot } from '../@types/scrobot';
@@ -18,6 +18,11 @@ export class ElService {
   static TAG_NAME_H2 = `h2`;
   static TAG_NAME_H3 = `h3`;
   static TAG_NAME_BUTTON = `button`;
+  static TAG_NAME_TABLE = `table`;
+  static TAG_NAME_SELECT = `select`;
+
+  @Output() elSelectedEvent = new EventEmitter<ElEventMessage>();
+  @Output() endedEvent = new EventEmitter<ElEventMessage>();
 
   /**
    * 화면에 추가된 전체 엘리먼트
@@ -27,7 +32,7 @@ export class ElService {
   /**
    * 엘리먼트 이벤트 구독
    */
-  private subject = new Subject<ElEventMessage>();
+  // private subject = new Subject<ElEventMessage>();
 
   constructor(private compnService: CompnService, private selectedElService: SelectedElService) {}
 
@@ -55,7 +60,7 @@ export class ElService {
     //
     this.compnService.deleteByScrinId(scrinId).then(() => {
       this.compnService.regist(dtos).then(() => {
-        this.subject.next({ e: 'regist' });
+        this.endedEvent.emit({ e: 'regist' });
       });
     });
   }
@@ -193,6 +198,7 @@ export class ElService {
       case ElService.TAG_NAME_H1:
       case ElService.TAG_NAME_H2:
       case ElService.TAG_NAME_H3:
+      case ElService.TAG_NAME_TABLE:
         $el.draggable({ containment: 'div.content' });
         break;
 
@@ -240,6 +246,10 @@ export class ElService {
         $el.resizable({ containment: 'div.content', handles: 'se' });
         break;
 
+      case ElService.TAG_NAME_TABLE:
+        console.log('table 은 resize 없음');
+        break;
+
       default:
         throw new Error('NOT IMPL ' + tagName);
     }
@@ -270,7 +280,7 @@ export class ElService {
 
           this.selectedElService.add($(event.currentTarget).attr('id'), $(event.currentTarget));
           // this.showProperty($(event.currentTarget));
-          this.subject.next({ e: 'click', tagName, $el: $(event.currentTarget) });
+          this.elSelectedEvent.emit({ e: 'click', tagName, $el: $(event.currentTarget) });
         });
 
         $el.find(`input`).on('mousedown', function (e) {
@@ -293,6 +303,7 @@ export class ElService {
       case ElService.TAG_NAME_BUTTON:
       case ElService.TAG_NAME_SPAN:
       case ElService.TAG_NAME_DIV:
+      case ElService.TAG_NAME_TABLE:
         $el.on('click', (event, ui) => {
           event.stopPropagation();
 
@@ -302,12 +313,14 @@ export class ElService {
           this.selectedElService.clearAll();
 
           $(event.currentTarget).draggable('enable');
-          $(event.currentTarget).resizable('enable');
+          if ($(event.currentTarget).hasClass('ui-resizable')) {
+            $(event.currentTarget).resizable('enable');
+          }
           $(event.currentTarget).css('border', '2px dashed red');
 
           this.selectedElService.add($(event.currentTarget).attr('id'), $(event.currentTarget));
           // this.showProperty($(event.currentTarget));
-          this.subject.next({ e: 'click', tagName, $el: $(event.currentTarget) });
+          this.elSelectedEvent.emit({ e: 'click', tagName, $el: $(event.currentTarget) });
         });
         break;
 
@@ -329,7 +342,7 @@ export class ElService {
 
           this.selectedElService.add($(event.currentTarget).attr('id'), $(event.currentTarget));
           // this.showProperty($(event.currentTarget));
-          this.subject.next({ e: 'click', tagName, $el: $(event.currentTarget) });
+          this.elSelectedEvent.emit({ e: 'click', tagName, $el: $(event.currentTarget) });
         });
         break;
 
@@ -368,6 +381,9 @@ export class ElService {
 
       case ElService.TAG_NAME_BUTTON:
         return this.createButton(cn);
+
+      case ElService.TAG_NAME_TABLE:
+        return this.createTable(cn);
 
       default:
         throw new Error('not impl ' + tagName);
@@ -490,6 +506,29 @@ export class ElService {
   }
 
   /**
+   * 테이블 엘리먼트 생성
+   * @param cn 내용
+   * @returns 테이블 엘리먼트
+   */
+  private createTable(cn: string = ''): JQuery<HTMLElement> {
+    if (0 < cn.length) {
+      return $(cn);
+    }
+
+    const id = ScUtil.createId();
+
+    const $wrapper = $(`<div id="${id}_wrapper" class="wrapper" style="position:absolute; width:100px; height:100px;"></div>`);
+    $wrapper.attr('data-tag-name', 'table');
+
+    const $el = $(`<table id="${id}" class="table list" ></table>`);
+    $el.append(`<thead><tr><th>제목</th></tr></thead>`);
+    $el.append(`<tbody><tr><td>내용</td></tr></tbody>`);
+
+    $wrapper.append($el);
+    return $wrapper;
+  }
+
+  /**
    * 모든 엘리먼트의 draggable() 비활성화
    */
   clearAllDraggable(): void {
@@ -503,7 +542,9 @@ export class ElService {
    */
   clearAllResizable(): void {
     this.els.forEach(($el) => {
-      $el.resizable('disable');
+      if ($el.hasClass('ui-resizable')) {
+        $el.resizable('disable');
+      }
     });
   }
 
@@ -555,9 +596,9 @@ export class ElService {
    * 엘리먼트 이벤트 구독
    * @returns observable
    */
-  getObservable(): Observable<ElEventMessage> {
-    return this.subject.asObservable();
-  }
+  // getObservable(): Observable<ElEventMessage> {
+  //   return this.subject.asObservable();
+  // }
 }
 
 export interface ElEventMessage {

@@ -252,6 +252,28 @@ export class PropertyComponent implements OnInit, OnChanges {
     return arr;
   }
 
+  private createItemProperty($el: JQuery<HTMLElement> | undefined): Property[] {
+    const arr: Property[] = [];
+
+    if (undefined === $el) {
+      return arr;
+    }
+
+    const tagName = $el?.attr('data-tag-name');
+    if (ElService.TAG_NAME_TABLE !== tagName) {
+      return arr;
+    }
+
+    arr.push({
+      key: 'item',
+      value: '',
+      text: '항목',
+      se: PropertySe.Item,
+    });
+
+    return arr;
+  }
+
   showProperty($el: JQuery<HTMLElement> | undefined): void {
     if (undefined === $el) {
       return;
@@ -262,6 +284,7 @@ export class PropertyComponent implements OnInit, OnChanges {
     this.properties = this.properties.concat(this.createBtnProperty($el));
     this.properties = this.properties.concat(this.createValueProperty($el));
     this.properties = this.properties.concat(this.createTextProperty($el));
+    this.properties = this.properties.concat(this.createItemProperty($el));
   }
 
   /**
@@ -426,4 +449,5 @@ export const enum PropertySe {
   Text = 'text',
   Value = 'value',
   Btn = 'btn',
+  Item = 'item',
 }

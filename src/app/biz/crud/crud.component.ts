@@ -6,6 +6,7 @@ import 'jqueryui';
 import { CmmnCodeService } from 'src/app/service/cmmn-code.service';
 import { TrgetSys } from 'src/app/@types/trgetSys';
 import { ScUtil } from 'src/app/service/util';
+import { ElService } from 'src/app/service/el.service';
 
 @Component({
   selector: 'app-crud',
@@ -86,10 +87,11 @@ export class CrudComponent implements OnInit, AfterViewInit {
       return a.ordr_value - b.ordr_value;
     });
     this.showCompns();
+
     // 버튼 이벤트 등록
     this.addBtnEvent(this.scrin?.scrin_se_code);
 
-    //
+    // 버튼 색 변경
     this.changeBtnColor();
 
     // 목록화면이면
@@ -102,17 +104,21 @@ export class CrudComponent implements OnInit, AfterViewInit {
       const p4 = await this.bizService.getMetas(this.prjctId, this.scrinId);
       this.metas = p4.data;
 
+      // 테이블에 데이터 목록 표시
       const $table = $('#form table.list');
 
       this.showDatas($table);
+      this.refindTable($table);
       this.addFirstTdAndShowIndexNo($table);
       this.addLastTd($table);
       this.addButtonAtLastTd($table);
       this.addEvent($table);
+      this.addNoDataFound($table);
     }
 
-    // 데이터키가 존재하면(수정/조회화면 이면)
+    // 조회/수정 화면이면
     if (BizService.SE_R === this.scrin?.scrin_se_code || BizService.SE_U === this.scrin?.scrin_se_code) {
+      // 데이터 조회
       const p3 = await this.bizService.getData(this.prjctId, this.scrinId, this.id);
       this.data = p3.data;
       this.showData();
@@ -166,12 +172,28 @@ export class CrudComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * 조회 버튼에 클릭 이벤트 추가
+   * 데이터 없음 표시
+   * @param $table 테이블
+   */
+  addNoDataFound($table: JQuery<HTMLElement>): void {
+    const trCo: number = $table.find('tbody > tr').length;
+    if (0 < trCo) {
+      return;
+    }
+
+    const thCo: number = $table.find('thead > tr > th').length;
+    $table.find('tbody').append(`<tr><td colspan="${thCo}" class="text-center">데이터가 없습니다.</td></tr>`);
+  }
+
+  /**
+   * 기능 버튼에 클릭 이벤트 추가
    * @param $table 테이블
    */
   addEvent($table: JQuery<HTMLElement>): void {
     // 조회 버튼 클릭 이벤트 추가
     const pkColumnName = this.bizService.getPkColmnName(this.scrinGroup);
+
+    // 조회 버튼
     $table.find('button.detail').each((i, button) => {
       const index = Number($(button).attr('data-index') ?? '');
       const data = this.datas[index];
@@ -179,6 +201,22 @@ export class CrudComponent implements OnInit, AfterViewInit {
       $(button).on('click', () => {
         this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_R).then((scrinId) => {
           this.link(BizService.SE_R, scrinId, data[pkColumnName]);
+        });
+      });
+    });
+
+    // 삭제 버튼
+    $table.find('button.delete').each((i, button) => {
+      const index = Number($(button).attr('data-index') ?? '');
+      const data = this.datas[index];
+
+      $(button).on('click', () => {
+        if (!confirm('삭제하시겠습니까?')) {
+          return;
+        }
+
+        this.bizService.delete(this.prjctId, this.scrinId, data[pkColumnName]).then(() => {
+          this.init();
         });
       });
     });
@@ -190,7 +228,8 @@ export class CrudComponent implements OnInit, AfterViewInit {
    */
   addButtonAtLastTd($table: JQuery<HTMLElement>): void {
     $table.find('tbody > tr').each((i, tr) => {
-      $(tr).find('td:last').html(`<button type="button" class="btn btn-secondary btn-sm detail" data-index="${i}">조회</button>`);
+      $(tr).find('td:last').html(`<button type="button" class="btn btn-outline-secondary btn-sm detail" title="조회" data-index="${i}">조회</button>`);
+      $(tr).find('td:last').append(`<button type="button" class="btn btn-outline-danger btn-sm mx-1 delete" title="삭제" data-index="${i}">삭제</button>`);
     });
   }
 
@@ -223,21 +262,16 @@ export class CrudComponent implements OnInit, AfterViewInit {
       });
     });
 
-    // 목록
-    const $templateTr = $table.find('tbody > tr[data-template="true"]');
+    // 1st tr
+    const $templateTr = $table.find('tbody > tr:first'); // $table.find('tbody > tr[data-template="true"]');
 
     // 미리 데이터수만큼 tr 생성
     this.datas.forEach((x) => {
-      let s = '';
-      s += `<tr>`;
-      s += $templateTr.html();
-      s += `</tr>`;
-
-      $table.find('tbody').append(s);
+      $table.find('tbody').append($templateTr.clone());
     });
 
     // template tr 삭제
-    $table.find('tbody > tr[data-template]').remove();
+    // $table.find('tbody > tr[data-template]').remove();
 
     const pkColumnName = this.bizService.getPkColmnName(this.scrinGroup);
 
@@ -257,6 +291,33 @@ export class CrudComponent implements OnInit, AfterViewInit {
         .each((i2, td) => {
           this.bindValue(data, $(td));
         });
+    });
+  }
+
+  /**
+   * 불필요한 th, td등 삭제
+   * @param $table 테이블
+   */
+  refindTable($table: JQuery<HTMLElement>): void {
+    // data-pk가 없는 tr 삭제
+    $table.find('tbody > tr').each((i, item) => {
+      if (undefined === $(item).attr('data-pk') || '' === $(item).attr('data-pk')) {
+        $(item).remove();
+      }
+    });
+
+    // data-eng-abrv-nm 없는 th 삭제
+    $table.find('thead > tr > th').each((i, th) => {
+      if (undefined === $(th).attr('data-eng-abrv-nm')) {
+        $(th).remove();
+      }
+    });
+
+    // data-eng-abrv-nm 없는 td 삭제
+    $table.find('tbody > tr > td').each((i, td) => {
+      if (undefined === $(td).attr('data-eng-abrv-nm')) {
+        $(td).remove();
+      }
     });
   }
 
@@ -374,11 +435,13 @@ export class CrudComponent implements OnInit, AfterViewInit {
       $el.css('top', t).css('left', l).css('position', 'absolute').removeAttr('readonly').removeAttr('disabled');
       $('#content').append($el);
 
+      //
       if (null !== x.eng_abrv_nm && undefined !== x.eng_abrv_nm && 0 < x.eng_abrv_nm.length) {
         $el.attr('id', x.eng_abrv_nm).attr('name', x.eng_abrv_nm);
       }
 
-      if ('SELECT' === x.compn_se_code) {
+      //
+      if (ElService.TAG_NAME_SELECT === x.compn_se_code) {
         const prntsCmmnCode = $el.attr('data-prnts-cmmn-code');
         if (null === prntsCmmnCode || undefined === prntsCmmnCode || 0 === prntsCmmnCode.length) {
           return;
@@ -395,6 +458,10 @@ export class CrudComponent implements OnInit, AfterViewInit {
             $el.append(`<option value="${x.cmmnCode}">${x.cmmnCodeNm}</option>`);
           });
         });
+      }
+
+      //
+      if (ElService.TAG_NAME_TABLE === x.compn_se_code) {
       }
     });
   }
@@ -458,8 +525,8 @@ export class CrudComponent implements OnInit, AfterViewInit {
     }
 
     $btn.on('click', () => {
-      // 현재 등록화면이면 목록으로 이동
-      if (BizService.SE_C === scrinSeCode) {
+      // 현재 등록/조회 화면이면 목록으로 이동
+      if (BizService.SE_C === scrinSeCode || BizService.SE_R === scrinSeCode) {
         this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_L).then((scrinId) => {
           this.link(BizService.SE_L, scrinId);
         });
@@ -538,7 +605,7 @@ export class CrudComponent implements OnInit, AfterViewInit {
       // 조회화면이면 수정화면으로 이동
       if (BizService.SE_R === scrinSeCode) {
         this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_U).then((scrinId) => {
-          this.link(BizService.SE_U, scrinId);
+          this.link(BizService.SE_U, scrinId, this.id);
         });
         return;
       }

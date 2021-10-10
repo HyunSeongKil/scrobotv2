@@ -28,4 +28,11 @@
       뒤로
     </button>
   </div>
+
+  <div class="mt-1" *ngIf="tableSelected">
+    <button type="button" class="btn btn-outline-primary btn-sm" (click)="addTableRow()">행추가</button>
+    <button type="button" class="btn btn-outline-danger btn-sm" (click)="deleteTableRow()">행삭제</button>
+    <button type="button" class="btn btn-outline-primary btn-sm" (click)="addTableCol()">열추가</button>
+    <button type="button" class="btn btn-outline-danger btn-sm" (click)="deleteTableCol()">열삭제</button>
+  </div>
 </div>

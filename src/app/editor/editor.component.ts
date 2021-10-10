@@ -45,11 +45,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
   $selectedEl: JQuery<HTMLElement> | undefined;
 
   /**
-   * 엘리멘트 이벤트 구독
-   */
-  elEventSubscription = new Subscription();
-
-  /**
    * 생성자
    * @param route
    * @param renderer
@@ -72,17 +67,15 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     // 이벤트 구독
-    this.elEventSubscription.unsubscribe();
-    this.elEventSubscription = elService.getObservable().subscribe((res) => {
-      if ('regist' === res.e) {
+    elService.elSelectedEvent.subscribe((elEventMessage) => {
+      if ('click' === elEventMessage.e) {
+        this.$selectedEl = elEventMessage.$el;
+      }
+    });
+    elService.endedEvent.subscribe((elEventMessage) => {
+      if ('regist' === elEventMessage.e) {
         alert('저장되었습니다.');
       }
-
-      if ('click' === res.e) {
-        this.$selectedEl = res.$el;
-      }
-
-      console.log(res);
     });
 
     //
@@ -93,7 +86,8 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
    *
    */
   ngOnDestroy(): void {
-    this.elEventSubscription.unsubscribe();
+    this.elService.elSelectedEvent.unsubscribe();
+    this.elService.endedEvent.unsubscribe();
 
     //
     console.log('<<ngOnDestroy');
