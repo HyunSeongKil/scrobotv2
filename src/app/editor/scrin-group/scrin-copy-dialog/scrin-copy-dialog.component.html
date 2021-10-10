@@ -1,6 +1,6 @@
 <ng-template #content let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">화면 등록</h4>
+    <h4 class="modal-title" id="modal-basic-title">화면 복사</h4>
     <button type="button" class="btn btn-sm close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -19,7 +19,7 @@
     <div class="mt-1 font-italic"><span class="req">*</span> 필수입력 항목입니다.</div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-primary" (click)="modal.close('SAVE')">저장</button>
+    <button type="button" class="btn btn-outline-primary" (click)="modal.close('SAVE')">복사</button>
     <button type="button" class="btn btn-outline-secondary" (click)="modal.close('CLOSE')">닫기</button>
   </div>
 </ng-template>

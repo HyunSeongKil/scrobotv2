@@ -178,7 +178,7 @@ export class CrudComponent implements OnInit, AfterViewInit {
 
       $(button).on('click', () => {
         this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_R).then((scrinId) => {
-          this.link(scrinId, data[pkColumnName]);
+          this.link(BizService.SE_R, scrinId, data[pkColumnName]);
         });
       });
     });
@@ -409,6 +409,7 @@ export class CrudComponent implements OnInit, AfterViewInit {
           $(item).removeClass('btn-primary').css('background-color', '').addClass('btn-primary');
           break;
         case BizService.SE_R:
+        case BizService.SE_CANCEL:
           $(item).removeClass('btn-primary').css('background-color', '').addClass('btn-secondary');
           break;
         case BizService.SE_U:
@@ -440,7 +441,7 @@ export class CrudComponent implements OnInit, AfterViewInit {
         case BizService.SE_L:
           this.addLBtnEvent(scrinSeCode, $(item));
           break;
-        case BizService.BTN_SE_CANCEL:
+        case BizService.SE_CANCEL:
           this.addCancelBtnEvent(scrinSeCode, $(item));
           break;
       }
@@ -456,25 +457,23 @@ export class CrudComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    // 현재 등록화면이면 목록화면으로 이동
-    if (BizService.SE_C === scrinSeCode) {
-      $btn.on('click', () => {
+    $btn.on('click', () => {
+      // 현재 등록화면이면 목록으로 이동
+      if (BizService.SE_C === scrinSeCode) {
         this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_L).then((scrinId) => {
           this.link(BizService.SE_L, scrinId);
         });
-      });
-      return;
-    }
+        return;
+      }
 
-    // 현재 수정화면이면 조회화면으로 이동
-    if (BizService.SE_U === scrinSeCode) {
-      $btn.on('click', () => {
+      // 현재 수정화면이면 조회로 이동
+      if (BizService.SE_U === scrinSeCode) {
         this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_R).then((scrinId) => {
-          this.link(scrinId, this.id);
+          this.link(BizService.SE_R, scrinId, this.id);
         });
-      });
-      return;
-    }
+        return;
+      }
+    });
   }
 
   /**
@@ -534,19 +533,17 @@ export class CrudComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    // 조회 화면이면 수정 화면으로 이동
-    if (BizService.SE_R === scrinSeCode) {
-      $btn.on('click', () => {
+    // 수정 처리
+    $btn.on('click', () => {
+      // 조회화면이면 수정화면으로 이동
+      if (BizService.SE_R === scrinSeCode) {
         this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_U).then((scrinId) => {
           this.link(BizService.SE_U, scrinId);
         });
-      });
+        return;
+      }
 
-      return;
-    }
-
-    // 수정 처리
-    $btn.on('click', () => {
+      // 수정처리
       if (!confirm('저장하시겠습니까?')) {
         return;
       }
@@ -559,7 +556,7 @@ export class CrudComponent implements OnInit, AfterViewInit {
 
           // 조회화면으로 이동
           this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_R).then((scrinId) => {
-            this.link(BizService.SE_R, scrinId);
+            this.link(BizService.SE_R, scrinId, this.id);
           });
         })
         .catch(() => {

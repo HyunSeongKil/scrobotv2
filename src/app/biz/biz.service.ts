@@ -11,7 +11,7 @@ export class BizService {
   static SE_R = 'R';
   static SE_D = 'D';
   static SE_L = 'L';
-  static BTN_SE_CANCEL = 'CANCEL';
+  static SE_CANCEL = 'CANCEL';
 
   BIZ_URI = 'http://localhost:38080/scrobot/biz';
 

@@ -30,6 +30,24 @@ export class ScrinService {
     return this.http.post(`${this.BIZ_URI}`, dto).toPromise();
   }
 
+  /**
+   * 화면 복사
+   * @param srcScrinId 원본 화면 아이디
+   * @param scrin 값
+   * @returns promise
+   */
+  copy(srcScrinId: string, scrin: Scrobot.Scrin): Promise<any> {
+    return this.http.post(`${this.BIZ_URI}/copy?srcScrinId=${srcScrinId}`, scrin).toPromise();
+  }
+
+  /**
+   * 상세조회
+   * @param scrinId 화면 아이디
+   */
+  get(scrinId: string): Promise<any> {
+    return this.http.get(`${this.BIZ_URI}/${scrinId}`).toPromise();
+  }
+
   listByScrinGroupId(scrinGroupId: string): Promise<any> {
     return this.http.get(`${this.BIZ_URI}/by-scrin-group?scrinGroupId=${scrinGroupId}`).toPromise();
   }

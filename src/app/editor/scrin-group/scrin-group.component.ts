@@ -3,6 +3,7 @@ import { Scrobot } from 'src/app/@types/scrobot';
 import { CompnService } from 'src/app/service/compn.service';
 import { ScrinGroupService } from 'src/app/service/scrin-group.service';
 import { ScrinService } from 'src/app/service/scrin.service';
+import { ScrinCopyDialogComponent } from './scrin-copy-dialog/scrin-copy-dialog.component';
 import { ScrinGroupRegistDialogComponent } from './scrin-group-regist-dialog/scrin-group-regist-dialog.component';
 import { ScrinRegistDialogComponent } from './scrin-regist-dialog/scrin-regist-dialog.component';
 
@@ -14,6 +15,7 @@ import { ScrinRegistDialogComponent } from './scrin-regist-dialog/scrin-regist-d
 export class ScrinGroupComponent implements OnInit {
   @ViewChild('scrinGroupRegistDialogRef') scrinGroupRegistDialogRef!: ScrinGroupRegistDialogComponent;
   @ViewChild('scrinRegistDialogRef') scrinRegistDialogRef!: ScrinRegistDialogComponent;
+  @ViewChild('scrinCopyDialogRef') scrinCopyDialogRef!: ScrinCopyDialogComponent;
 
   /**
    * 프로젝트 아이디
@@ -161,6 +163,10 @@ export class ScrinGroupComponent implements OnInit {
     this.scrinSelectEvent.emit(scrinId);
   }
 
+  /**
+   * 편집 저장
+   * @returns void
+   */
   save(): void {
     if (!confirm('저장하시겠습니까?')) {
       return;
@@ -169,11 +175,24 @@ export class ScrinGroupComponent implements OnInit {
     this.saveEvent.emit('');
   }
 
+  /**
+   * 편집 닫기
+   * @returns void
+   */
   close(): void {
     if (!confirm('닫으시겠습니까?\n※ 저장하지 않은 자료는 삭제됩니다.')) {
       return;
     }
 
     this.closeEvent.emit('');
+  }
+
+  /**
+   * 화면 복사
+   * @param scrinId 화면아이디
+   */
+  copyScrin(scrinId: string): void {
+    // 화면 복사 팝업창 실행
+    this.scrinCopyDialogRef.open(scrinId);
   }
 }
