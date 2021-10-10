@@ -1,6 +1,6 @@
 <div>
-  <div *ngFor="let x of subMenus">
-    <a href="javascript:;" class="fw-bold" (click)="subMenuClicked(x)" *ngIf="x.menu_id === subMenuId">{{ x.menu_nm }}</a>
-    <a href="javascript:;" (click)="subMenuClicked(x)" *ngIf="x.menu_id !== subMenuId">{{ x.menu_nm }}</a>
+  <div class="mx-2" (click)="subMenuClicked(x)" *ngFor="let x of subMenus">
+    <a href="javascript:;" class="fw-bold" [attr.data-menu-id]="x.menu_id" *ngIf="x.menu_id === subMenuId">{{ x.menu_nm }}</a>
+    <a href="javascript:;" [attr.data-menu-id]="x.menu_id" *ngIf="x.menu_id !== subMenuId">{{ x.menu_nm }}</a>
   </div>
 </div>

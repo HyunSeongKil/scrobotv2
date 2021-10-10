@@ -31,7 +31,7 @@ const JWT_Module_Options: JwtModuleOptions = {
 };
 
 export function tokenGetter() {
-  return localStorage.getItem('jws_token');
+  return localStorage.getItem('jwt');
 }
 
 @NgModule({

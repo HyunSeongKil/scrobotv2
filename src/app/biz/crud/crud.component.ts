@@ -5,6 +5,7 @@ import * as $ from 'jquery';
 import 'jqueryui';
 import { CmmnCodeService } from 'src/app/service/cmmn-code.service';
 import { TrgetSys } from 'src/app/@types/trgetSys';
+import { ScUtil } from 'src/app/service/util';
 
 @Component({
   selector: 'app-crud',
@@ -87,6 +88,9 @@ export class CrudComponent implements OnInit, AfterViewInit {
     this.showCompns();
     // 버튼 이벤트 등록
     this.addBtnEvent(this.scrin?.scrin_se_code);
+
+    //
+    this.changeBtnColor();
 
     // 목록화면이면
     if (BizService.SE_L === this.scrin?.scrin_se_code) {
@@ -173,7 +177,7 @@ export class CrudComponent implements OnInit, AfterViewInit {
       const data = this.datas[index];
 
       $(button).on('click', () => {
-        this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_R, (scrinId: string) => {
+        this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_R).then((scrinId) => {
           this.link(scrinId, data[pkColumnName]);
         });
       });
@@ -357,7 +361,17 @@ export class CrudComponent implements OnInit, AfterViewInit {
 
     // 엘리먼트 화면에 추가
     this.compns.forEach((x) => {
-      const $el = $(`${x.compn_cn}`);
+      let $el = $(`${x.compn_cn}`);
+
+      const t = $el.css('top');
+      const l = $el.css('left');
+
+      if (ScUtil.isWrapperEl($el)) {
+        $el = $el.children().first();
+      }
+
+      //
+      $el.css('top', t).css('left', l).css('position', 'absolute').removeAttr('readonly').removeAttr('disabled');
       $('#content').append($el);
 
       if (null !== x.eng_abrv_nm && undefined !== x.eng_abrv_nm && 0 < x.eng_abrv_nm.length) {
@@ -381,6 +395,28 @@ export class CrudComponent implements OnInit, AfterViewInit {
             $el.append(`<option value="${x.cmmnCode}">${x.cmmnCodeNm}</option>`);
           });
         });
+      }
+    });
+  }
+
+  /**
+   * 버튼 속성, 색.... 변경하기
+   */
+  changeBtnColor(): void {
+    $('#form button').each((i, item) => {
+      switch ($(item).attr('data-btn-se')) {
+        case BizService.SE_C:
+          $(item).removeClass('btn-primary').css('background-color', '').addClass('btn-primary');
+          break;
+        case BizService.SE_R:
+          $(item).removeClass('btn-primary').css('background-color', '').addClass('btn-secondary');
+          break;
+        case BizService.SE_U:
+          $(item).removeClass('btn-primary').css('background-color', '').addClass('btn-warning');
+          break;
+        case BizService.SE_D:
+          $(item).removeClass('btn-primary').css('background-color', '').addClass('btn-danger');
+          break;
       }
     });
   }
@@ -423,8 +459,8 @@ export class CrudComponent implements OnInit, AfterViewInit {
     // 현재 등록화면이면 목록화면으로 이동
     if (BizService.SE_C === scrinSeCode) {
       $btn.on('click', () => {
-        this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_L, (scrinId) => {
-          this.link(scrinId);
+        this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_L).then((scrinId) => {
+          this.link(BizService.SE_L, scrinId);
         });
       });
       return;
@@ -433,7 +469,7 @@ export class CrudComponent implements OnInit, AfterViewInit {
     // 현재 수정화면이면 조회화면으로 이동
     if (BizService.SE_U === scrinSeCode) {
       $btn.on('click', () => {
-        this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_R, (scrinId) => {
+        this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_R).then((scrinId) => {
           this.link(scrinId, this.id);
         });
       });
@@ -452,8 +488,8 @@ export class CrudComponent implements OnInit, AfterViewInit {
 
     $btn.on('click', () => {
       // 목록 화면으로 이동
-      this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_L, (scrinId) => {
-        this.link(scrinId);
+      this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_L).then((scrinId) => {
+        this.link(BizService.SE_L, scrinId);
       });
     });
   }
@@ -480,9 +516,8 @@ export class CrudComponent implements OnInit, AfterViewInit {
           alert('삭제되었습니다');
 
           //  목록 화면으로 이동
-
-          this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_L, (scrinId) => {
-            this.link(scrinId);
+          this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_L).then((scrinId) => {
+            this.link(BizService.SE_L, scrinId);
           });
         })
         .catch(() => {
@@ -502,8 +537,8 @@ export class CrudComponent implements OnInit, AfterViewInit {
     // 조회 화면이면 수정 화면으로 이동
     if (BizService.SE_R === scrinSeCode) {
       $btn.on('click', () => {
-        this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_U, (scrinId) => {
-          this.link(scrinId, this.id);
+        this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_U).then((scrinId) => {
+          this.link(BizService.SE_U, scrinId);
         });
       });
 
@@ -523,8 +558,8 @@ export class CrudComponent implements OnInit, AfterViewInit {
           alert('저장되었습니다');
 
           // 조회화면으로 이동
-          this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_R, (scrinId) => {
-            this.link(scrinId, this.id);
+          this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_R).then((scrinId) => {
+            this.link(BizService.SE_R, scrinId);
           });
         })
         .catch(() => {
@@ -541,19 +576,17 @@ export class CrudComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    // 현재 화면이 목록이면 등록화면으로 이동
-    if (BizService.SE_L === scrinSeCode) {
-      $btn.on('click', () => {
-        this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_C, (scrinId) => {
-          this.link(scrinId);
-        });
-      });
-
-      return;
-    }
-
-    // 등록 처리
     $btn.on('click', () => {
+      // 현재 화면이 등록 화면이 아니면
+      if (BizService.SE_C !== scrinSeCode) {
+        // 등록화면으로 이동
+        this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_C).then((scrinId) => {
+          this.link(BizService.SE_C, scrinId);
+        });
+        return;
+      }
+
+      // 등록 처리
       if (!confirm('저장하시겠습니까?')) {
         return;
       }
@@ -565,9 +598,11 @@ export class CrudComponent implements OnInit, AfterViewInit {
           alert('저장되었습니다');
 
           // 목록 화면으로 이동
-          this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_L, (scrinId) => {
-            this.link(scrinId);
+          this.bizService.getScrinId(this.prjctId, this.scrinGroup, BizService.SE_L).then((scrinId) => {
+            this.link(BizService.SE_L, scrinId);
           });
+
+          $('#form').trigger('reset');
         })
         .catch(() => {
           alert('오류가 발생했습니다. 관리자에게 문의하시기 바랍니다.');
@@ -577,10 +612,16 @@ export class CrudComponent implements OnInit, AfterViewInit {
 
   /**
    * 화면 이동
+   * @param scrinSeCode 화면구분코드
    * @param scrindId 화면아이디
    * @param id (데이터)아이디
    */
-  private link(scrindId: string, id?: string): void {
+  private link(scrinSeCode: string, scrindId: string, id?: string): void {
+    if (0 === scrindId.length) {
+      alert(`TODO ${scrinSeCode}화면이 없습니다.`);
+      return;
+    }
+
     let s = `biz/crud/${this.prjctId}?scrinId=${scrindId}`;
     if (undefined !== id) {
       s += `&id=${id}`;

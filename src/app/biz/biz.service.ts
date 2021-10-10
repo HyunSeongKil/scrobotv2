@@ -41,7 +41,7 @@ export class BizService {
     });
 
     // console.log(arr, json);
-    return this.http.post(`${this.BIZ_URI}/${prjctId}/${scrinId}`, json).toPromise();
+    return this.http.post(`${this.BIZ_URI}/${prjctId}?scrinId=${scrinId}`, json).toPromise();
   }
 
   /**
@@ -162,20 +162,25 @@ export class BizService {
    * @param prjctId 프로젝트아이디
    * @param scrinGroup 화면그룹
    * @param se 구분
-   * @param fn 콜백함수
    */
-  getScrinId(prjctId: string, scrinGroup: TrgetSys.ScrinGroup | undefined, se: string, fn: (scrinId: string) => void): void {
+  async getScrinId(prjctId: string, scrinGroup: TrgetSys.ScrinGroup | undefined, se: string): Promise<any> {
     if (undefined === scrinGroup) {
       throw new Error('NULL SCRIN_GROUP');
     }
 
-    this.getScrins(prjctId, scrinGroup.scrin_group_id).then((res: any) => {
-      for (let i = 0; i < res.data.length; i++) {
-        const scrin = res.data[i] as TrgetSys.Scrin;
-        if (se === scrin.scrin_se_code) {
-          fn(scrin.scrin_id);
-        }
+    let scrinId = '';
+
+    // 전체 화면 목록 조회
+    const prms = await this.getScrins(prjctId, scrinGroup.scrin_group_id);
+    for (let i = 0; i < prms.data.length; i++) {
+      const scrin = prms.data[i] as TrgetSys.Scrin;
+      if (se === scrin.scrin_se_code) {
+        scrinId = scrin.scrin_id;
       }
+    }
+
+    return new Promise((resolve) => {
+      resolve(scrinId);
     });
   }
 }
