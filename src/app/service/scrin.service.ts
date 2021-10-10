@@ -31,6 +31,15 @@ export class ScrinService {
   }
 
   /**
+   * 수정
+   * @param dto 값
+   * @returns promise
+   */
+  updt(dto: Scrobot.Scrin): Promise<any> {
+    return this.http.put(`${this.BIZ_URI}`, dto).toPromise();
+  }
+
+  /**
    * 화면 복사
    * @param srcScrinId 원본 화면 아이디
    * @param scrin 값

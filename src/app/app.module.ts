@@ -26,6 +26,7 @@ import { SigninComponent } from './signin/signin.component';
 import { AuthInterceptor } from './service/auth-interceptor.service';
 import { JwtModule, JwtModuleOptions } from '@auth0/angular-jwt';
 import { ScrinCopyDialogComponent } from './editor/scrin-group/scrin-copy-dialog/scrin-copy-dialog.component';
+import { ScrinUpdtDialogComponent } from './editor/scrin-group/scrin-updt-dialog/scrin-updt-dialog.component';
 
 const JWT_Module_Options: JwtModuleOptions = {
   config: { tokenGetter },
@@ -36,7 +37,7 @@ export function tokenGetter() {
 }
 
 @NgModule({
-  declarations: [AppComponent, EditorComponent, HeaderComponent, FooterComponent, SideBarComponent, RightComponent, MenuComponent, MenuRegistDialogComponent, ScrinGroupComponent, ScrinGroupRegistDialogComponent, ScrinRegistDialogComponent, CompnComponent, ToolComponent, PropertyComponent, WordDicarySelectDialogComponent, SigninComponent, ScrinCopyDialogComponent],
+  declarations: [AppComponent, EditorComponent, HeaderComponent, FooterComponent, SideBarComponent, RightComponent, MenuComponent, MenuRegistDialogComponent, ScrinGroupComponent, ScrinGroupRegistDialogComponent, ScrinRegistDialogComponent, CompnComponent, ToolComponent, PropertyComponent, WordDicarySelectDialogComponent, SigninComponent, ScrinCopyDialogComponent, ScrinUpdtDialogComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, BizModule, PrjctModule, FormsModule, NgbModule, ReactiveFormsModule, JwtModule.forRoot(JWT_Module_Options)],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],

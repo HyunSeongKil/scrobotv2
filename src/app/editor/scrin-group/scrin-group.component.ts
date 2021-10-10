@@ -6,6 +6,7 @@ import { ScrinService } from 'src/app/service/scrin.service';
 import { ScrinCopyDialogComponent } from './scrin-copy-dialog/scrin-copy-dialog.component';
 import { ScrinGroupRegistDialogComponent } from './scrin-group-regist-dialog/scrin-group-regist-dialog.component';
 import { ScrinRegistDialogComponent } from './scrin-regist-dialog/scrin-regist-dialog.component';
+import { ScrinUpdtDialogComponent } from './scrin-updt-dialog/scrin-updt-dialog.component';
 
 @Component({
   selector: 'app-scrin-group',
@@ -16,6 +17,7 @@ export class ScrinGroupComponent implements OnInit {
   @ViewChild('scrinGroupRegistDialogRef') scrinGroupRegistDialogRef!: ScrinGroupRegistDialogComponent;
   @ViewChild('scrinRegistDialogRef') scrinRegistDialogRef!: ScrinRegistDialogComponent;
   @ViewChild('scrinCopyDialogRef') scrinCopyDialogRef!: ScrinCopyDialogComponent;
+  @ViewChild('scrinUpdtDialogRef') scrinUpdtDialogRef!: ScrinUpdtDialogComponent;
 
   /**
    * 프로젝트 아이디
@@ -194,5 +196,9 @@ export class ScrinGroupComponent implements OnInit {
   copyScrin(scrinId: string): void {
     // 화면 복사 팝업창 실행
     this.scrinCopyDialogRef.open(scrinId);
+  }
+
+  updtScrin(scrinId: string): void {
+    this.scrinUpdtDialogRef.open(scrinId);
   }
 }
