@@ -55,11 +55,14 @@ export class WordDicarySelectDialogComponent implements OnInit {
    * 팝업창 실행
    */
   open() {
+    this.map.clear();
+    this.form.patchValue({ wordNm: '' });
+
     this.modalService.open(this.content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
       (result: any) => {
         this.closeResult = `Closed with: ${result}`;
 
-        if ('SAVE' !== result) {
+        if ('SELECT' !== result) {
           return;
         }
 
