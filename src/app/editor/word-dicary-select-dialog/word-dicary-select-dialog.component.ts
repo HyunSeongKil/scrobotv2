@@ -27,7 +27,9 @@ export class WordDicarySelectDialogComponent implements OnInit {
 
   form: FormGroup;
 
-  map = new Map<string, any[]>();
+  results: any[] = [];
+
+  // map = new Map<string, any[]>();
 
   constructor(private modalService: NgbModal, private wordDicaryService: WordDicaryService) {
     this.form = new FormGroup({
@@ -38,15 +40,25 @@ export class WordDicarySelectDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   search(): void {
+    // this.map.clear();
+    this.results = [];
+
     if (!this.form.valid) {
       alert('입력값을 확인하시기 바랍니다.');
       return;
     }
 
+    const arr: string[] = this.form.controls.wordNm.value.split(' ');
+
     // 한글 명별 영문 약어 목록 조회
     this.wordDicaryService.listByWords(this.form.controls.wordNm.value.split(' ')).then((res: any) => {
-      Object.keys(res).forEach((k) => {
-        this.map.set(k, res[k]);
+      Object.keys(res).forEach((k, index) => {
+        this.results.push({
+          index,
+          wordNm: arr[index],
+          data: res[index],
+        });
+        // this.map.set(arr[index], res[index]);
       });
     });
   }
@@ -55,7 +67,8 @@ export class WordDicarySelectDialogComponent implements OnInit {
    * 팝업창 실행
    */
   open() {
-    this.map.clear();
+    // this.map.clear();
+    this.results = [];
     this.form.patchValue({ wordNm: '' });
 
     this.modalService.open(this.content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
