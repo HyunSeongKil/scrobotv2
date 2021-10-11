@@ -5,6 +5,7 @@ import { CmmnCodeService } from 'src/app/service/cmmn-code.service';
 import { ElService } from 'src/app/service/el.service';
 import { SelectedElService } from 'src/app/service/selected-el.service';
 import { ScUtil } from 'src/app/service/util';
+import { WordDicarySelectDialogComponent, WordDicarySelectMessage } from '../word-dicary-select-dialog/word-dicary-select-dialog.component';
 import { TableItemEditDialogComponent } from './table-item-edit-dialog/table-item-edit-dialog.component';
 
 @Component({
@@ -14,6 +15,8 @@ import { TableItemEditDialogComponent } from './table-item-edit-dialog/table-ite
 })
 export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('tableItemEditDialogRef') tableItemEditDialogRef!: TableItemEditDialogComponent;
+  @ViewChild('wordDicarySelectDialogRef') wordDicarySelectDialogRef!: WordDicarySelectDialogComponent;
+
   /**
    * 프로젝트 아이디
    */
@@ -95,7 +98,7 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
    * @param $el 엘리먼트
    * @returns 속성 목록
    */
-  private createDataProperty($el: JQuery<HTMLElement> | undefined): Property[] {
+  private createWordDicaryProperty($el: JQuery<HTMLElement> | undefined): Property[] {
     const arr: Property[] = [];
 
     if (undefined === $el) {
@@ -103,7 +106,7 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if (ScUtil.isWrapperEl($el)) {
-      return this.createDataProperty($el.children().first());
+      return this.createWordDicaryProperty($el.children().first());
     }
 
     // input은 항상 wrapper 존재
@@ -112,10 +115,11 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
       return arr;
     }
 
-    const items = [
-      { k: 'eng-abrv-nm', t: '영문 명' },
-      { k: 'hngl-abrv-nm', t: '한글 명' },
-    ];
+    // const items = [
+    //   { k: 'eng-abrv-nm', t: '영문 명' },
+    //   { k: 'hngl-abrv-nm', t: '한글 명' },
+    // ];
+    const items = [{ k: 'hngl-abrv-nm', t: '용어' }];
 
     items.forEach((x) => {
       const index = arr.findIndex((a) => a.key === x.k);
@@ -128,7 +132,7 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
         key: x.k,
         text: x.t,
         value: $el.attr('data-' + x.k) ?? '',
-        se: PropertySe.Data,
+        se: PropertySe.WordDicary,
         tagName,
         $el,
       });
@@ -318,7 +322,7 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
 
-    this.properties = this.properties.concat(this.createDataProperty($el));
+    this.properties = this.properties.concat(this.createWordDicaryProperty($el));
     this.properties = this.properties.concat(this.createCssProperty($el));
     this.properties = this.properties.concat(this.createBtnProperty($el));
     this.properties = this.properties.concat(this.createValueProperty($el));
@@ -327,31 +331,37 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
-   * data 속성 적용
+   * 용어 속성 적용
    */
-  private applyDataProperty($el: JQuery<HTMLElement> | undefined): void {
+  private applyWordDicaryProperty($el: JQuery<HTMLElement> | undefined): void {
     if (undefined === $el) {
       return;
     }
 
     if (ScUtil.isWrapperEl($el)) {
-      return this.applyDataProperty($el.children().first());
+      return this.applyWordDicaryProperty($el.children().first());
     }
 
     //
     $('table.property input').each((i, item) => {
       const $input = $(item);
-      if (PropertySe.Data !== $input.attr('data-se')) {
+      if (PropertySe.WordDicary !== $input.attr('data-se')) {
         return;
       }
 
-      const dataName = $input.attr('name');
-      if (undefined === dataName) {
-        return;
-      }
-      const v = $input.val() as string;
+      const engAbrvNm: string = $input.attr('data-eng-abrv-nm') ?? '';
+      const hnglAbrvNm: string = $input.attr('data-hngl-abrv-nm') ?? '';
 
-      $el.attr('data-' + dataName, v);
+      $el.attr('data-eng-abrv-nm', engAbrvNm);
+      $el.attr('data-hngl-abrv-nm', hnglAbrvNm);
+
+      // const dataName = $input.attr('name');
+      // if (undefined === dataName) {
+      //   return;
+      // }
+      // const v = $input.val() as string;
+
+      // $el.attr('data-' + dataName, v);
     });
   }
 
@@ -478,7 +488,7 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
       $el = this.selectedElService.getOne();
     }
 
-    this.applyDataProperty($el);
+    this.applyWordDicaryProperty($el);
     this.applyCssProperty($el);
     this.applyBtnProperty($el);
     this.applyTextProperty($el);
@@ -506,6 +516,26 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
       $tableWrapper?.find(`table > tbody > tr > td:eq(${x.i})`).attr('data-hngl-abrv-nm', x.hnglAbrvNm);
     });
   }
+
+  /**
+   * 용어 선택
+   */
+  selectWordDicary(key: string): void {
+    this.wordDicarySelectDialogRef.open(1, key);
+  }
+
+  /**
+   * 용어 선택됨 이벤트 처리
+   * @param a 값
+   */
+  wordDicarySelected(wdsMessage: WordDicarySelectMessage): void {
+    const elName = wdsMessage.ref;
+
+    const $el = $(`table.property [name="${elName}"]`);
+    $el.attr('data-eng-abrv-nm', wdsMessage.data[0].eng.toLowerCase());
+    $el.attr('data-hngl-abrv-nm', wdsMessage.data[0].kor);
+    $el.val(wdsMessage.data[0].kor);
+  }
 }
 
 export interface Property {
@@ -522,6 +552,7 @@ export const enum PropertySe {
   Css = 'css',
   Text = 'text',
   Value = 'value',
+  WordDicary = 'wordDicary',
   Btn = 'btn',
   Item = 'item',
 }

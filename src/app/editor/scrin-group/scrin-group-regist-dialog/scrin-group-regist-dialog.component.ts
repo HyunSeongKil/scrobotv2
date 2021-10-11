@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Scrobot } from 'src/app/@types/scrobot';
 import { ScrinGroupService } from 'src/app/service/scrin-group.service';
-import { WordDicarySelectDialogComponent } from '../../word-dicary-select-dialog/word-dicary-select-dialog.component';
+import { WordDicarySelectDialogComponent, WordDicarySelectMessage } from '../../word-dicary-select-dialog/word-dicary-select-dialog.component';
 
 /**
  * 화면 그룹 등록 팝업
@@ -116,15 +116,15 @@ export class ScrinGroupRegistDialogComponent implements OnInit {
 
   /**
    * 용어 사전 선택됨 이벤트 호출됨
-   * @param arr [{kor,eng}]
+   * @param wdsMessage [{kor,eng}]
    */
-  wordDicarySelected(arr: any[]): void {
-    console.log(arr);
+  wordDicarySelected(wdsMessage: WordDicarySelectMessage): void {
+    console.log(wdsMessage);
 
     let kors: string[] = [];
     let engs: string[] = [];
 
-    arr.forEach((x) => {
+    wdsMessage.data.forEach((x) => {
       kors.push(x.kor);
       engs.push(x.eng.toLowerCase());
     });

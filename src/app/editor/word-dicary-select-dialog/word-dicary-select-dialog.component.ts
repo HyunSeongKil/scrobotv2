@@ -29,6 +29,11 @@ export class WordDicarySelectDialogComponent implements OnInit {
 
   results: any[] = [];
 
+  /**
+   * 조회 가능한 수. 1:용어 1개만 조회 가능
+   */
+  selectCo: number = 1;
+
   // map = new Map<string, any[]>();
 
   constructor(private modalService: NgbModal, private wordDicaryService: WordDicaryService) {
@@ -48,10 +53,15 @@ export class WordDicarySelectDialogComponent implements OnInit {
       return;
     }
 
-    const arr: string[] = this.form.controls.wordNm.value.split(' ');
+    let arr: string[] = [];
+    if (1 === this.selectCo) {
+      arr = [this.form.controls.wordNm.value];
+    } else {
+      arr = this.form.controls.wordNm.value.split(' ');
+    }
 
     // 한글 명별 영문 약어 목록 조회
-    this.wordDicaryService.listByWords(this.form.controls.wordNm.value.split(' ')).then((res: any) => {
+    this.wordDicaryService.listByWords(arr).then((res: any) => {
       Object.keys(res).forEach((k, index) => {
         this.results.push({
           index,
@@ -66,7 +76,8 @@ export class WordDicarySelectDialogComponent implements OnInit {
   /**
    * 팝업창 실행
    */
-  open(ref: any = undefined) {
+  open(selectCo: number | undefined = 10, ref: any = undefined) {
+    this.selectCo = selectCo;
     // this.map.clear();
     this.results = [];
     this.form.patchValue({ wordNm: '' });
@@ -89,7 +100,7 @@ export class WordDicarySelectDialogComponent implements OnInit {
         //
         $('select.word-nm').each((i, item) => {
           const $select = $(item);
-          const kor: string = $select.find('option:selected').html();
+          const kor: string = $select.find('option:selected').attr('data-hngl-abrv-nm') ?? '';
           const eng: string = '' + ($select.find('option:selected').val() ?? '');
           // const wordNm = $select.attr('name');
 

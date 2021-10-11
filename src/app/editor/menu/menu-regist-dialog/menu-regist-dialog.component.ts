@@ -15,7 +15,7 @@ export class MenuRegistDialogComponent implements OnInit {
   @ViewChild('content') content!: ElementRef<HTMLDivElement>;
 
   @Output() savingEvent = new EventEmitter<any>();
-  @Output() savedEvent = new EventEmitter<any>();
+  @Output() menuSavedEvent = new EventEmitter<any>();
 
   private closeResult = '';
 
@@ -38,7 +38,8 @@ export class MenuRegistDialogComponent implements OnInit {
    * 모달 창 실행
    */
   open(prjctId: string, prntsMenuId: string = '-') {
-    this.form.patchValue({ prjctId, prntsMenuId });
+    this.form.patchValue({ prjctId, prntsMenuId, menuNm: '' });
+    this.scrins = [];
 
     //  화면 목록 조회
     this.scrinService.listByPrjctId(prjctId).then((res: any) => {
@@ -64,7 +65,7 @@ export class MenuRegistDialogComponent implements OnInit {
 
           //
           this.service.regist(this.form.value as Scrobot.Menu).then((res: any) => {
-            this.savedEvent.emit('');
+            this.menuSavedEvent.emit('');
           });
         }
       },

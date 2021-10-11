@@ -251,7 +251,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * 화면 닫기 이벤트 구독
    */
-  scrinClosed(): void {
+  closeScrin(): void {
     this.editingScrinId = '';
 
     this.elService.removeAll();
@@ -284,7 +284,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * 화면 저장 이벤트 구독
    */
-  scrinSaved(): void {
+  saveScrin(): void {
     this.elService.clearAllBorder();
     this.elService.clearAllDraggable();
     this.elService.clearAllResizable();
@@ -307,4 +307,28 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
    * @param $el 엘리먼트
    */
   elChanged($el: JQuery<HTMLElement>): void {}
+
+  /**
+   * 편집 저장
+   * @returns void
+   */
+  saveEditing(): void {
+    if (!confirm('편집 화면을 저장하시겠습니까?')) {
+      return;
+    }
+
+    this.saveScrin();
+  }
+
+  /**
+   * 편집 닫기
+   * @returns void
+   */
+  closeEditing(): void {
+    if (!confirm('편집 화면을 닫으시겠습니까?\n※저장하지 않은 내용은 삭제됩니다.')) {
+      return;
+    }
+
+    this.closeScrin();
+  }
 }

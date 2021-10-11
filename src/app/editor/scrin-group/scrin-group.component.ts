@@ -32,12 +32,12 @@ export class ScrinGroupComponent implements OnInit {
   /**
    * 화면 선택 완료 이벤트
    */
-  @Output() scrinSelectEvent = new EventEmitter<any>();
+  @Output() scrinSelectedEvent = new EventEmitter<any>();
   /**
    * 닫기 이벤트
    */
-  @Output() closeEvent = new EventEmitter<any>();
-  @Output() saveEvent = new EventEmitter<any>();
+  // @Output() closeEvent = new EventEmitter<any>();
+  // @Output() saveEvent = new EventEmitter<any>();
 
   /**
    * 화면 그룹 목록
@@ -172,32 +172,32 @@ export class ScrinGroupComponent implements OnInit {
       return;
     }
 
-    this.scrinSelectEvent.emit(scrinId);
+    this.scrinSelectedEvent.emit(scrinId);
   }
 
-  /**
-   * 편집 저장
-   * @returns void
-   */
-  save(): void {
-    if (!confirm('저장하시겠습니까?')) {
-      return;
-    }
+  // /**
+  //  * 편집 저장
+  //  * @returns void
+  //  */
+  // save(): void {
+  //   if (!confirm('저장하시겠습니까?')) {
+  //     return;
+  //   }
 
-    this.saveEvent.emit('');
-  }
+  //   this.saveEvent.emit('');
+  // }
 
-  /**
-   * 편집 닫기
-   * @returns void
-   */
-  close(): void {
-    if (!confirm('닫으시겠습니까?\n※ 저장하지 않은 자료는 삭제됩니다.')) {
-      return;
-    }
+  // /**
+  //  * 편집 닫기
+  //  * @returns void
+  //  */
+  // close(): void {
+  //   if (!confirm('닫으시겠습니까?\n※ 저장하지 않은 자료는 삭제됩니다.')) {
+  //     return;
+  //   }
 
-    this.closeEvent.emit('');
-  }
+  //   this.closeEvent.emit('');
+  // }
 
   /**
    * 화면 복사

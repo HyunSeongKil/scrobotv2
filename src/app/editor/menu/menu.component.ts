@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Scrobot } from 'src/app/@types/scrobot';
 import { MenuService } from 'src/app/service/menu.service';
 import { MenuRegistDialogComponent } from './menu-regist-dialog/menu-regist-dialog.component';
@@ -9,7 +9,9 @@ import { MenuUpdtDialogComponent } from './menu-updt-dialog/menu-updt-dialog.com
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css'],
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent implements OnInit, OnChanges {
+  @Input() editingScrinId: string = '';
+
   @ViewChild('menuRegistDialogRef') menuRegistDialogRef!: MenuRegistDialogComponent;
   @ViewChild('menuUpdtDialogRef') menuUpdtDialogRef!: MenuUpdtDialogComponent;
 
@@ -18,6 +20,12 @@ export class MenuComponent implements OnInit {
   menus: Scrobot.Menu[] = [];
 
   constructor(private service: MenuService) {}
+
+  /**
+   * 값 변화 감지
+   * @param changes 변화들
+   */
+  ngOnChanges(changes: SimpleChanges): void {}
 
   ngOnInit(): void {}
 
@@ -29,7 +37,7 @@ export class MenuComponent implements OnInit {
   }
 
   render(): void {
-    console.log(this.menus);
+    // console.log(this.menus);
   }
 
   /**

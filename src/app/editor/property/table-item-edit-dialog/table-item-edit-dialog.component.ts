@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Scrobot } from 'src/app/@types/scrobot';
 import { PrjctService } from 'src/app/service/prjct.service';
-import { WordDicarySelectDialogComponent } from '../../word-dicary-select-dialog/word-dicary-select-dialog.component';
+import { WordDicarySelectDialogComponent, WordDicarySelectMessage } from '../../word-dicary-select-dialog/word-dicary-select-dialog.component';
 
 /**
  * 프로젝트 등록
@@ -121,11 +121,11 @@ export class TableItemEditDialogComponent implements OnInit {
     this.wordDicarySelectDialogRef.open();
   }
 
-  wordDicarySelected(arr: any[]): void {
-    console.log(this.selectedIndex, arr);
+  wordDicarySelected(wrsMessage: WordDicarySelectMessage): void {
+    console.log(this.selectedIndex, wrsMessage);
 
-    const engs = arr.map((x) => x.eng.toLowerCase());
-    const hngls = arr.map((x) => x.kor);
+    const engs = wrsMessage.data.map((x) => x.eng.toLowerCase());
+    const hngls = wrsMessage.data.map((x) => x.kor);
 
     $(`#eng_${this.selectedIndex}`).val(engs.join('_'));
     $(`#hngl_${this.selectedIndex}`).val(hngls.join(' '));
