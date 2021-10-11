@@ -47,7 +47,7 @@ export class ScrinGroupRegistDialogComponent implements OnInit {
    * @param scrinGroups 화면 그룹 목록
    */
   open(prjctId: string, scrinGroups: Scrobot.ScrinGroup[]) {
-    this.form.patchValue({ prjctId });
+    this.form.patchValue({ prjctId, scrinGroupNm: '', engAbrvNm: '' });
 
     this.modalService.open(this.content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
       (result: any) => {
@@ -126,7 +126,7 @@ export class ScrinGroupRegistDialogComponent implements OnInit {
 
     arr.forEach((x) => {
       kors.push(x.kor);
-      engs.push(x.eng);
+      engs.push(x.eng.toLowerCase());
     });
 
     this.form.controls.scrinGroupNm.setValue(kors.join(' '));
