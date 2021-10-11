@@ -1,3 +1,5 @@
+import { HtmlAstPath } from '@angular/compiler';
+
 export class ScUtil {
   /**
    * 랜덤한 id 문자열 생성
@@ -97,5 +99,22 @@ export class ScUtil {
     }
 
     return $el.parent().hasClass('wrapper');
+  }
+
+  /**
+   * 태그명 구하기. 현재 엘리먼트에 태그명 없으면 부모 엘리먼트에서 추출
+   * @param $el 엘리먼트
+   * @returns 태그 명
+   */
+  static getTagName($el: JQuery<HTMLElement> | undefined): string | undefined {
+    if (undefined === $el) {
+      return undefined;
+    }
+
+    if (undefined !== $el.attr('data-tag-name')) {
+      return $el.attr('data-tag-name') as string;
+    }
+
+    return $el.parent().attr('data-tag-name');
   }
 }
