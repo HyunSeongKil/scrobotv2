@@ -1,21 +1,17 @@
 <ng-template #content let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">화면 그룹 등록</h4>
+    <h4 class="modal-title" id="modal-basic-title">테이블 항목 편집</h4>
     <button type="button" class="btn btn-sm close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <form [formGroup]="form">
-      <div>
-        <label for="scrinGroupNm" class="d-block">화면 그룹 명<span class="req">*</span></label>
-        <input type="text" class="form-control w-75 d-inline" id="scrinGroupNm" readonly formControlName="scrinGroupNm" />
-        <button type="button" class="btn btn-outline-secondary btn-sm mx-1" (click)="openWordDicarySelectDialog()">선택...</button>
-      </div>
-
-      <label for="engAbrvNm">영문 약어 명<span class="req">*</span></label>
-      <input type="text" class="form-control" id="engAbrvNm" readonly formControlName="engAbrvNm" />
-    </form>
+    <div *ngFor="let x of arr">
+      <label for="hngl_{{ x.i }}" class="d-block">{{ x.i + 1 }}번째 항목 <span class="req">*</span></label>
+      <input type="text" id="hngl_{{ x.i }}" class="form-control w-75 d-inline" readonly [value]="x.hnglAbrvNm ?? ''" />
+      <input type="hidden" id="eng_{{ x.i }}" [value]="x.engAbrvNm ?? ''" />
+      <button type="button" class="btn btn-outline-secondary btn-sm mx-1" (click)="selectWordDicary(x.i)">단어선택</button>
+    </div>
 
     <div class="mt-1 font-italic"><span class="req">*</span> 필수입력 항목입니다.</div>
   </div>

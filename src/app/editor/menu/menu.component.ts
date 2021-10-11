@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Scrobot } from 'src/app/@types/scrobot';
 import { MenuService } from 'src/app/service/menu.service';
 import { MenuRegistDialogComponent } from './menu-regist-dialog/menu-regist-dialog.component';
+import { MenuUpdtDialogComponent } from './menu-updt-dialog/menu-updt-dialog.component';
 
 @Component({
   selector: 'app-menu',
@@ -10,6 +11,7 @@ import { MenuRegistDialogComponent } from './menu-regist-dialog/menu-regist-dial
 })
 export class MenuComponent implements OnInit {
   @ViewChild('menuRegistDialogRef') menuRegistDialogRef!: MenuRegistDialogComponent;
+  @ViewChild('menuUpdtDialogRef') menuUpdtDialogRef!: MenuUpdtDialogComponent;
 
   @Input() prjctId = '';
 
@@ -28,6 +30,14 @@ export class MenuComponent implements OnInit {
 
   render(): void {
     console.log(this.menus);
+  }
+
+  /**
+   * 메뉴 수정
+   * @param menuId 메뉴 아이디
+   */
+  updtMenu(menuId: string): void {
+    this.menuUpdtDialogRef.open(this.prjctId, menuId);
   }
 
   /**

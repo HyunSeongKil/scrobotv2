@@ -5,6 +5,7 @@ import { ScrinGroupService } from 'src/app/service/scrin-group.service';
 import { ScrinService } from 'src/app/service/scrin.service';
 import { ScrinCopyDialogComponent } from './scrin-copy-dialog/scrin-copy-dialog.component';
 import { ScrinGroupRegistDialogComponent } from './scrin-group-regist-dialog/scrin-group-regist-dialog.component';
+import { ScrinGroupUpdtDialogComponent } from './scrin-group-updt-dialog/scrin-group-updt-dialog.component';
 import { ScrinRegistDialogComponent } from './scrin-regist-dialog/scrin-regist-dialog.component';
 import { ScrinUpdtDialogComponent } from './scrin-updt-dialog/scrin-updt-dialog.component';
 
@@ -15,6 +16,7 @@ import { ScrinUpdtDialogComponent } from './scrin-updt-dialog/scrin-updt-dialog.
 })
 export class ScrinGroupComponent implements OnInit {
   @ViewChild('scrinGroupRegistDialogRef') scrinGroupRegistDialogRef!: ScrinGroupRegistDialogComponent;
+  @ViewChild('scrinGroupUpdtDialogRef') scrinGroupUpdtDialogRef!: ScrinGroupUpdtDialogComponent;
   @ViewChild('scrinRegistDialogRef') scrinRegistDialogRef!: ScrinRegistDialogComponent;
   @ViewChild('scrinCopyDialogRef') scrinCopyDialogRef!: ScrinCopyDialogComponent;
   @ViewChild('scrinUpdtDialogRef') scrinUpdtDialogRef!: ScrinUpdtDialogComponent;
@@ -114,6 +116,14 @@ export class ScrinGroupComponent implements OnInit {
     this.scrinService.delete(scrinId).then(() => {
       this.on();
     });
+  }
+
+  /**
+   * 화면 그룹 수정
+   * @param scrinGroupId 화면 그룹 아이디
+   */
+  updtScrinGroup(scrinGroupId: string): void {
+    this.scrinGroupUpdtDialogRef.open(this.prjctId, scrinGroupId, this.scrinGroups);
   }
 
   /**

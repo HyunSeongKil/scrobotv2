@@ -7,7 +7,7 @@ import 'jqueryui';
 })
 export class SelectedElService {
   @Output() selectedEvent = new EventEmitter<any>();
-  @Output() unselectedEVent = new EventEmitter<any>();
+  @Output() unselectedEvent = new EventEmitter<any>();
 
   private map = new Map<string, JQuery<HTMLElement>>();
 
@@ -61,12 +61,12 @@ export class SelectedElService {
 
     this.map.delete(id);
 
-    this.unselectedEVent.emit('');
+    this.unselectedEvent.emit('');
   }
 
   clearAll(): void {
     this.map.clear();
 
-    this.unselectedEVent.emit('');
+    this.unselectedEvent.emit('');
   }
 }

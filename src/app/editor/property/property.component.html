@@ -28,7 +28,7 @@
 
           <!-- item -->
           <ng-container *ngIf="'item' === x.se">
-            <button type="button" class="btn btn-outline-secondary btn-sm">...</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="editItem(x.$el, x.tagName)">...</button>
           </ng-container>
         </td>
       </tr>
@@ -57,3 +57,5 @@
     </tfoot>
   </table>
 </div>
+
+<app-table-item-edit-dialog #tableItemEditDialogRef (itemEditedEvent)="itemEdited($event)"></app-table-item-edit-dialog>

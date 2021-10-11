@@ -27,6 +27,9 @@ import { AuthInterceptor } from './service/auth-interceptor.service';
 import { JwtModule, JwtModuleOptions } from '@auth0/angular-jwt';
 import { ScrinCopyDialogComponent } from './editor/scrin-group/scrin-copy-dialog/scrin-copy-dialog.component';
 import { ScrinUpdtDialogComponent } from './editor/scrin-group/scrin-updt-dialog/scrin-updt-dialog.component';
+import { TableItemEditDialogComponent } from './editor/property/table-item-edit-dialog/table-item-edit-dialog.component';
+import { ScrinGroupUpdtDialogComponent } from './editor/scrin-group/scrin-group-updt-dialog/scrin-group-updt-dialog.component';
+import { MenuUpdtDialogComponent } from './editor/menu/menu-updt-dialog/menu-updt-dialog.component';
 
 const JWT_Module_Options: JwtModuleOptions = {
   config: { tokenGetter },
@@ -37,7 +40,7 @@ export function tokenGetter() {
 }
 
 @NgModule({
-  declarations: [AppComponent, EditorComponent, HeaderComponent, FooterComponent, SideBarComponent, RightComponent, MenuComponent, MenuRegistDialogComponent, ScrinGroupComponent, ScrinGroupRegistDialogComponent, ScrinRegistDialogComponent, CompnComponent, ToolComponent, PropertyComponent, WordDicarySelectDialogComponent, SigninComponent, ScrinCopyDialogComponent, ScrinUpdtDialogComponent],
+  declarations: [AppComponent, EditorComponent, HeaderComponent, FooterComponent, SideBarComponent, RightComponent, MenuComponent, MenuRegistDialogComponent, ScrinGroupComponent, ScrinGroupRegistDialogComponent, ScrinRegistDialogComponent, CompnComponent, ToolComponent, PropertyComponent, WordDicarySelectDialogComponent, SigninComponent, ScrinCopyDialogComponent, ScrinUpdtDialogComponent, TableItemEditDialogComponent, ScrinGroupUpdtDialogComponent, MenuUpdtDialogComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, BizModule, PrjctModule, FormsModule, NgbModule, ReactiveFormsModule, JwtModule.forRoot(JWT_Module_Options)],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],

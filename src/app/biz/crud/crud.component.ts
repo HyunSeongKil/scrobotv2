@@ -234,7 +234,7 @@ export class CrudComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * td(or th) 추가. 조회버튼 들어갈 자리임
+   * td(or th) 추가. 기능버튼 들어갈 자리임
    * @param $table 테이블
    */
   addLastTd($table: JQuery<HTMLElement>): void {
@@ -299,6 +299,8 @@ export class CrudComponent implements OnInit, AfterViewInit {
    * @param $table 테이블
    */
   refindTable($table: JQuery<HTMLElement>): void {
+    $table.css('width', '');
+
     // data-pk가 없는 tr 삭제
     $table.find('tbody > tr').each((i, item) => {
       if (undefined === $(item).attr('data-pk') || '' === $(item).attr('data-pk')) {

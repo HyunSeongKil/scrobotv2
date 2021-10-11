@@ -25,16 +25,11 @@ export class ScrinRegistDialogComponent implements OnInit {
 
   closeResult = '';
 
-  constructor(private modalService: NgbModal, private service: ScrinService, cmmnCodeService: CmmnCodeService) {
+  constructor(private modalService: NgbModal, private service: ScrinService, private cmmnCodeService: CmmnCodeService) {
     this.form = new FormGroup({
       scrinGroupId: new FormControl('', [Validators.required]),
       scrinNm: new FormControl('', [Validators.required]),
       scrinSeCode: new FormControl('', [Validators.required]),
-    });
-
-    // 화면 구분 코드 목록 조회
-    cmmnCodeService.listByPrntsCmmnCode('scrin_se').then((res: any) => {
-      this.scrinSeCodes = res.data;
     });
   }
   ngOnInit(): void {}
@@ -44,6 +39,12 @@ export class ScrinRegistDialogComponent implements OnInit {
    * @param scrinGroupId 화면 그룹 아이디
    */
   open(scrinGroupId: string) {
+    // 화면 구분 코드 목록 조회
+    this.cmmnCodeService.listByPrntsCmmnCode('scrin_se').then((res: any) => {
+      this.scrinSeCodes = res.data;
+    });
+
+    //
     this.form.patchValue({ scrinGroupId });
 
     this.modalService.open(this.content, { ariaLabelledBy: 'modal-basic-title' }).result.then(

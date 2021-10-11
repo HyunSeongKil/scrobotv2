@@ -27,15 +27,10 @@ export class ScrinCopyDialogComponent implements OnInit {
 
   closeResult = '';
 
-  constructor(private modalService: NgbModal, private service: ScrinService, cmmnCodeService: CmmnCodeService) {
+  constructor(private modalService: NgbModal, private service: ScrinService, private cmmnCodeService: CmmnCodeService) {
     this.form = new FormGroup({
       scrinNm: new FormControl('', [Validators.required]),
       scrinSeCode: new FormControl('', [Validators.required]),
-    });
-
-    // 화면 구분 코드 목록 조회
-    cmmnCodeService.listByPrntsCmmnCode('scrin_se').then((res: any) => {
-      this.scrinSeCodes = res.data;
     });
   }
   ngOnInit(): void {}
@@ -45,6 +40,11 @@ export class ScrinCopyDialogComponent implements OnInit {
    * @param srcScrinId 원본 화면 아이디
    */
   open(srcScrinId: string) {
+    // 화면 구분 코드 목록 조회
+    this.cmmnCodeService.listByPrntsCmmnCode('scrin_se').then((res: any) => {
+      this.scrinSeCodes = res.data;
+    });
+
     this.srcScrinId = srcScrinId;
 
     this.service.get(srcScrinId).then((res: any) => {

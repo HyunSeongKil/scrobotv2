@@ -1,4 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ElService } from 'src/app/service/el.service';
 import { SelectedElService } from 'src/app/service/selected-el.service';
 
@@ -13,8 +14,37 @@ export class ToolComponent implements OnInit, OnDestroy {
 
   tableSelected: boolean = false;
 
+  selectedEventSub: Subscription = new Subscription();
+  unselectedEventSub: Subscription = new Subscription();
+
+  /**
+   * 생성자
+   * @param elService 엘리먼트 서비스
+   * @param selectedElService 선택된 엘리먼트 서비스
+   */
   constructor(private elService: ElService, private selectedElService: SelectedElService) {
-    selectedElService.selectedEvent.subscribe(($el) => {
+    console.log('<<ctr');
+  }
+
+  /**
+   * 파괴자
+   */
+  ngOnDestroy(): void {
+    if (!this.selectedEventSub.closed) {
+      this.selectedEventSub.unsubscribe();
+    }
+    if (!this.unselectedEventSub.closed) {
+      this.unselectedEventSub.unsubscribe();
+    }
+
+    console.log('<<ngOnDestroy');
+  }
+
+  /**
+   * 초기화
+   */
+  ngOnInit(): void {
+    this.selectedEventSub = this.selectedElService.selectedEvent.subscribe(($el) => {
       const tagName = $el?.attr('data-tag-name');
       if (ElService.TAG_NAME_TABLE === tagName) {
         this.tableSelected = true;
@@ -22,18 +52,12 @@ export class ToolComponent implements OnInit, OnDestroy {
         this.tableSelected = false;
       }
     });
-
-    selectedElService.unselectedEVent.subscribe(() => {
+    this.unselectedEventSub = this.selectedElService.unselectedEvent.subscribe(() => {
       this.tableSelected = false;
     });
-  }
 
-  ngOnDestroy(): void {
-    this.selectedElService.selectedEvent.unsubscribe();
-    this.selectedElService.unselectedEVent.unsubscribe();
+    console.log('<<ngOnInit');
   }
-
-  ngOnInit(): void {}
 
   /**
    * 선택된 엘리먼트 삭제

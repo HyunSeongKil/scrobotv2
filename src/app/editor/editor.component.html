@@ -39,7 +39,7 @@
   <div class="col-3">
     <app-tool [prjctId]="prjctId" [editingScrinId]="editingScrinId"></app-tool>
 
-    <app-property [prjctId]="prjctId" [editingScrinId]="editingScrinId" [$selectedEl]="$selectedEl" (elChangedEvent)="elChanged($event)"></app-property>
+    <app-property [prjctId]="prjctId" [editingScrinId]="editingScrinId" (elPropertyChangedEvent)="elChanged($event)"></app-property>
   </div>
 </div>
 

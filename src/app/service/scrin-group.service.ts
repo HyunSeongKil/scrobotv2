@@ -32,11 +32,29 @@ export class ScrinGroupService {
   }
 
   /**
+   * 수정
+   * @param dto 값
+   * @returns promise
+   */
+  updt(dto: Scrobot.ScrinGroup): Promise<any> {
+    return this.http.put(`${this.BIZ_URI}`, dto).toPromise();
+  }
+
+  /**
    * 목록 조회
    * @param prjctId 프로젝트 아이디
    * @returns promise
    */
   listByPrjctId(prjctId: string): Promise<any> {
     return this.http.get(`${this.BIZ_URI}/by-prjct?prjctId=${prjctId}`).toPromise();
+  }
+
+  /**
+   * 조회
+   * @param scrinGroupId 화면 그룹 아이디
+   * @returns promise
+   */
+  get(scrinGroupId: string): Promise<any> {
+    return this.http.get(`${this.BIZ_URI}/${scrinGroupId}`).toPromise();
   }
 }

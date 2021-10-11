@@ -44,6 +44,9 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   $selectedEl: JQuery<HTMLElement> | undefined;
 
+  elSelectedEventSub: Subscription = new Subscription();
+  endedEventSub: Subscription = new Subscription();
+
   /**
    * 생성자
    * @param route
@@ -59,24 +62,13 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     if (undefined === this.prjctId) {
+      alert('프로젝트 정보가 없습니다.');
       return;
     }
 
-    editorService.getAllByPrjctId(this.prjctId).then((res: any) => {
-      console.log(res);
-    });
-
-    // 이벤트 구독
-    elService.elSelectedEvent.subscribe((elEventMessage) => {
-      if ('click' === elEventMessage.e) {
-        this.$selectedEl = elEventMessage.$el;
-      }
-    });
-    elService.endedEvent.subscribe((elEventMessage) => {
-      if ('regist' === elEventMessage.e) {
-        alert('저장되었습니다.');
-      }
-    });
+    // editorService.getAllByPrjctId(this.prjctId).then((res: any) => {
+    //   console.log(res);
+    // });
 
     //
     console.log('<<ctr');
@@ -86,8 +78,12 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
    *
    */
   ngOnDestroy(): void {
-    this.elService.elSelectedEvent.unsubscribe();
-    this.elService.endedEvent.unsubscribe();
+    if (!this.elSelectedEventSub.closed) {
+      this.elSelectedEventSub.unsubscribe();
+    }
+    if (!this.endedEventSub.closed) {
+      this.endedEventSub.unsubscribe();
+    }
 
     //
     console.log('<<ngOnDestroy');
@@ -117,6 +113,18 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
+    // 이벤트 구독
+    this.elSelectedEventSub = this.elService.elSelectedEvent.subscribe((elEventMessage) => {
+      if ('click' === elEventMessage.e) {
+        this.$selectedEl = elEventMessage.$el;
+      }
+    });
+    this.endedEventSub = this.elService.endedEvent.subscribe((elEventMessage) => {
+      if ('regist' === elEventMessage.e) {
+        alert('저장되었습니다.');
+      }
+    });
+
     $('div.content').on('click', (event) => {
       event.stopPropagation();
 

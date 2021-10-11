@@ -29,6 +29,15 @@ export class MenuService {
   }
 
   /**
+   * 수정
+   * @param dto 값
+   * @returns promise
+   */
+  updt(dto: Scrobot.Menu): Promise<any> {
+    return this.http.put(`${this.BIZ_URI}`, dto).toPromise();
+  }
+
+  /**
    * 메뉴 목록 조회
    * @param prjctId 프로젝트 아이디
    * @returns promise
@@ -44,5 +53,14 @@ export class MenuService {
    */
   listByPrjctIdWithSort(prjctId: string): Promise<any> {
     return this.http.get(`${this.BIZ_URI}/by-prjct-with-sort?prjctId=${prjctId}`).toPromise();
+  }
+
+  /**
+   * 조회
+   * @param menuId 메뉴 아이디
+   * @returns promise
+   */
+  get(menuId: string): Promise<any> {
+    return this.http.get(`${this.BIZ_URI}/${menuId}`).toPromise();
   }
 }

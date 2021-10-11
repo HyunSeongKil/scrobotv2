@@ -1,15 +1,19 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Scrobot } from 'src/app/@types/scrobot';
 import { CmmnCodeService } from 'src/app/service/cmmn-code.service';
 import { ElService } from 'src/app/service/el.service';
+import { SelectedElService } from 'src/app/service/selected-el.service';
 import { ScUtil } from 'src/app/service/util';
+import { TableItemEditDialogComponent } from './table-item-edit-dialog/table-item-edit-dialog.component';
 
 @Component({
   selector: 'app-property',
   templateUrl: './property.component.html',
   styleUrls: ['./property.component.css'],
 })
-export class PropertyComponent implements OnInit, OnChanges {
+export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
+  @ViewChild('tableItemEditDialogRef') tableItemEditDialogRef!: TableItemEditDialogComponent;
   /**
    * 프로젝트 아이디
    */
@@ -21,12 +25,12 @@ export class PropertyComponent implements OnInit, OnChanges {
   /**
    * 선택된 엘리먼트
    */
-  @Input() $selectedEl: JQuery<HTMLElement> | undefined;
+  // @Input() $selectedEl: JQuery<HTMLElement> | undefined;
 
   /**
    * 엘리먼트 변경됨 이벤트 발생
    */
-  @Output() elChangedEvent = new EventEmitter<any>();
+  @Output() elPropertyChangedEvent = new EventEmitter<any>();
 
   properties: Property[] = [];
 
@@ -35,12 +39,30 @@ export class PropertyComponent implements OnInit, OnChanges {
    */
   btnSes: Scrobot.CmmnCode[] = [];
 
+  selectedEventSub: Subscription = new Subscription();
+  unselectedEventSub: Subscription = new Subscription();
+
   /**
    *
    * @param cmmnCodeService
    */
-  constructor(private cmmnCodeService: CmmnCodeService, private elService: ElService) {}
+  constructor(private cmmnCodeService: CmmnCodeService, private elService: ElService, private selectedElService: SelectedElService) {}
 
+  /**
+   * 파괴자
+   */
+  ngOnDestroy(): void {
+    if (!this.selectedEventSub.closed) {
+      this.selectedEventSub.unsubscribe();
+    }
+    if (!this.unselectedEventSub.closed) {
+      this.unselectedEventSub.unsubscribe();
+    }
+  }
+
+  /**
+   * 버튼 구분 코드 목록 조회
+   */
   getBtnSes(): void {
     this.cmmnCodeService.listByPrntsCmmnCode('btn_se').then((res: any) => {
       this.btnSes = res.data;
@@ -52,24 +74,20 @@ export class PropertyComponent implements OnInit, OnChanges {
    * @param changes
    * @returns
    */
-  ngOnChanges(changes: SimpleChanges): void {
-    if (undefined === changes) {
-      return;
-    }
+  ngOnChanges(changes: SimpleChanges): void {}
 
-    this.getBtnSes();
-
-    this.properties = [];
-
-    if (undefined !== changes.$selectedEl) {
-      if (undefined !== changes.$selectedEl.currentValue) {
-        this.showProperty(this.$selectedEl);
-      }
-    }
-  }
-
+  /**
+   * 초기화
+   */
   ngOnInit(): void {
-    this.properties = [];
+    this.selectedEventSub = this.selectedElService.selectedEvent.subscribe(($el) => {
+      this.properties = [];
+      this.getBtnSes();
+      this.showProperty($el);
+    });
+    this.unselectedEventSub = this.selectedElService.unselectedEvent.subscribe(() => {
+      this.properties = [];
+    });
   }
 
   /**
@@ -89,7 +107,7 @@ export class PropertyComponent implements OnInit, OnChanges {
     }
 
     // input은 항상 wrapper 존재
-    const tagName = $el.parent().attr('data-tag-name');
+    const tagName = ScUtil.getTagName($el);
     if (undefined === tagName || ElService.TAG_NAME_INPUT_TEXT !== tagName) {
       return arr;
     }
@@ -111,6 +129,8 @@ export class PropertyComponent implements OnInit, OnChanges {
         text: x.t,
         value: $el.attr('data-' + x.k) ?? '',
         se: PropertySe.Data,
+        tagName,
+        $el,
       });
     });
 
@@ -131,6 +151,11 @@ export class PropertyComponent implements OnInit, OnChanges {
 
     if (ScUtil.isWrapperEl($el)) {
       return this.createCssProperty($el.children().first());
+    }
+
+    const tagName = ScUtil.getTagName($el);
+    if (undefined === tagName) {
+      return arr;
     }
 
     const items = [
@@ -154,6 +179,8 @@ export class PropertyComponent implements OnInit, OnChanges {
         text: x.t,
         value: $el.css(x.k) ?? '',
         se: PropertySe.Css,
+        tagName,
+        $el,
       });
     });
 
@@ -172,7 +199,8 @@ export class PropertyComponent implements OnInit, OnChanges {
       return arr;
     }
 
-    if (ElService.TAG_NAME_BUTTON !== $el?.attr('data-tag-name')) {
+    const tagName = ScUtil.getTagName($el);
+    if (ElService.TAG_NAME_BUTTON !== tagName) {
       return arr;
     }
 
@@ -181,6 +209,8 @@ export class PropertyComponent implements OnInit, OnChanges {
       value: $el.children().first().attr('data-btn-se') ?? '',
       text: '버튼 구분',
       se: PropertySe.Btn,
+      tagName,
+      $el,
     });
 
     return arr;
@@ -198,7 +228,8 @@ export class PropertyComponent implements OnInit, OnChanges {
       return arr;
     }
 
-    if (ElService.TAG_NAME_INPUT_TEXT !== $el?.attr('data-tag-name')) {
+    const tagName = ScUtil.getTagName($el);
+    if (ElService.TAG_NAME_INPUT_TEXT !== tagName) {
       return arr;
     }
 
@@ -207,6 +238,8 @@ export class PropertyComponent implements OnInit, OnChanges {
       value: $el.children().first().val() ?? '',
       text: '값',
       se: PropertySe.Value,
+      tagName,
+      $el,
     });
 
     return arr;
@@ -224,7 +257,7 @@ export class PropertyComponent implements OnInit, OnChanges {
       return arr;
     }
 
-    const tagName = $el?.attr('data-tag-name');
+    const tagName = ScUtil.getTagName($el);
 
     switch (tagName) {
       case ElService.TAG_NAME_H1:
@@ -236,6 +269,8 @@ export class PropertyComponent implements OnInit, OnChanges {
           value: $el.text(),
           text: '텍스트',
           se: PropertySe.Text,
+          tagName,
+          $el,
         });
         break;
 
@@ -245,6 +280,8 @@ export class PropertyComponent implements OnInit, OnChanges {
           value: $el.children().first().text(),
           text: '텍스트',
           se: PropertySe.Text,
+          tagName,
+          $el,
         });
         break;
     }
@@ -259,7 +296,7 @@ export class PropertyComponent implements OnInit, OnChanges {
       return arr;
     }
 
-    const tagName = $el?.attr('data-tag-name');
+    const tagName = ScUtil.getTagName($el);
     if (ElService.TAG_NAME_TABLE !== tagName) {
       return arr;
     }
@@ -269,6 +306,8 @@ export class PropertyComponent implements OnInit, OnChanges {
       value: '',
       text: '항목',
       se: PropertySe.Item,
+      tagName,
+      $el,
     });
 
     return arr;
@@ -423,16 +462,49 @@ export class PropertyComponent implements OnInit, OnChanges {
   }
 
   /**
+   * 항목 수정
+   */
+  editItem($el: JQuery<HTMLElement>, tagName: string): void {
+    if (ElService.TAG_NAME_TABLE === tagName) {
+      this.tableItemEditDialogRef.open($el);
+    }
+  }
+
+  /**
    * 프로퍼티 적용
    */
-  applyProperty(): void {
-    this.applyDataProperty(this.$selectedEl);
-    this.applyCssProperty(this.$selectedEl);
-    this.applyBtnProperty(this.$selectedEl);
-    this.applyTextProperty(this.$selectedEl);
+  applyProperty($el: JQuery<HTMLElement> | undefined = undefined): void {
+    if (undefined === $el) {
+      $el = this.selectedElService.getOne();
+    }
+
+    this.applyDataProperty($el);
+    this.applyCssProperty($el);
+    this.applyBtnProperty($el);
+    this.applyTextProperty($el);
     // TODO text, value 적용
 
-    this.elChangedEvent.emit(this.$selectedEl);
+    this.elPropertyChangedEvent.emit($el);
+  }
+
+  /**
+   * 항목 편집됨 이벤트 처리
+   * @param items 아이템
+   */
+  itemEdited(items: any[]): void {
+    console.log(items);
+
+    // 테이블 엘리먼트
+    const $tableWrapper = this.selectedElService.getOne();
+
+    items.forEach((x) => {
+      $tableWrapper?.find(`table > thead > tr > th:eq(${x.i})`).attr('data-eng-abrv-nm', x.engAbrvNm);
+      $tableWrapper?.find(`table > thead > tr > th:eq(${x.i})`).attr('data-hngl-abrv-nm', x.hnglAbrvNm);
+      $tableWrapper?.find(`table > thead > tr > th:eq(${x.i})`).html(x.hnglAbrvNm);
+
+      $tableWrapper?.find(`table > tbody > tr > td:eq(${x.i})`).attr('data-eng-abrv-nm', x.engAbrvNm);
+      $tableWrapper?.find(`table > tbody > tr > td:eq(${x.i})`).attr('data-hngl-abrv-nm', x.hnglAbrvNm);
+    });
   }
 }
 
@@ -441,6 +513,8 @@ export interface Property {
   value: any;
   text: string;
   se: PropertySe;
+  tagName: string;
+  $el: JQuery<HTMLElement>;
 }
 
 export const enum PropertySe {
