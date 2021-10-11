@@ -21,7 +21,7 @@ export class WordDicarySelectDialogComponent implements OnInit {
   /**
    * 저장완료 이벤트
    */
-  @Output() wordDicarySelectedEvent = new EventEmitter<any>();
+  @Output() wordDicarySelectedEvent = new EventEmitter<WordDicarySelectMessage>();
 
   closeResult = '';
 
@@ -66,7 +66,7 @@ export class WordDicarySelectDialogComponent implements OnInit {
   /**
    * 팝업창 실행
    */
-  open() {
+  open(ref: any = undefined) {
     // this.map.clear();
     this.results = [];
     this.form.patchValue({ wordNm: '' });
@@ -80,7 +80,7 @@ export class WordDicarySelectDialogComponent implements OnInit {
         }
 
         if (!this.isValid()) {
-          this.open();
+          this.open(ref);
           return;
         }
 
@@ -89,14 +89,15 @@ export class WordDicarySelectDialogComponent implements OnInit {
         //
         $('select.word-nm').each((i, item) => {
           const $select = $(item);
-          const v = '' + ($select.find('option:selected').val() ?? '');
-          const wordNm = $select.attr('name');
+          const kor: string = $select.find('option:selected').html();
+          const eng: string = '' + ($select.find('option:selected').val() ?? '');
+          // const wordNm = $select.attr('name');
 
-          arr.push({ kor: wordNm, eng: v });
+          arr.push({ kor, eng });
         });
 
         //
-        this.wordDicarySelectedEvent.emit(arr);
+        this.wordDicarySelectedEvent.emit({ ref, data: arr });
       },
       (reason: any) => {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -134,4 +135,9 @@ export class WordDicarySelectDialogComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
+}
+
+export interface WordDicarySelectMessage {
+  ref: any;
+  data: any[];
 }
