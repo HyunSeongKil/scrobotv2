@@ -32,7 +32,7 @@
       <app-menu #menuRef [prjctId]="prjctId" [editingScrinId]="editingScrinId"></app-menu>
     </div>
     <div #areaScrinRef class="d-none">
-      <app-scrin-group #scrinGroupRef [prjctId]="prjctId" [editingScrinId]="editingScrinId" (scrinSelectedEvent)="scrinSelected($event)" (saveEvent)="saveScrin()" (closeEvent)="closeScrin()"></app-scrin-group>
+      <app-scrin-group #scrinGroupRef [prjctId]="prjctId" (saveEvent)="saveScrin()" (closeEvent)="closeScrin()"></app-scrin-group>
     </div>
     <div #areaCompnRef class="d-none">
       <app-compn #compnRef [prjctId]="prjctId" [editingScrinId]="editingScrinId" (tagSelectedEvent)="tagSelected($event)"></app-compn>

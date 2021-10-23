@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ElService } from 'src/app/service/el.service';
 
@@ -12,6 +13,8 @@ export class CompnComponent implements OnInit {
 
   @Output() tagSelectedEvent = new EventEmitter<any>();
 
+  compns: CompnForEditor[] = [];
+
   TAG_NAME_BUTTON = ElService.TAG_NAME_BUTTON;
   TAG_NAME_INPUT_TEXT = ElService.TAG_NAME_INPUT_TEXT;
   TAG_NAME_SPAN = ElService.TAG_NAME_SPAN;
@@ -21,11 +24,28 @@ export class CompnComponent implements OnInit {
   TAG_NAME_H3 = ElService.TAG_NAME_H3;
   TAG_NAME_TABLE = ElService.TAG_NAME_TABLE;
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getList().then((res: any) => {
+      this.compns = res.data;
+    });
+  }
+
+  /**
+   * 편집용 콤포넌트 목록 조회
+   * @returns
+   */
+  getList(): Promise<any> {
+    return this.http.get(`./assets/data/compns.json`).toPromise();
+  }
 
   selectTag(tagName: string): void {
     this.tagSelectedEvent.emit(tagName);
   }
+}
+
+export interface CompnForEditor {
+  name: string;
+  tagName: string;
 }

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Scrobot } from '../@types/scrobot';
 import { CompnService } from './compn.service';
 import { MenuService } from './menu.service';
@@ -11,6 +11,20 @@ import { ScrinService } from './scrin.service';
   providedIn: 'root',
 })
 export class EditorService {
+  /**
+   * 화면 편집 시작됨 이벤트
+   */
+  @Output() onScrinEditedEvent = new EventEmitter<string>();
+  /**
+   * 화면 편집 종료됨 이벤트
+   */
+  @Output() offScrinEditedEvent = new EventEmitter<any>();
+
+  /**
+   * 편집 화면 저장됨 이벤트
+   */
+  @Output() editScrinSavedEvent = new EventEmitter<any>();
+
   constructor(private prjctService: PrjctService, private menuService: MenuService, private scrinGroupService: ScrinGroupService, private scrinService: ScrinService, private compnService: CompnService) {}
 
   /**

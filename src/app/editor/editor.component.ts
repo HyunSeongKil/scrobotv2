@@ -48,6 +48,20 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
   endedEventSub: Subscription = new Subscription();
 
   /**
+   * 화면 편집 시작됨 이벤트 구독
+   */
+  onScrinEditedEventSub: Subscription = new Subscription();
+  /**
+   * 화면 편집 완료됨 이벤트 구독
+   */
+  offScrinEditedEventSub: Subscription = new Subscription();
+
+  /**
+   * 편집 화면 저장됨 이벤트 구독
+   */
+  editScrinSavedEventSub: Subscription = new Subscription();
+
+  /**
    * 생성자
    * @param route
    * @param renderer
@@ -85,6 +99,16 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
       this.endedEventSub.unsubscribe();
     }
 
+    if (!this.onScrinEditedEventSub.closed) {
+      this.onScrinEditedEventSub.unsubscribe();
+    }
+    if (!this.offScrinEditedEventSub.closed) {
+      this.offScrinEditedEventSub.unsubscribe();
+    }
+    if (!this.editScrinSavedEventSub.closed) {
+      this.editScrinSavedEventSub.unsubscribe();
+    }
+
     //
     console.log('<<ngOnDestroy');
   }
@@ -107,6 +131,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     // default on 화면 탭
+    this.hideTab([this.tabCompnRef]);
     this.onScrin();
 
     console.log('<<ngAfterViewInit');
@@ -123,6 +148,37 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
       if ('regist' === elEventMessage.e) {
         alert('저장되었습니다.');
       }
+    });
+
+    /**
+     * 화면 편집 시작됨 이벤트 구독
+     */
+    this.onScrinEditedEventSub = this.editorService.onScrinEditedEvent.subscribe((scrinId: string) => {
+      this.scrinSelected(scrinId);
+
+      // on콤포넌트탭 off화면탭 off메뉴탭
+      this.showTab([this.tabCompnRef]);
+      this.hideTab([this.tabScrinRef, this.tabMenuRef]);
+      this.onCompn();
+    });
+
+    /**
+     * 화면 편집 완료됨 이벤트 구독
+     */
+    this.offScrinEditedEventSub = this.editorService.offScrinEditedEvent.subscribe(() => {
+      this.closeScrin();
+
+      // on화면탭 on메뉴탭 off콤포넌트탭
+      this.showTab([this.tabScrinRef, this.tabMenuRef]);
+      this.hideTab([this.tabCompnRef]);
+      this.onScrin();
+    });
+
+    /**
+     * 편집 화면 저장됨 이벤트 구독
+     */
+    this.editScrinSavedEventSub = this.editorService.editScrinSavedEvent.subscribe(() => {
+      // TODO
     });
 
     $('div.content').on('click', (event) => {
@@ -163,10 +219,10 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   onMenu(): void {
     this.unactiveAllTab();
-    this.activeTab([this.tabMenuRef.nativeElement]);
+    this.activeTab(this.tabMenuRef);
 
     this.hideAllArea();
-    this.showArea([this.areaMenuRef.nativeElement]);
+    this.showArea(this.areaMenuRef);
 
     this.menuRef.on();
   }
@@ -176,10 +232,10 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   onScrin(): void {
     this.unactiveAllTab();
-    this.activeTab([this.tabScrinRef.nativeElement]);
+    this.activeTab(this.tabScrinRef);
 
     this.hideAllArea();
-    this.showArea([this.areaScrinRef.nativeElement]);
+    this.showArea(this.areaScrinRef);
 
     this.scrinGroupRef.on();
   }
@@ -189,10 +245,10 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   onCompn(): void {
     this.unactiveAllTab();
-    this.activeTab([this.tabCompnRef.nativeElement]);
+    this.activeTab(this.tabCompnRef);
 
     this.hideAllArea();
-    this.showArea([this.areaCompnRef.nativeElement]);
+    this.showArea(this.areaCompnRef);
   }
 
   /**
@@ -220,32 +276,36 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /**
    * 탭 활성화 시키기
-   * @param els 엘리먼트 목록
+   * @param er 엘리먼트ref
    */
-  activeTab(els: any[]): void {
-    ScUtil.addClass(els, 'active');
+  activeTab(er: ElementRef): void {
+    this.renderer.addClass(er.nativeElement, 'active');
   }
 
   /**
    * 모든 탭 비활성화 시키기
    */
   unactiveAllTab(): void {
-    ScUtil.removeClass([this.tabMenuRef.nativeElement, this.tabScrinRef.nativeElement, this.tabCompnRef.nativeElement], 'active');
+    [this.tabCompnRef, this.tabMenuRef, this.tabScrinRef].forEach((er) => {
+      this.renderer.removeClass(er.nativeElement, 'active');
+    });
   }
 
   /**
    * 영역 표시하기
-   * @param els 엘리먼트 목록
+   * @param er 엘리먼트 ref
    */
-  showArea(els: any[]): void {
-    ScUtil.removeClass(els, 'd-none');
+  showArea(er: ElementRef): void {
+    this.renderer.removeClass(er.nativeElement, 'd-none');
   }
 
   /**
    * 모든 영역 숨기기
    */
   hideAllArea(): void {
-    ScUtil.addClass([this.areaMenuRef.nativeElement, this.areaScrinRef.nativeElement, this.areaCompnRef.nativeElement], 'd-none');
+    [this.areaCompnRef, this.areaMenuRef, this.areaScrinRef].forEach((er) => {
+      this.renderer.addClass(er.nativeElement, 'd-none');
+    });
   }
 
   /**
@@ -329,6 +389,27 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
-    this.closeScrin();
+    //
+    this.editorService.offScrinEditedEvent.emit();
+  }
+
+  /**
+   * show 탭
+   * @param els 엘리먼트 목록
+   */
+  showTab(els: ElementRef[]): void {
+    els.forEach((el) => {
+      this.renderer.removeClass(el.nativeElement, 'd-none');
+    });
+  }
+
+  /**
+   * hide 탭
+   * @param els 엘리먼트 목록
+   */
+  hideTab(els: ElementRef[]): void {
+    els.forEach((el) => {
+      this.renderer.addClass(el.nativeElement, 'd-none');
+    });
   }
 }

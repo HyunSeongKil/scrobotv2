@@ -1,0 +1,12 @@
+{
+  "data": [
+    { "name": "제목1", "tagName": "h1" },
+    { "name": "제목2", "tagName": "h2" },
+    { "name": "제목3", "tagName": "h3" },
+    { "name": "영역", "tagName": "div" },
+    { "name": "레이블", "tagName": "span" },
+    { "name": "값입력", "tagName": "input" },
+    { "name": "버튼", "tagName": "button" },
+    { "name": "테이블", "tagName": "table" }
+  ]
+}

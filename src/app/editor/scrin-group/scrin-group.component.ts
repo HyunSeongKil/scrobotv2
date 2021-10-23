@@ -1,6 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Scrobot } from 'src/app/@types/scrobot';
 import { CompnService } from 'src/app/service/compn.service';
+import { EditorService } from 'src/app/service/editor.service';
 import { ScrinGroupService } from 'src/app/service/scrin-group.service';
 import { ScrinService } from 'src/app/service/scrin.service';
 import { ScrinCopyDialogComponent } from './scrin-copy-dialog/scrin-copy-dialog.component';
@@ -14,7 +16,7 @@ import { ScrinUpdtDialogComponent } from './scrin-updt-dialog/scrin-updt-dialog.
   templateUrl: './scrin-group.component.html',
   styleUrls: ['./scrin-group.component.css'],
 })
-export class ScrinGroupComponent implements OnInit {
+export class ScrinGroupComponent implements OnInit, OnDestroy {
   @ViewChild('scrinGroupRegistDialogRef') scrinGroupRegistDialogRef!: ScrinGroupRegistDialogComponent;
   @ViewChild('scrinGroupUpdtDialogRef') scrinGroupUpdtDialogRef!: ScrinGroupUpdtDialogComponent;
   @ViewChild('scrinRegistDialogRef') scrinRegistDialogRef!: ScrinRegistDialogComponent;
@@ -28,7 +30,7 @@ export class ScrinGroupComponent implements OnInit {
   /**
    * 현재 편집중인 화면 아이디
    */
-  @Input() editingScrinId = '';
+  editingScrinId = '';
   /**
    * 화면 선택 완료 이벤트
    */
@@ -48,9 +50,42 @@ export class ScrinGroupComponent implements OnInit {
    */
   scrins: Scrobot.Scrin[] = [];
 
-  constructor(private service: ScrinGroupService, private scrinService: ScrinService, private compnService: CompnService) {}
+  onScrinEditedEventSub: Subscription = new Subscription();
+  offScrinEditedEventSub: Subscription = new Subscription();
 
-  ngOnInit(): void {}
+  /**
+   * 생성자
+   * @param service
+   * @param scrinService
+   * @param compnService
+   * @param editorService
+   */
+  constructor(private service: ScrinGroupService, private scrinService: ScrinService, private compnService: CompnService, private editorService: EditorService) {}
+
+  /**
+   * 파괴자
+   */
+  ngOnDestroy(): void {
+    if (!this.onScrinEditedEventSub.closed) {
+      this.onScrinEditedEventSub.unsubscribe();
+    }
+    if (!this.offScrinEditedEventSub.closed) {
+      this.offScrinEditedEventSub.unsubscribe();
+    }
+  }
+
+  /**
+   * 초기화
+   */
+  ngOnInit(): void {
+    this.onScrinEditedEventSub = this.editorService.onScrinEditedEvent.subscribe((scrinId: string) => {
+      this.editingScrinId = scrinId;
+    });
+
+    this.offScrinEditedEventSub = this.editorService.offScrinEditedEvent.subscribe(() => {
+      this.editingScrinId = '';
+    });
+  }
 
   async on(): Promise<void> {
     // 화면 그룹
@@ -133,7 +168,7 @@ export class ScrinGroupComponent implements OnInit {
    */
   deleteScrinGroup(scrinGroupId: string): void {
     if (this.existsScrin(scrinGroupId)) {
-      alert('화면 삭제 후 다시 시도하시기 바랍니다.');
+      alert('하위화면 삭제 후 다시 시도하시기 바랍니다.');
       return;
     }
 
@@ -172,7 +207,8 @@ export class ScrinGroupComponent implements OnInit {
       return;
     }
 
-    this.scrinSelectedEvent.emit(scrinId);
+    // this.scrinSelectedEvent.emit(scrinId);
+    this.editorService.onScrinEditedEvent.emit(scrinId);
   }
 
   // /**
