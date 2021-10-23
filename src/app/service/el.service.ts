@@ -1,9 +1,6 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
-import { htmlPrefilter } from 'jquery';
-import { Observable, Subject } from 'rxjs';
 import { Scrobot } from '../@types/scrobot';
 import { CompnService } from './compn.service';
-import { ScrinService } from './scrin.service';
 import { SelectedElService } from './selected-el.service';
 import { ScUtil } from './util';
 
@@ -281,6 +278,19 @@ export class ElService {
           this.selectedElService.add($(event.currentTarget).attr('id'), $(event.currentTarget));
           // this.showProperty($(event.currentTarget));
           this.elSelectedEvent.emit({ e: 'click', tagName, $el: $(event.currentTarget) });
+        });
+
+        // 마우스 업이면 input의 사이즈 변경
+        $el.on('mouseup', (event) => {
+          const w: number = event.currentTarget.clientWidth;
+          $(event.currentTarget)
+            .find('input')
+            .css('width', w - 5 + 'px');
+
+          const h: number = event.currentTarget.clientHeight;
+          $(event.currentTarget)
+            .find('input')
+            .css('height', h - 5 + 'px');
         });
 
         $el.find(`input`).on('mousedown', function (e) {
