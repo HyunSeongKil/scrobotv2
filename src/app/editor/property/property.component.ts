@@ -163,8 +163,6 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     const items = [
-      { k: 'color', t: '색' },
-      { k: 'background-color', t: '배경 색' },
       { k: 'width', t: '넓이' },
       { k: 'height', t: '높이' },
       { k: 'font-family', t: '글꼴' },
@@ -183,6 +181,59 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
         text: x.t,
         value: $el.css(x.k) ?? '',
         se: PropertySe.Css,
+        tagName,
+        $el,
+      });
+    });
+
+    return arr;
+  }
+
+  /**
+   * css > color 속성 목록 생성
+   * @param $el 엘리먼트
+   * @returns 속성 목록
+   */
+  private createCssColorProperty($el: JQuery<HTMLElement> | undefined): Property[] {
+    const arr: Property[] = [];
+
+    if (undefined === $el) {
+      return arr;
+    }
+
+    if (ScUtil.isWrapperEl($el)) {
+      return this.createCssColorProperty($el.children().first());
+    }
+
+    const tagName = ScUtil.getTagName($el);
+    if (undefined === tagName) {
+      return arr;
+    }
+
+    const items = [
+      { k: 'color', t: '색' },
+      { k: 'background-color', t: '배경 색' },
+    ];
+
+    items.forEach((x) => {
+      const index = arr.findIndex((a) => a.key === x.k);
+      if (-1 !== index) {
+        // 키가 이미 존재하면
+        return;
+      }
+
+      //
+      let s = $el.css(x.k);
+      s = s.replace(/rgb\(/gi, '').replace(/\)/gi, '');
+      const rgb = s.split(',');
+      const hex = ScUtil.rgbToHex(Number(rgb[0]), Number(rgb[1]), Number(rgb[2]));
+
+      //
+      arr.push({
+        key: x.k,
+        text: x.t,
+        value: hex,
+        se: PropertySe.CssColor,
         tagName,
         $el,
       });
@@ -324,6 +375,7 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
 
     this.properties = this.properties.concat(this.createWordDicaryProperty($el));
     this.properties = this.properties.concat(this.createCssProperty($el));
+    this.properties = this.properties.concat(this.createCssColorProperty($el));
     this.properties = this.properties.concat(this.createBtnProperty($el));
     this.properties = this.properties.concat(this.createValueProperty($el));
     this.properties = this.properties.concat(this.createTextProperty($el));
@@ -381,6 +433,35 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
     $('table.property input').each((i, item) => {
       const $input = $(item);
       if (PropertySe.Css !== $input.attr('data-se')) {
+        return;
+      }
+
+      const propertyName = $input.attr('name');
+      if (undefined === propertyName) {
+        return;
+      }
+      const v = $input.val() as string;
+
+      $el?.css(propertyName, v);
+    });
+  }
+
+  /**
+   * css > color 속성 적용
+   */
+  private applyCssColorProperty($el: JQuery<HTMLElement> | undefined): void {
+    if (undefined === $el) {
+      return;
+    }
+
+    if (ScUtil.isWrapperEl($el)) {
+      return this.applyCssColorProperty($el.children().first());
+    }
+
+    //
+    $('table.property input').each((i, item) => {
+      const $input = $(item);
+      if (PropertySe.CssColor !== $input.attr('data-se')) {
         return;
       }
 
@@ -490,6 +571,7 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
 
     this.applyWordDicaryProperty($el);
     this.applyCssProperty($el);
+    this.applyCssColorProperty($el);
     this.applyBtnProperty($el);
     this.applyTextProperty($el);
     // TODO text, value 적용
@@ -550,6 +632,7 @@ export interface Property {
 export const enum PropertySe {
   Data = 'data',
   Css = 'css',
+  CssColor = 'cssColor',
   Text = 'text',
   Value = 'value',
   WordDicary = 'wordDicary',

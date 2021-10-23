@@ -26,6 +26,11 @@
             <input type="text" class="form-control" attr.data-se="{{ x.se }}" [name]="x.key" [value]="x.value" />
           </ng-container>
 
+          <!-- color -->
+          <ng-container *ngIf="'cssColor' === x.se">
+            <input type="color" class="form-control w-50" [attr.data-se]="x.se" [name]="x.key" [value]="x.value" />
+          </ng-container>
+
           <!-- item -->
           <ng-container *ngIf="'item' === x.se">
             <button type="button" class="btn btn-outline-secondary btn-sm" (click)="editItem(x.$el, x.tagName)">...</button>
