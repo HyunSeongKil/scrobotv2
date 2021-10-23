@@ -12,7 +12,7 @@
         <td>
           <!-- btn -->
           <ng-container *ngIf="'btn' === x.se">
-            <select class="form-control" attr.data-se="{{ x.se }}" [name]="x.key">
+            <select class="form-select" attr.data-se="{{ x.se }}" [name]="x.key">
               <option value="">-없음-</option>
               <ng-container *ngFor="let btnSe of btnSes">
                 <option [value]="btnSe.cmmnCode" selected *ngIf="btnSe.cmmnCode === x.value">{{ btnSe.cmmnCodeNm }}</option>
@@ -26,9 +26,16 @@
             <input type="text" class="form-control" attr.data-se="{{ x.se }}" [name]="x.key" [value]="x.value" />
           </ng-container>
 
-          <!-- color -->
+          <!-- css > color -->
           <ng-container *ngIf="'cssColor' === x.se">
             <input type="color" class="form-control w-50" [attr.data-se]="x.se" [name]="x.key" [value]="x.value" />
+          </ng-container>
+
+          <!-- css > font-size -->
+          <ng-container *ngIf="'cssFontSize' === x.se">
+            <select class="form-select" [attr.data-se]="x.se" [name]="x.key">
+              <option [value]="v" [selected]="x.value === v" *ngFor="let v of x.items">{{ v }}</option>
+            </select>
           </ng-container>
 
           <!-- item -->

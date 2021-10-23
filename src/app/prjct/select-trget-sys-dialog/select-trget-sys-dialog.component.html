@@ -8,10 +8,10 @@
   <div class="modal-body">
     <form [formGroup]="form">
       <label for="trgetSysId">대상 시스템</label>
-      <select id="trgetSysId" class="form-control" formControlName="trgetSysId">
+      <select id="trgetSysId" class="form-select" formControlName="trgetSysId">
         <option value="">-선택-</option>
         <ng-container *ngFor="let x of trgetSyss">
-          <option value="{{x.trgetSysId}}">{{x.trgetSysNm}}</option>
+          <option value="{{ x.trgetSysId }}">{{ x.trgetSysNm }}</option>
         </ng-container>
       </select>
     </form>

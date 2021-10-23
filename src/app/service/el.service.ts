@@ -261,6 +261,8 @@ export class ElService {
    * @returns 엘리먼트
    */
   listen(tagName: string, $el: JQuery<HTMLElement>): JQuery<HTMLElement> {
+    // TODO del키 눌렀을 때 삭제 처리하기
+
     switch (tagName) {
       case ElService.TAG_NAME_INPUT_TEXT:
         $el.on('click', (event, ui) => {

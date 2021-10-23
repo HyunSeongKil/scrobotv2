@@ -21,7 +21,7 @@
 
     <div class="mb-2" *ngFor="let x of results">
       <label>{{ x.wordNm }}</label>
-      <select class="form-control word-nm" [name]="x.wordNm">
+      <select class="form-select word-nm" [name]="x.wordNm">
         <option *ngFor="let x2 of x.data" [value]="x2.engAbrvNm" [attr.data-hngl-abrv-nm]="x2.wordNm">{{ x2.wordNm }} ({{ x2.engAbrvNm }})</option>
       </select>
     </div>

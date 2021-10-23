@@ -166,7 +166,6 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
       { k: 'width', t: '넓이' },
       { k: 'height', t: '높이' },
       { k: 'font-family', t: '글꼴' },
-      { k: 'font-size', t: '글꼴 크기' },
     ];
 
     items.forEach((x) => {
@@ -210,12 +209,10 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
       return arr;
     }
 
-    const items = [
+    [
       { k: 'color', t: '색' },
       { k: 'background-color', t: '배경 색' },
-    ];
-
-    items.forEach((x) => {
+    ].forEach((x) => {
       const index = arr.findIndex((a) => a.key === x.k);
       if (-1 !== index) {
         // 키가 이미 존재하면
@@ -236,6 +233,58 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
         se: PropertySe.CssColor,
         tagName,
         $el,
+      });
+    });
+
+    return arr;
+  }
+
+  /**
+   * css > font-size 속성 목록 생성
+   * @param $el 엘리먼트
+   * @returns 속성 목록
+   */
+  private createCssFontSizeProperty($el: JQuery<HTMLElement> | undefined): Property[] {
+    const arr: Property[] = [];
+
+    if (undefined === $el) {
+      return arr;
+    }
+
+    if (ScUtil.isWrapperEl($el)) {
+      return this.createCssFontSizeProperty($el.children().first());
+    }
+
+    const tagName = ScUtil.getTagName($el);
+    if (undefined === tagName) {
+      return arr;
+    }
+
+    [{ k: 'font-size', t: '글꼴 크기' }].forEach((x) => {
+      const index = arr.findIndex((a) => a.key === x.k);
+      if (-1 !== index) {
+        // 키가 이미 존재하면
+        return;
+      }
+
+      //
+      const items: any[] = [];
+      for (let i = 5; i < 20; i++) {
+        items.push(`${i}px`);
+      }
+      for (let i = 20; i < 50; i += 2) {
+        items.push(`${i}px`);
+      }
+
+      //
+      arr.push({
+        key: x.k,
+        text: x.t,
+        value: $el.css(x.k),
+        se: PropertySe.CssFontSize,
+        tagName,
+        $el,
+        items,
       });
     });
 
@@ -376,6 +425,7 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
     this.properties = this.properties.concat(this.createWordDicaryProperty($el));
     this.properties = this.properties.concat(this.createCssProperty($el));
     this.properties = this.properties.concat(this.createCssColorProperty($el));
+    this.properties = this.properties.concat(this.createCssFontSizeProperty($el));
     this.properties = this.properties.concat(this.createBtnProperty($el));
     this.properties = this.properties.concat(this.createValueProperty($el));
     this.properties = this.properties.concat(this.createTextProperty($el));
@@ -470,6 +520,35 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
         return;
       }
       const v = $input.val() as string;
+
+      $el?.css(propertyName, v);
+    });
+  }
+
+  /**
+   * css > font-size 속성 적용
+   */
+  private applyCssFontSizeProperty($el: JQuery<HTMLElement> | undefined): void {
+    if (undefined === $el) {
+      return;
+    }
+
+    if (ScUtil.isWrapperEl($el)) {
+      return this.applyCssFontSizeProperty($el.children().first());
+    }
+
+    //
+    $('table.property select').each((i, item) => {
+      const $select = $(item);
+      if (PropertySe.CssFontSize !== $select.attr('data-se')) {
+        return;
+      }
+
+      const propertyName = $select.attr('name');
+      if (undefined === propertyName) {
+        return;
+      }
+      const v = $select.val() as string;
 
       $el?.css(propertyName, v);
     });
@@ -572,6 +651,7 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
     this.applyWordDicaryProperty($el);
     this.applyCssProperty($el);
     this.applyCssColorProperty($el);
+    this.applyCssFontSizeProperty($el);
     this.applyBtnProperty($el);
     this.applyTextProperty($el);
     // TODO text, value 적용
@@ -627,12 +707,14 @@ export interface Property {
   se: PropertySe;
   tagName: string;
   $el: JQuery<HTMLElement>;
+  items?: any[];
 }
 
 export const enum PropertySe {
   Data = 'data',
   Css = 'css',
   CssColor = 'cssColor',
+  CssFontSize = 'cssFontSize',
   Text = 'text',
   Value = 'value',
   WordDicary = 'wordDicary',

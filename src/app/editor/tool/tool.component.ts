@@ -1,5 +1,7 @@
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { EditorService } from 'src/app/service/editor.service';
 import { ElService } from 'src/app/service/el.service';
 import { SelectedElService } from 'src/app/service/selected-el.service';
 
@@ -10,7 +12,7 @@ import { SelectedElService } from 'src/app/service/selected-el.service';
 })
 export class ToolComponent implements OnInit, OnDestroy {
   @Input() prjctId = '';
-  @Input() editingScrinId = '';
+  editingScrinId = '';
 
   tableSelected: boolean = false;
 
@@ -18,11 +20,20 @@ export class ToolComponent implements OnInit, OnDestroy {
   unselectedEventSub: Subscription = new Subscription();
 
   /**
+   * 화면 편집 시작됨 이벤트 구독
+   */
+  onScrinEditedEventSub: Subscription = new Subscription();
+  /**
+   * 화면 편집 완료됨 이벤트 구독
+   */
+  offScrinEditedEventSub: Subscription = new Subscription();
+
+  /**
    * 생성자
    * @param elService 엘리먼트 서비스
    * @param selectedElService 선택된 엘리먼트 서비스
    */
-  constructor(private elService: ElService, private selectedElService: SelectedElService) {
+  constructor(private elService: ElService, private selectedElService: SelectedElService, private editorService: EditorService) {
     console.log('<<ctr');
   }
 
@@ -35,6 +46,14 @@ export class ToolComponent implements OnInit, OnDestroy {
     }
     if (!this.unselectedEventSub.closed) {
       this.unselectedEventSub.unsubscribe();
+    }
+
+    //
+    if (!this.onScrinEditedEventSub.closed) {
+      this.onScrinEditedEventSub.unsubscribe();
+    }
+    if (!this.offScrinEditedEventSub.closed) {
+      this.offScrinEditedEventSub.unsubscribe();
     }
 
     console.log('<<ngOnDestroy');
@@ -54,6 +73,22 @@ export class ToolComponent implements OnInit, OnDestroy {
     });
     this.unselectedEventSub = this.selectedElService.unselectedEvent.subscribe(() => {
       this.tableSelected = false;
+    });
+
+    /**
+     * 화면 편집 시작됨 이벤트 구독
+     */
+    this.onScrinEditedEventSub = this.editorService.onScrinEditedEvent.subscribe((scrinId: string) => {
+      //
+      this.editingScrinId = scrinId;
+    });
+
+    /**
+     * 화면 편집 완료됨 이벤트 구독
+     */
+    this.offScrinEditedEventSub = this.editorService.offScrinEditedEvent.subscribe(() => {
+      //
+      this.editingScrinId = '';
     });
 
     console.log('<<ngOnInit');
