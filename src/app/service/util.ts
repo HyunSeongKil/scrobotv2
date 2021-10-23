@@ -117,4 +117,15 @@ export class ScUtil {
 
     return $el.parent().attr('data-tag-name');
   }
+
+  /**
+   * rgb => hex
+   * @param r r
+   * @param g g
+   * @param b b
+   * @returns hexa
+   */
+  static rgbToHex(r: number, g: number, b: number): string {
+    return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+  }
 }
