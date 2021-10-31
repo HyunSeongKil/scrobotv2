@@ -1,0 +1,24 @@
+ul,
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul li {
+  float: left;
+  padding: 0 10px;
+  line-height: 32px;
+}
+
+ul li a {
+  display: block;
+  font-size: 0.75vw;
+  color: #fff;
+}
+
+ul li:hover a {
+  color: lightgray;
+}

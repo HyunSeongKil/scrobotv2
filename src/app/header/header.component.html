@@ -1,4 +1,146 @@
-<div class="header row">
+<div class="header_line"></div>
+<!-- 메인화면-->
+<header>
+  <div class="top_header">
+    <div class="mainlogo">
+      <a href="/"><img src="./assets/images/mainlogo_brown.png" alt="브라운메인로고" /></a>
+    </div>
+
+    <div class="topbtn">
+      <nav [ngClass]="0 === userNm.length ? '' : 'd-none'">
+        <ul class="gnb2">
+          <li class="pop">
+            <a href="javascript:;"><span class="bold_font">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;로그인 </span></a>
+          </li>
+          <li>
+            <a routerLink="/sub/business28"><span class="bold_font">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;회원가입 </span>&nbsp;&nbsp;&nbsp;&nbsp;</a>
+          </li>
+        </ul>
+      </nav>
+
+      <nav [ngClass]="0 < userNm.length ? '' : 'd-none'">
+        <ul class="gnb2">
+          <li class="sootechsys_btn">
+            <a href="javascript:;"><span class="bold_font">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sootechsys </span><span class="small_font2">∨</span>&nbsp;&nbsp;&nbsp;&nbsp;</a>
+
+            <ul class="sub2">
+              <li><a href="javascript:;"> Developer 이용중</a></li>
+              <li><a routerLink="/sub/business20">·마이페이지</a></li>
+              <br />
+              <li><a href="javascript:;" (click)="signout()">·로그아웃</a></li>
+              <br />
+              <li class="sub2_li"><a href="./new_sc_robot_edit/editmain.html" target="_blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;·에디터실행</a></li>
+              <br />
+              <li class="sub2_li"><a href="boardmanage_main.html" target="_blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;·SC-ROBOT관리</a></li>
+            </ul>
+          </li>
+          <li class="top_header_r"><a href="./new_sc_robot_edit/editmain.html" target="_blank">에디터실행</a></li>
+          &nbsp;&nbsp;
+          <li class="top_header_r"><a href="boardmanage_main.html" target="_blank">SC-ROBOT관리</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="sns">
+      <ul>
+        <li>
+          <a href="#none" onclick="test()"><img src="./assets/images/facebook.png" alt="페이스북" /></a>
+        </li>
+        <li>
+          <a href="#none" onclick="test()"><img src="./assets/images/kakao.png" alt="카카오" /></a>
+        </li>
+        <li>
+          <a href="#none" onclick="test()"><img src="./assets/images/blog.png" alt="블로그" /></a>
+        </li>
+        <li>
+          <a href="#none" onclick="test()"><img src="./assets/images/youtube.png" alt="유튜브" /></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="center">
+    <nav class="">
+      <ul class="gnb">
+        <li><a href="http://sootechsys.co.kr/" target="_blank">회사소개</a></li>
+        <li><a href="/sub/introduce">SC_Robot소개</a></li>
+        <li><a href="/sub/service">상품안내</a></li>
+        <li>
+          <a href="#none">고객지원 <span class="small_font">∨</span></a>
+          <ul class="sub">
+            <li><a href="sub/inquiry">·문의처</a></li>
+            <li><a href="sub/business11">·공지사항</a></li>
+            <li><a href="sub/business14">·FAQ</a></li>
+            <li><a href="sub/business2">·문의하기</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="pop_bg" style="display: none">
+  <div class="popup">
+    <div id="div_login">
+      <button class="close">X</button>
+      <!-- 타이틀 -->
+      <div id="div_login_title">
+        <span id="span_login_title">로그인</span>
+      </div>
+      <div class="sns_login">
+        <ul>
+          <li>
+            <a href="#" onclick="test()"><img onclick="fn_onclickImg();" src="./assets/images/google.png" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;구글 아이디로 로그인</a>
+          </li>
+          <li>
+            <a href="#" onclick="test()"><img onclick="fn_onclickImg();" src="./assets/images/kakao_y.png" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;카카오 아이디로 로그인</a>
+          </li>
+          <li>
+            <a href="#" onclick="test()"><img onclick="fn_onclickImg();" src="./assets/images/naver.png" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;네이버 아이디로 로그인</a>
+          </li>
+        </ul>
+      </div>
+      <div class="line_l"></div>
+      <div class="line_or">또는</div>
+      <div class="line_r"></div>
+      <!-- // 타이틀 -->
+
+      <div id="div_login_table">
+        <form [formGroup]="form">
+          <table id="tbl_login_table">
+            <colgroup>
+              <col width="30" />
+              <col width="90" />
+              <col width="80" />
+            </colgroup>
+            <tr>
+              <td>이메일 (회원ID)</td>
+              <td><input type="text" name="user_id" id="user_id" style="ime-mode: disabled; font-size: 13px" value="sootechsys@sootechsys.co.kr" maxlength="30" autocomplete="false" formControlName="userId" /></td>
+            </tr>
+            <tr>
+              <td>비밀번호</td>
+              <td><input type="password" name="pass" id="pass" value="!1q2w3e4r" maxlength="20" autocomplete="new-password" formControlName="password" /></td>
+            </tr>
+            <!--
+                  <tr>
+                      <td>&nbsp; &nbsp;</td>
+                      <td rowspan="2"><input type="button" value="로그인" onclick="fn_selectLoginDetail();"></td>
+                  </tr>
+-->
+          </table>
+        </form>
+        <div>
+          <a href="javascript:;"><input type="button" value="로그인" class="btn_log" (click)="signin()" /></a>
+        </div>
+        <!-- /List -->
+      </div>
+      <div id="div_login_button">
+        <a href="business4_br.html" onclick="fn_goMberRegist();"><span> 회원가입 </span> ㅣ</a>
+        <a href="business6_br.html" onclick="fn_goAcntSearch();"><span> 아이디 / 비밀번호찾기 </span></a> &nbsp;
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="header row">
   <div class="col-6"></div>
   <div class="col-6 text-right text-end">
     <ng-container *ngIf="0 < userNm.length">
@@ -6,4 +148,4 @@
       <button type="button" class="btn btn-outline-primary btn-sm mx-1" (click)="signout()">로그아웃</button>
     </ng-container>
   </div>
-</div>
+</div> -->

@@ -1,12 +1,12 @@
 {
   "data": [
-    { "name": "제목1", "tagName": "h1" },
-    { "name": "제목2", "tagName": "h2" },
-    { "name": "제목3", "tagName": "h3" },
-    { "name": "영역", "tagName": "div" },
-    { "name": "레이블", "tagName": "span" },
-    { "name": "값입력", "tagName": "input" },
-    { "name": "버튼", "tagName": "button" },
-    { "name": "테이블", "tagName": "table" }
+    { "name": "제목1", "tagName": "h1", "imgFileNm": "" },
+    { "name": "제목2", "tagName": "h2", "imgFileNm": "" },
+    { "name": "제목3", "tagName": "h3", "imgFileNm": "" },
+    { "name": "영역", "tagName": "div", "imgFileNm": "div.png" },
+    { "name": "레이블", "tagName": "span", "imgFileNm": "" },
+    { "name": "값입력", "tagName": "input", "imgFileNm": "input.png" },
+    { "name": "버튼", "tagName": "button", "imgFileNm": "button.png" },
+    { "name": "테이블", "tagName": "table", "imgFileNm": "table.png" }
   ]
 }

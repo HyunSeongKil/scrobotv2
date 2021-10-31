@@ -4,6 +4,7 @@ import * as $ from 'jquery';
 import 'jqueryui';
 import { Subscription } from 'rxjs';
 import { Scrobot } from '../@types/scrobot';
+import { EditorHeaderService } from '../service/editor-header.service';
 import { EditorService } from '../service/editor.service';
 import { ElService } from '../service/el.service';
 import { SelectedElService } from '../service/selected-el.service';
@@ -70,7 +71,9 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
    * @param editorService
    * @returns
    */
-  constructor(route: ActivatedRoute, private router: Router, private renderer: Renderer2, private elService: ElService, private selectedElService: SelectedElService, private editorService: EditorService) {
+  constructor(route: ActivatedRoute, private router: Router, private renderer: Renderer2, private elService: ElService, private selectedElService: SelectedElService, private editorService: EditorService, private editorHeaderService: EditorHeaderService) {
+    ScUtil.loadStyle('../assets/css/bootstrap.min.css');
+
     route.queryParams.subscribe((params) => {
       this.prjctId = params['prjctId'];
     });

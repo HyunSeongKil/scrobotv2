@@ -1,0 +1,62 @@
+ol,
+ul,
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* 헤더 - 탑메뉴 */
+.top_menu {
+  height: 50px;
+}
+.top_pc {
+  width: 100%;
+  background: #535353;
+  height: 32px;
+  text-align: center;
+}
+
+.top_pc ul li {
+  float: left;
+  padding: 0 10px;
+  line-height: 32px;
+}
+
+.top_pc ul li a {
+  display: block;
+  font-size: 0.75vw;
+  color: #fff;
+}
+
+.top_pc ul li:hover a {
+  color: lightgray;
+}
+
+.left_top {
+  float: left;
+  padding-left: 10px;
+}
+
+.left_top ul li:nth-of-type(1) a {
+  font-weight: 600;
+  font-size: 0.9vw;
+  line-height: 32px;
+  color: #a2a2a2;
+}
+
+.right_top {
+  float: right;
+}
+
+.right_top ul li:nth-of-type(1) a,
+.right_top ul li:nth-of-type(2) a {
+  width: 20px;
+  line-height: 28px;
+}
+
+.right_top ul li a img {
+  width: 100%;
+}

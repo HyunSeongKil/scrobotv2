@@ -34,7 +34,7 @@ export class ScrinGroupComponent implements OnInit, OnDestroy {
   /**
    * 화면 선택 완료 이벤트
    */
-  @Output() scrinSelectedEvent = new EventEmitter<any>();
+  // @Output() scrinSelectedEvent = new EventEmitter<any>();
   /**
    * 닫기 이벤트
    */

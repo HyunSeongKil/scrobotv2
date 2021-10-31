@@ -48,4 +48,5 @@ export class CompnComponent implements OnInit {
 export interface CompnForEditor {
   name: string;
   tagName: string;
+  imgFileNm: string;
 }

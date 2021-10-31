@@ -128,4 +128,33 @@ export class ScUtil {
   static rgbToHex(r: number, g: number, b: number): string {
     return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
   }
+
+  static loadScript(url: string, fn?: (res: any) => void): void {
+    let node = document.createElement('script');
+    node.src = url;
+    node.type = 'text/javascript';
+    node.async = true;
+    node.charset = 'utf-8';
+    document.getElementsByTagName('head')[0].appendChild(node);
+    node.onload = () => {
+      if (undefined !== fn) {
+        fn(url);
+      }
+    };
+  }
+
+  static loadStyle(url: string, fn?: (res: any) => void): void {
+    var link = document.createElement('link');
+    link.href = url;
+    link.type = 'text/css';
+    link.rel = 'stylesheet';
+    link.media = 'screen,print';
+    link.onload = () => {
+      if (undefined !== fn) {
+        fn(url);
+      }
+    };
+
+    document.getElementsByTagName('head')[0].appendChild(link);
+  }
 }

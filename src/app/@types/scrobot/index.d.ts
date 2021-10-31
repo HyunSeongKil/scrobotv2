@@ -1,8 +1,8 @@
 export namespace Scrobot {
   export interface User {
     userId: string;
-    userNm: string;
-    password: string;
+    userNm?: string;
+    password?: string;
   }
   export interface Prjct {
     prjctId: string;

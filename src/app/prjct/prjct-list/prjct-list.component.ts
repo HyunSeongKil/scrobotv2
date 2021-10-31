@@ -10,6 +10,7 @@ import { ConfigService } from 'src/app/service/config.service';
 import { PrjctUpdtDialogComponent } from '../prjct-updt-dialog/prjct-updt-dialog.component';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/service/auth.service';
+import { ScUtil } from 'src/app/service/util';
 
 /**
  * 프로젝트 목록
@@ -32,7 +33,9 @@ export class PrjctListComponent implements OnInit {
     [key: string]: number;
   } = {};
 
-  constructor(private router: Router, private authService: AuthService, private service: PrjctService, private menuService: MenuService, private scrinService: ScrinService, private deployService: DeployService) {}
+  constructor(private router: Router, private authService: AuthService, private service: PrjctService, private menuService: MenuService, private scrinService: ScrinService, private deployService: DeployService) {
+    ScUtil.loadStyle('../assets/css/bootstrap.min.css');
+  }
 
   ngOnInit(): void {
     this.listByUserId();

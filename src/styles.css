@@ -1,4 +1,4 @@
-@import "~bootstrap/dist/css/bootstrap.css";
+/* @import "~bootstrap/dist/css/bootstrap.css"; */
 @import "~jqueryui/jquery-ui.min.css";
 
 head,
@@ -35,6 +35,10 @@ div.header {
 
 .font-italic {
   font-style: italic;
+}
+
+.d-none {
+  display: none !important;
 }
 
 /* 상위 메뉴 */
