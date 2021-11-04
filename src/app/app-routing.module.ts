@@ -11,8 +11,11 @@ import { Business14Component } from './sub/business14/business14.component';
 import { Business2Component } from './sub/business2/business2.component';
 import { Business20Component } from './sub/business20/business20.component';
 import { Business28Component } from './sub/business28/business28.component';
+import { Business4Component } from './sub/business4/business4.component';
 import { InquiryComponent } from './sub/inquiry/inquiry.component';
 import { IntroduceComponent } from './sub/introduce/introduce.component';
+import { SelfCrtfc1Component } from './sub/self-crtfc1/self-crtfc1.component';
+import { SelfCrtfc3Component } from './sub/self-crtfc3/self-crtfc3.component';
 import { ServiceComponent } from './sub/service/service.component';
 
 const routes: Routes = [
@@ -24,8 +27,12 @@ const routes: Routes = [
   { path: 'sub/business11', component: Business11Component },
   { path: 'sub/business14', component: Business14Component },
   { path: 'sub/business2', component: Business2Component },
+  { path: 'sub/business4', component: Business4Component },
   { path: 'sub/business20', component: Business20Component },
   { path: 'sub/business28', component: Business28Component },
+
+  { path: 'sub/self-crtfc1', component: SelfCrtfc1Component },
+  { path: 'sub/self-crtfc3', component: SelfCrtfc3Component },
 
   { path: 'signin', component: SigninComponent },
   {

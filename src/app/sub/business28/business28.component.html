@@ -23,10 +23,17 @@
       </ul>
     </div>
     <div class="btn">
-      <a href="business4_br.html">본인인증</a>&nbsp;&nbsp;
-      <a href="main_logout_br.html">돌아가기</a>
+      <a href="javascript:;" (click)="selfCrtfc()">본인인증</a>&nbsp;&nbsp;
+      <a routerLink="../../index">돌아가기</a>
     </div>
   </div>
 </div>
+
+<form name="form1" method="get" action="sub/self-crtfc1"></form>
+
+<form name="form4">
+  <input type="hidden" name="rslt_cd" />
+  <input type="hidden" name="rslt_msg" />
+</form>
 
 <app-footer></app-footer>
