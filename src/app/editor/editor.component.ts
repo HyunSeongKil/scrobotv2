@@ -13,6 +13,7 @@ import { CompnComponent } from './compn/compn.component';
 import { MenuComponent } from './menu/menu.component';
 import { PropertyComponent } from './property/property.component';
 import { ScrinGroupComponent } from './scrin-group/scrin-group.component';
+import { SourceEditDialogComponent } from './source-edit-dialog/source-edit-dialog.component';
 import { ToolComponent } from './tool/tool.component';
 
 @Component({
@@ -35,6 +36,8 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('compnRef') compnRef!: CompnComponent;
   @ViewChild('toolRef') toolRef!: ToolComponent;
   @ViewChild('propertyRef') propertyRef!: PropertyComponent;
+
+  @ViewChild('sourceEditDialogRef') sourceEditDialogRef!: SourceEditDialogComponent;
 
   /**
    * 프로젝트 아이디
@@ -160,10 +163,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
       this.scrinSelected(scrinId);
 
       this.onTabClick('COMPN');
-      // on콤포넌트탭 off화면탭 off메뉴탭
-      // this.showTab(['COMPN']);
-      // this.hideTab(['SCRIN', 'MENU']);
-      // this.onTabAndArea('COMPN');
     });
 
     /**
@@ -173,10 +172,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
       this.closeScrin();
 
       this.onTabClick('SCRIN');
-      // on화면탭 on메뉴탭 off콤포넌트탭
-      // this.showTab(['SCRIN', 'MENU']);
-      // this.hideTab(['COMPN']);
-      // this.onTabAndArea('SCRIN');
     });
 
     /**
@@ -220,47 +215,48 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
-   * on 메뉴 탭
-   */
-  private onMenu(): void {
-    this.unactiveAllTab();
-    this.activeTab('MENU');
-    this.hideAllArea();
-    this.showArea('MENU');
-    this.menuRef.on();
-  }
-
-  /**
-   * on 화면 탭
-   */
-  private onScrin(): void {
-    this.unactiveAllTab();
-    this.activeTab('SCRIN');
-    this.hideAllArea();
-    this.showArea('SCRIN');
-    this.scrinGroupRef.on();
-  }
-
-  /**
-   * on 콤포넌트 탭
-   */
-  private onCompn(): void {
-    this.unactiveAllTab();
-    this.activeTab('COMPN');
-    this.hideAllArea();
-    this.showArea('COMPN');
-  }
-
-  /**
    * 엘리먼트 추가
    * @param compn 콤포넌트
    */
-  private addEl(tagName: string, cn = ''): void {
+  // private addEl(tagName: string, cn = ''): void {
+  //   this.elService.clearAllDraggable();
+  //   this.elService.clearAllResizable();
+  //   this.elService.clearAllBorder();
+
+  //   let $el = this.elService.createEl(tagName, cn);
+  //   $el = this.elService.setDraggable(tagName, $el);
+  //   $el = this.elService.setResizable(tagName, $el);
+  //   $el = this.elService.listen(tagName, $el);
+
+  //   this.elService.add($el.attr('id'), $el);
+
+  //   $el.css('border', '2px dashed red');
+  //   this.selectedElService.add($el.attr('id'), $el);
+  //   this.$selectedEl = $el;
+
+  //   $('div.content').append($el);
+  // }
+
+  private addEl($elOrTagName: JQuery<HTMLElement> | string, cn = ''): void {
+    if ('string' === typeof $elOrTagName) {
+      const tagName = $elOrTagName;
+      let $el = this.elService.createEl($elOrTagName, cn);
+      this.addEl($el);
+      return;
+    }
+
+    //
     this.elService.clearAllDraggable();
     this.elService.clearAllResizable();
     this.elService.clearAllBorder();
 
-    let $el = this.elService.createEl(tagName, cn);
+    // let $el = this.elService.createEl($elOrTagName, cn);
+    let $el = $elOrTagName as JQuery<HTMLElement>;
+    const tagName = ScUtil.getTagName($el);
+    if (undefined === tagName) {
+      return;
+    }
+
     $el = this.elService.setDraggable(tagName, $el);
     $el = this.elService.setResizable(tagName, $el);
     $el = this.elService.listen(tagName, $el);
@@ -519,5 +515,114 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
       this.onTabClick(se);
       return;
     }
+  }
+
+  /**
+   * 소스 편집 창 열기
+   */
+  openSourceEditDialog(): void {
+    this.elService.clearAllBorder();
+    this.elService.clearAllDraggable();
+    this.elService.clearAllResizable();
+
+    const $cloneEls: JQuery<HTMLElement>[] = [];
+    this.elService.getAll().forEach(($el) => {
+      const $cloneEl = $el.clone();
+
+      // draggle, resizable 클래스 제거
+      $cloneEl.draggable({}).draggable('destroy');
+      $cloneEl.resizable({}).resizable('destroy');
+      $cloneEls.push($cloneEl);
+    });
+
+    this.sourceEditDialogRef.open($cloneEls);
+  }
+
+  /**
+   * 메뉴 클릭됨
+   * @param se 구분자
+   */
+  menuClicked(se: string): void {
+    switch (se) {
+      case 'SAVE':
+        this.saveEditing();
+        break;
+
+      case 'CLOSE':
+        this.closeEditing();
+        break;
+
+      case 'EDIT-SOURCE':
+        this.openSourceEditDialog();
+        break;
+
+      case 'DWLD-SOURCE':
+        this.dwldSource();
+        break;
+    }
+  }
+
+  /**
+   * 소스 다운로드
+   */
+  dwldSource(): void {
+    const arr: string[] = [];
+
+    this.elService.getAll().forEach(($el) => {
+      const $cloneEl = $el.clone();
+      $cloneEl.draggable({}).draggable('destroy');
+      $cloneEl.resizable({}).resizable('destroy');
+
+      arr.push(this.elService.getHtmlString($cloneEl));
+    });
+
+    const blob: Blob = new Blob([arr.join('\n\n')], { type: 'text/plain' });
+    const a: HTMLAnchorElement = document.createElement('a');
+    a.download = 'file.txt';
+    a.innerHTML = 'download file';
+    if (null !== window.webkitURL) {
+      // chrome
+      a.href = window.webkitURL.createObjectURL(blob);
+    } else {
+      // TODO for firefox
+    }
+
+    a.click();
+  }
+
+  /**
+   * 소스 편집됨
+   * @param editedContent 편집된 소스
+   */
+  sourceEdited(editedContent: string): void {
+    //
+    this.elService.clearAllBorder();
+    this.elService.clearAllDraggable();
+    this.elService.clearAllResizable();
+    this.elService.removeAll();
+
+    // 임시로 추가
+    // console.log(editedContent);
+    $('div.content').append(editedContent);
+
+    // 엘리먼트 정보 추출
+    const $els: JQuery<HTMLElement>[] = [];
+    $('div.content')
+      .children()
+      .each((i, item) => {
+        const $el = $(item).clone();
+        $el.draggable({}).draggable('destroy');
+        $el.resizable({}).resizable('destroy');
+
+        $els.push($el);
+      });
+
+    // content 삭제
+    $('div.content').html('');
+
+    // 엘리먼트 추가
+    $els.forEach(($el) => {
+      this.addEl($el);
+    });
   }
 }

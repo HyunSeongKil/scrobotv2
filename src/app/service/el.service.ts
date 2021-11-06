@@ -1,4 +1,5 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
+import { disableDebugTools } from '@angular/platform-browser';
 import { Scrobot } from '../@types/scrobot';
 import { CompnService } from './compn.service';
 import { SelectedElService } from './selected-el.service';
@@ -41,15 +42,21 @@ export class ElService {
     const dtos: Scrobot.Compn[] = [];
 
     this.els.forEach(($el, i) => {
-      const compnCn = $el.clone().wrapAll('<div/>').parent().html();
+      const $cloneEl = $el.clone();
+      // draggle, resizable 클래스 제거
+      $cloneEl.draggable({}).draggable('destroy');
+      $cloneEl.resizable({}).resizable('destroy');
+
+      //
+      const compnCn = this.getHtmlString($cloneEl);
 
       dtos.push({
         scrinId,
         compnCn,
-        compnSeCode: $el.attr('data-tag-name') ?? '',
+        compnSeCode: $cloneEl.attr('data-tag-name') ?? '',
         compnNm: 'dummy',
-        engAbrvNm: this.getEngAbrvNm($el),
-        hnglAbrvNm: this.getHnglAbrvNm($el),
+        engAbrvNm: this.getEngAbrvNm($cloneEl),
+        hnglAbrvNm: this.getHnglAbrvNm($cloneEl),
         ordrValue: i,
       });
     });
@@ -149,6 +156,14 @@ export class ElService {
     return this.els;
   }
 
+  getHtmlString($el: JQuery<HTMLElement> | undefined): string {
+    if (undefined === $el) {
+      return '';
+    }
+
+    return $el.clone().wrapAll('<div/>').parent().html();
+  }
+
   /**
    * 삭제(선택된에서 삭제, 전체에서 삭제, 화면에서 삭제)
    * @param id 아이디
@@ -182,8 +197,11 @@ export class ElService {
    * @returns 수정된 엘리먼트
    */
   setDraggable(tagName: string, $el: JQuery<HTMLElement>): JQuery<HTMLElement> {
+    // destroy하면 draggable관련 클래스 모두 삭제됨
+    $el.draggable({}).draggable('destroy');
+
     // ui-draggable이 이미존재하면 리턴
-    const cn = $el.clone().wrapAll('<div/>').parent().html();
+    const cn = this.getHtmlString($el); // $el.clone().wrapAll('<div/>').parent().html();
     if (-1 !== cn.indexOf('ui-draggable')) {
       return $el.draggable();
     }
@@ -226,11 +244,11 @@ export class ElService {
       throw new Error('undefined tagName');
     }
 
+    // destroy하면 resizable관련 클래스 모두 삭제됨
+    $el.resizable({}).resizable('destroy');
+
     // ui-resizable이  이미 존재하면 리턴
-    const cn = $el.clone().wrapAll('<div/>').parent().html();
-    if (-1 !== cn.indexOf('ui-resizable')) {
-      $el.find('div.ui-resizable-handle').remove();
-    }
+    const cn = this.getHtmlString($el); // $el.clone().wrapAll('<div/>').parent().html();
 
     switch (tagName) {
       case ElService.TAG_NAME_DIV:
@@ -273,8 +291,13 @@ export class ElService {
           this.clearAllResizable();
           this.selectedElService.clearAll();
 
-          $(event.currentTarget).draggable('enable');
-          $(event.currentTarget).resizable('enable');
+          const tagName = ScUtil.getTagName($(event.currentTarget)) ?? '';
+          this.setDraggable(tagName, $(event.currentTarget)).draggable('enable');
+          // $(event.currentTarget).draggable({}).draggable('enable');
+
+          this.setResizable(tagName, $(event.currentTarget)).resizable('enable');
+          // $(event.currentTarget).resizable({}).resizable('enable');
+
           $(event.currentTarget).css('border', '2px dashed red');
 
           this.selectedElService.add($(event.currentTarget).attr('id'), $(event.currentTarget));
@@ -324,10 +347,17 @@ export class ElService {
           this.clearAllResizable();
           this.selectedElService.clearAll();
 
-          $(event.currentTarget).draggable('enable');
-          if ($(event.currentTarget).hasClass('ui-resizable')) {
-            $(event.currentTarget).resizable('enable');
-          }
+          const tagName = ScUtil.getTagName($(event.currentTarget)) ?? '';
+          this.setDraggable(tagName, $(event.currentTarget)).draggable('enable');
+          // $(event.currentTarget).draggable('enable');
+
+          //
+          this.setResizable(tagName, $(event.currentTarget)).resizable('enable');
+          // if ($(event.currentTarget).hasClass('ui-resizable')) {
+          //   $(event.currentTarget).resizable('enable');
+          // }
+
+          //
           $(event.currentTarget).css('border', '2px dashed red');
 
           this.selectedElService.add($(event.currentTarget).attr('id'), $(event.currentTarget));
@@ -347,8 +377,13 @@ export class ElService {
           this.clearAllResizable();
           this.selectedElService.clearAll();
 
-          $(event.target).draggable().draggable('enable');
-          $(event.target).resizable().resizable('enable');
+          const tagName = ScUtil.getTagName($(event.target)) ?? '';
+          this.setDraggable(tagName, $(event.target)).draggable('enable');
+          // $(event.target).draggable().draggable('enable');
+
+          //
+          this.setResizable(tagName, $(event.target)).resizable('enable');
+          // $(event.target).resizable().resizable('enable');
 
           $(event.target).css('border', '2px dashed red');
 
@@ -545,8 +580,17 @@ export class ElService {
    */
   clearAllDraggable(): void {
     this.els.forEach(($el) => {
-      $el.draggable('disable');
+      // $el.draggable('disable');
+      this.disabledDraggable($el);
     });
+  }
+
+  disabledDraggable($el: JQuery<HTMLElement> | undefined): void {
+    if (undefined === $el) {
+      return;
+    }
+
+    $el.draggable('disable');
   }
 
   /**
@@ -554,10 +598,17 @@ export class ElService {
    */
   clearAllResizable(): void {
     this.els.forEach(($el) => {
-      if ($el.hasClass('ui-resizable')) {
-        $el.resizable('disable');
-      }
+      this.disabledResizable($el);
     });
+  }
+
+  disabledResizable($el: JQuery<HTMLElement> | undefined): void {
+    if (undefined === $el) {
+      return;
+    }
+    if ($el.hasClass('ui-resizable')) {
+      $el.resizable('disable');
+    }
   }
 
   /**

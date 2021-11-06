@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { EditorHeaderService } from 'src/app/service/editor-header.service';
 import { EditorService } from 'src/app/service/editor.service';
@@ -10,6 +10,10 @@ import { ElService } from 'src/app/service/el.service';
   styleUrls: ['./editor-header.component.css'],
 })
 export class EditorHeaderComponent implements OnInit {
+  @Input() editingScrinId: string = '';
+
+  @Output() menuClickedEvent = new EventEmitter<any>();
+
   constructor(private router: Router, private editorService: EditorService, private elService: ElService, private editorHeaderService: EditorHeaderService) {}
 
   ngOnInit(): void {}
@@ -23,8 +27,19 @@ export class EditorHeaderComponent implements OnInit {
     this.router.navigate(['prjcts']);
   }
 
-  editSourceClicked(): void {
-    const els = this.elService.getAll();
-    console.log(els);
+  onEditSourceClick(): void {
+    this.menuClickedEvent.emit('EDIT-SOURCE');
+  }
+
+  onSaveClick(): void {
+    this.menuClickedEvent.emit('SAVE');
+  }
+
+  onCloseClick(): void {
+    this.menuClickedEvent.emit('CLOSE');
+  }
+
+  onSourceDwldClick(): void {
+    this.menuClickedEvent.emit('DWLD-SOURCE');
   }
 }
