@@ -5,22 +5,24 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   providedIn: 'root',
 })
 export class AuthService {
+  TOKEN_KEY = 'jwt';
+
   constructor(private jwtHelper: JwtHelperService) {}
 
   getToken(): string {
-    const jwt: string = localStorage.getItem('jwt') ?? '';
+    const jwt: string = localStorage.getItem(this.TOKEN_KEY) ?? '';
     console.log(jwt);
     return jwt;
   }
 
   setToken(token: string): void {
-    localStorage.setItem('jwt', token);
+    localStorage.setItem(this.TOKEN_KEY, token);
 
     console.log(this.jwtHelper.decodeToken(token));
   }
 
   removeToken(): void {
-    localStorage.removeItem('jwt');
+    localStorage.removeItem(this.TOKEN_KEY);
   }
 
   isAuthenticated(): boolean {
@@ -39,6 +41,11 @@ export class AuthService {
    * @returns 만료이면 true
    */
   isTokenExpired(token: string) {
+    const dt = this.jwtHelper.getTokenExpirationDate();
+    if (null !== dt) {
+      // console.log(dt.valueOf(), new Date().valueOf(), dt.valueOf() - new Date().valueOf(), dt.valueOf() > new Date().valueOf());
+    }
+
     const b = this.jwtHelper.isTokenExpired(token);
 
     console.log('<<isTokenExpired', b);

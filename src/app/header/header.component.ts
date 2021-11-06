@@ -17,6 +17,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   form: FormGroup;
 
+  intvl: any;
+
   /**
    * 생성자
    * @param router 라우터
@@ -36,6 +38,10 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {}
   ngAfterViewInit(): void {
     this.userNm = this.authService.getUserNm();
+
+    if (0 < this.userNm.length) {
+      this.xxx();
+    }
 
     //팝업
     $('.pop').click(function () {
@@ -111,9 +117,11 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  signout(): void {
-    if (!confirm('로그아웃하시겠습니까?')) {
-      return;
+  signout(silent: boolean = false): void {
+    if (!silent) {
+      if (!confirm('로그아웃하시겠습니까?')) {
+        return;
+      }
     }
 
     this.authService.removeToken();
@@ -121,5 +129,21 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.ngAfterViewInit();
     location.href = '/';
+  }
+
+  xxx(): void {
+    this.intvl = setInterval(() => {
+      // console.log(this.intvl);
+      if (!this.authService.isAuthenticated()) {
+        if (undefined === this.intvl) {
+          return;
+        }
+
+        clearInterval(this.intvl);
+
+        //
+        this.signout(true);
+      }
+    }, 1000 * 10);
   }
 }

@@ -38,6 +38,12 @@ export class PrjctListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (!this.authService.isAuthenticated()) {
+      alert('로그인정보가 없습니다.');
+      this.router.navigate(['/index']);
+      return;
+    }
+
     this.listByUserId();
   }
 
