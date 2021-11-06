@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Scrobot } from 'src/app/@types/scrobot';
 import { MenuService } from 'src/app/service/menu.service';
 import { MenuRegistDialogComponent } from './menu-regist-dialog/menu-regist-dialog.component';
@@ -9,7 +9,12 @@ import { MenuUpdtDialogComponent } from './menu-updt-dialog/menu-updt-dialog.com
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css'],
 })
-export class MenuComponent implements OnInit, OnChanges {
+export class MenuComponent implements OnInit, AfterViewInit, OnChanges {
+  /**
+   * 로드 완료됨 이벤트
+   */
+  @Output() initedEvent = new EventEmitter<any>();
+
   @Input() editingScrinId: string = '';
 
   @ViewChild('menuRegistDialogRef') menuRegistDialogRef!: MenuRegistDialogComponent;
@@ -20,6 +25,9 @@ export class MenuComponent implements OnInit, OnChanges {
   menus: Scrobot.Menu[] = [];
 
   constructor(private service: MenuService) {}
+  ngAfterViewInit(): void {
+    this.initedEvent.emit(this);
+  }
 
   /**
    * 값 변화 감지

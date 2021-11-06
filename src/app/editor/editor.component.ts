@@ -11,7 +11,9 @@ import { SelectedElService } from '../service/selected-el.service';
 import { ScUtil } from '../service/util';
 import { CompnComponent } from './compn/compn.component';
 import { MenuComponent } from './menu/menu.component';
+import { PropertyComponent } from './property/property.component';
 import { ScrinGroupComponent } from './scrin-group/scrin-group.component';
+import { ToolComponent } from './tool/tool.component';
 
 @Component({
   selector: 'app-editor',
@@ -22,13 +24,17 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('tabMenuRef') tabMenuRef!: ElementRef<HTMLAnchorElement>;
   @ViewChild('tabScrinRef') tabScrinRef!: ElementRef<HTMLAnchorElement>;
   @ViewChild('tabCompnRef') tabCompnRef!: ElementRef<HTMLAnchorElement>;
-  @ViewChild('areaMenuRef') areaMenuRef!: ElementRef<HTMLAnchorElement>;
-  @ViewChild('areaScrinRef') areaScrinRef!: ElementRef<HTMLAnchorElement>;
-  @ViewChild('areaCompnRef') areaCompnRef!: ElementRef<HTMLAnchorElement>;
+  @ViewChild('tabPropertyRef') tabPropertyRef!: ElementRef<HTMLAnchorElement>;
+  @ViewChild('areaMenuRef') areaMenuRef!: ElementRef<HTMLDivElement>;
+  @ViewChild('areaScrinRef') areaScrinRef!: ElementRef<HTMLDivElement>;
+  @ViewChild('areaCompnRef') areaCompnRef!: ElementRef<HTMLDivElement>;
+  @ViewChild('areaPropertyRef') areaPropertyRef!: ElementRef<HTMLDivElement>;
 
   @ViewChild('menuRef') menuRef!: MenuComponent;
   @ViewChild('scrinGroupRef') scrinGroupRef!: ScrinGroupComponent;
   @ViewChild('compnRef') compnRef!: CompnComponent;
+  @ViewChild('toolRef') toolRef!: ToolComponent;
+  @ViewChild('propertyRef') propertyRef!: PropertyComponent;
 
   /**
    * 프로젝트 아이디
@@ -62,6 +68,15 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   editScrinSavedEventSub: Subscription = new Subscription();
 
+  // ses: string[] = ['SCRIN', 'MENU', 'COMPN', 'PROPERTY'];
+
+  xxx: any = {
+    SCRIN: { inited: false, refs: [], showTab: ['SCRIN', 'MENU'] },
+    MENU: { inited: false, refs: [], showTab: ['SCRIN', 'MENU'] },
+    COMPN: { inited: false, refs: [], showTab: ['COMPN', 'PROPERTY'] },
+    PROPERTY: { inited: false, refs: [], showTab: ['COMPN', 'PROPERTY'] },
+  };
+
   /**
    * 생성자
    * @param route
@@ -82,10 +97,6 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
       alert('프로젝트 정보가 없습니다.');
       return;
     }
-
-    // editorService.getAllByPrjctId(this.prjctId).then((res: any) => {
-    //   console.log(res);
-    // });
 
     //
     console.log('<<ctr');
@@ -120,22 +131,11 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
    *
    */
   ngAfterViewInit(): void {
-    // 탭-메뉴 클릭 이벤트 등록
-    this.renderer.listen(this.tabMenuRef.nativeElement, 'click', (e: any) => {
-      this.onMenu();
-    });
-    // 탭 - 화면 클릭 이벤트 등록
-    this.renderer.listen(this.tabScrinRef.nativeElement, 'click', (e: any) => {
-      this.onScrin();
-    });
-    // 탭 - 콤포넌트 클릭 이벤트 등록
-    this.renderer.listen(this.tabCompnRef.nativeElement, 'click', (e: any) => {
-      this.onCompn();
-    });
-
     // default on 화면 탭
-    this.hideTab([this.tabCompnRef]);
-    this.onScrin();
+    this.onTabClick('SCRIN');
+    // this.onTabAndArea(this.xxx['SCRIN']);
+    // this.hideTab(['COMPN', 'PROPERTY']);
+    // this.onTabAndArea('SCRIN');
 
     console.log('<<ngAfterViewInit');
   }
@@ -159,10 +159,11 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
     this.onScrinEditedEventSub = this.editorService.onScrinEditedEvent.subscribe((scrinId: string) => {
       this.scrinSelected(scrinId);
 
+      this.onTabClick('COMPN');
       // on콤포넌트탭 off화면탭 off메뉴탭
-      this.showTab([this.tabCompnRef]);
-      this.hideTab([this.tabScrinRef, this.tabMenuRef]);
-      this.onCompn();
+      // this.showTab(['COMPN']);
+      // this.hideTab(['SCRIN', 'MENU']);
+      // this.onTabAndArea('COMPN');
     });
 
     /**
@@ -171,10 +172,11 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
     this.offScrinEditedEventSub = this.editorService.offScrinEditedEvent.subscribe(() => {
       this.closeScrin();
 
+      this.onTabClick('SCRIN');
       // on화면탭 on메뉴탭 off콤포넌트탭
-      this.showTab([this.tabScrinRef, this.tabMenuRef]);
-      this.hideTab([this.tabCompnRef]);
-      this.onScrin();
+      // this.showTab(['SCRIN', 'MENU']);
+      // this.hideTab(['COMPN']);
+      // this.onTabAndArea('SCRIN');
     });
 
     /**
@@ -220,45 +222,40 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * on 메뉴 탭
    */
-  onMenu(): void {
+  private onMenu(): void {
     this.unactiveAllTab();
-    this.activeTab(this.tabMenuRef);
-
+    this.activeTab('MENU');
     this.hideAllArea();
-    this.showArea(this.areaMenuRef);
-
+    this.showArea('MENU');
     this.menuRef.on();
   }
 
   /**
    * on 화면 탭
    */
-  onScrin(): void {
+  private onScrin(): void {
     this.unactiveAllTab();
-    this.activeTab(this.tabScrinRef);
-
+    this.activeTab('SCRIN');
     this.hideAllArea();
-    this.showArea(this.areaScrinRef);
-
+    this.showArea('SCRIN');
     this.scrinGroupRef.on();
   }
 
   /**
    * on 콤포넌트 탭
    */
-  onCompn(): void {
+  private onCompn(): void {
     this.unactiveAllTab();
-    this.activeTab(this.tabCompnRef);
-
+    this.activeTab('COMPN');
     this.hideAllArea();
-    this.showArea(this.areaCompnRef);
+    this.showArea('COMPN');
   }
 
   /**
    * 엘리먼트 추가
    * @param compn 콤포넌트
    */
-  addEl(tagName: string, cn = ''): void {
+  private addEl(tagName: string, cn = ''): void {
     this.elService.clearAllDraggable();
     this.elService.clearAllResizable();
     this.elService.clearAllBorder();
@@ -281,16 +278,30 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
    * 탭 활성화 시키기
    * @param er 엘리먼트ref
    */
-  activeTab(er: ElementRef): void {
-    this.renderer.addClass(er.nativeElement, 'active');
+  private activeTab(se: string | undefined): void {
+    if (undefined === se) {
+      return;
+    }
+
+    const el: HTMLAnchorElement | null = document.querySelector(`a[data-tab="${se}"].nav-link`);
+    if (null === el) {
+      return;
+    }
+
+    this.renderer.addClass(el, 'active');
   }
 
   /**
    * 모든 탭 비활성화 시키기
    */
-  unactiveAllTab(): void {
-    [this.tabCompnRef, this.tabMenuRef, this.tabScrinRef].forEach((er) => {
-      this.renderer.removeClass(er.nativeElement, 'active');
+  private unactiveAllTab(): void {
+    Object.keys(this.xxx).forEach((k) => {
+      const el: HTMLAnchorElement | null = document.querySelector(`a[data-tab="${k}"].nav-link`);
+      if (null === el) {
+        return;
+      }
+
+      this.renderer.removeClass(el, 'active');
     });
   }
 
@@ -298,16 +309,39 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
    * 영역 표시하기
    * @param er 엘리먼트 ref
    */
-  showArea(er: ElementRef): void {
-    this.renderer.removeClass(er.nativeElement, 'd-none');
+  private showArea(se: string | undefined): void {
+    if (undefined === se) {
+      return se;
+    }
+
+    const el: HTMLDivElement | null = document.querySelector(`div[data-area="${se}"].area`);
+    if (null === el) {
+      return;
+    }
+
+    this.renderer.removeClass(el, 'd-none');
+  }
+
+  private hideAllTab(): void {
+    Object.keys(this.xxx).forEach((k) => {
+      const el: HTMLDivElement | null = document.querySelector(`a[data-tab="${k}"].nav-link`);
+      if (null === el) {
+        return;
+      }
+      this.renderer.addClass(el, 'd-none');
+    });
   }
 
   /**
    * 모든 영역 숨기기
    */
-  hideAllArea(): void {
-    [this.areaCompnRef, this.areaMenuRef, this.areaScrinRef].forEach((er) => {
-      this.renderer.addClass(er.nativeElement, 'd-none');
+  private hideAllArea(): void {
+    Object.keys(this.xxx).forEach((k) => {
+      const el: HTMLDivElement | null = document.querySelector(`div[data-area="${k}"].area`);
+      if (null === el) {
+        return;
+      }
+      this.renderer.addClass(el, 'd-none');
     });
   }
 
@@ -324,7 +358,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
    * 화면 선택됨 이벤트 구독. 편집을 위한 데이터 로드
    * @param scrinId 화면 아이디
    */
-  scrinSelected(scrinId: string): void {
+  private scrinSelected(scrinId: string): void {
     this.editingScrinId = scrinId;
 
     //
@@ -355,6 +389,24 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
     this.$selectedEl = undefined;
 
     this.elService.regist(this.editingScrinId);
+  }
+
+  /**
+   * 하위 콤포넌트 로드 완료됨
+   */
+  subComponentInitedEvent(e: any, se: string): void {
+    this.xxx[se].inited = true;
+    this.xxx[se].refs.push(e);
+    console.log(this.xxx[se]);
+  }
+
+  /**
+   * 도구 콤포넌트 로드 완료됨
+   */
+  toolInitedEvent(e: any, se: string): void {
+    this.xxx[se].inited = true;
+    this.xxx[se].refs.push(e);
+    console.log(this.xxx[se]);
   }
 
   /**
@@ -400,9 +452,14 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
    * show 탭
    * @param els 엘리먼트 목록
    */
-  showTab(els: ElementRef[]): void {
-    els.forEach((el) => {
-      this.renderer.removeClass(el.nativeElement, 'd-none');
+  private showTab(se: string[]): void {
+    se.forEach((x) => {
+      const el: HTMLAnchorElement | null = document.querySelector(`a[data-tab="${x}"].nav-link`);
+      if (null === el) {
+        return;
+      }
+
+      this.renderer.removeClass(el, 'd-none');
     });
   }
 
@@ -410,9 +467,57 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
    * hide 탭
    * @param els 엘리먼트 목록
    */
-  hideTab(els: ElementRef[]): void {
-    els.forEach((el) => {
-      this.renderer.addClass(el.nativeElement, 'd-none');
+  private hideTab(se: string[]): void {
+    se.forEach((x) => {
+      const el: HTMLAnchorElement | null = document.querySelector(`a[data-tab="${x}"].nav-link`);
+      if (null === el) {
+        return;
+      }
+
+      this.renderer.addClass(el, 'd-none');
     });
+  }
+
+  /**
+   * 탭 클릭
+   * @param elOrSe 엘리먼트
+   */
+  onTabClick(elOrSe: HTMLAnchorElement | string): void {
+    if ('string' === typeof elOrSe) {
+      const se: string = elOrSe;
+
+      this.unactiveAllTab();
+      this.hideAllTab();
+      this.showTab(this.xxx[se].showTab);
+      this.activeTab(se);
+
+      this.hideAllArea();
+      this.showArea(se);
+
+      //
+      if (this.xxx[se].inited) {
+        //
+        this.xxx[se].refs.forEach((x: any) => {
+          x.on();
+        });
+        return;
+      }
+
+      //
+      const intvl = setInterval(() => {
+        if (this.xxx[se].inited) {
+          clearInterval(intvl);
+          this.onTabClick(se);
+        }
+      }, 500);
+    } else {
+      const se: string | undefined = elOrSe.dataset['tab'];
+      if (undefined === se) {
+        return;
+      }
+
+      this.onTabClick(se);
+      return;
+    }
   }
 }

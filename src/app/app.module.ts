@@ -89,6 +89,7 @@ export function tokenGetter() {
     SelfCrtfc1Component,
     SelfCrtfc3Component,
   ],
+  exports: [HeaderComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, BizModule, PrjctModule, FormsModule, NgbModule, ReactiveFormsModule, JwtModule.forRoot(JWT_Module_Options)],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],

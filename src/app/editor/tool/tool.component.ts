@@ -1,5 +1,5 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { EditorService } from 'src/app/service/editor.service';
 import { ElService } from 'src/app/service/el.service';
@@ -10,8 +10,9 @@ import { SelectedElService } from 'src/app/service/selected-el.service';
   templateUrl: './tool.component.html',
   styleUrls: ['./tool.component.css'],
 })
-export class ToolComponent implements OnInit, OnDestroy {
+export class ToolComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() prjctId = '';
+  @Output() initedEvent = new EventEmitter<any>();
   editingScrinId = '';
 
   tableSelected: boolean = false;
@@ -35,6 +36,9 @@ export class ToolComponent implements OnInit, OnDestroy {
    */
   constructor(private elService: ElService, private selectedElService: SelectedElService, private editorService: EditorService) {
     console.log('<<ctr');
+  }
+  ngAfterViewInit(): void {
+    this.initedEvent.emit(this);
   }
 
   /**
@@ -93,6 +97,11 @@ export class ToolComponent implements OnInit, OnDestroy {
 
     console.log('<<ngOnInit');
   }
+
+  /**
+   * dummy
+   */
+  on(): void {}
 
   /**
    * 선택된 엘리먼트 삭제

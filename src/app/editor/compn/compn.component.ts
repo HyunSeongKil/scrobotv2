@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ElService } from 'src/app/service/el.service';
 
 @Component({
@@ -7,10 +7,11 @@ import { ElService } from 'src/app/service/el.service';
   templateUrl: './compn.component.html',
   styleUrls: ['./compn.component.css'],
 })
-export class CompnComponent implements OnInit {
+export class CompnComponent implements OnInit, AfterViewInit {
   @Input() prjctId = '';
   @Input() editingScrinId = '';
 
+  @Output() initedEvent = new EventEmitter<any>();
   @Output() tagSelectedEvent = new EventEmitter<any>();
 
   compns: CompnForEditor[] = [];
@@ -25,12 +26,20 @@ export class CompnComponent implements OnInit {
   TAG_NAME_TABLE = ElService.TAG_NAME_TABLE;
 
   constructor(private http: HttpClient) {}
+  ngAfterViewInit(): void {
+    this.initedEvent.emit(this);
+  }
 
   ngOnInit(): void {
     this.getList().then((res: any) => {
       this.compns = res.data;
     });
   }
+
+  /**
+   * dummy
+   */
+  on(): void {}
 
   /**
    * 편집용 콤포넌트 목록 조회

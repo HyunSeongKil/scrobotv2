@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Scrobot } from 'src/app/@types/scrobot';
 import { CompnService } from 'src/app/service/compn.service';
@@ -16,7 +16,12 @@ import { ScrinUpdtDialogComponent } from './scrin-updt-dialog/scrin-updt-dialog.
   templateUrl: './scrin-group.component.html',
   styleUrls: ['./scrin-group.component.css'],
 })
-export class ScrinGroupComponent implements OnInit, OnDestroy {
+export class ScrinGroupComponent implements OnInit, AfterViewInit, OnDestroy {
+  /**
+   * 초기화 완료됨 이벤트
+   */
+  @Output() initedEvent = new EventEmitter<any>();
+
   @ViewChild('scrinGroupRegistDialogRef') scrinGroupRegistDialogRef!: ScrinGroupRegistDialogComponent;
   @ViewChild('scrinGroupUpdtDialogRef') scrinGroupUpdtDialogRef!: ScrinGroupUpdtDialogComponent;
   @ViewChild('scrinRegistDialogRef') scrinRegistDialogRef!: ScrinRegistDialogComponent;
@@ -61,6 +66,9 @@ export class ScrinGroupComponent implements OnInit, OnDestroy {
    * @param editorService
    */
   constructor(private service: ScrinGroupService, private scrinService: ScrinService, private compnService: CompnService, private editorService: EditorService) {}
+  ngAfterViewInit(): void {
+    this.initedEvent.emit(this);
+  }
 
   /**
    * 파괴자

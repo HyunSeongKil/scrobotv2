@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Scrobot } from 'src/app/@types/scrobot';
 import { CmmnCodeService } from 'src/app/service/cmmn-code.service';
@@ -13,7 +13,7 @@ import { TableItemEditDialogComponent } from './table-item-edit-dialog/table-ite
   templateUrl: './property.component.html',
   styleUrls: ['./property.component.css'],
 })
-export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
+export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @ViewChild('tableItemEditDialogRef') tableItemEditDialogRef!: TableItemEditDialogComponent;
   @ViewChild('wordDicarySelectDialogRef') wordDicarySelectDialogRef!: WordDicarySelectDialogComponent;
 
@@ -34,6 +34,7 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
    * 엘리먼트 변경됨 이벤트 발생
    */
   @Output() elPropertyChangedEvent = new EventEmitter<any>();
+  @Output() initedEvent = new EventEmitter<any>();
 
   properties: Property[] = [];
 
@@ -50,6 +51,9 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
    * @param cmmnCodeService
    */
   constructor(private cmmnCodeService: CmmnCodeService, private elService: ElService, private selectedElService: SelectedElService) {}
+  ngAfterViewInit(): void {
+    this.initedEvent.emit(this);
+  }
 
   /**
    * 파괴자
@@ -62,6 +66,11 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
       this.unselectedEventSub.unsubscribe();
     }
   }
+
+  /**
+   * dummy
+   */
+  on(): void {}
 
   /**
    * 버튼 구분 코드 목록 조회

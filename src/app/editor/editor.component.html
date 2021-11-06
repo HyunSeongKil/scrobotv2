@@ -1,7 +1,7 @@
 <app-editor-header></app-editor-header>
 
 <div class="row">
-  <div class="col-*" style="width: 320px">
+  <div class="col-*" style="width: 350px">
     <div class="mt-2">
       <!-- <button type="button" class="btn btn-outline-secondary btn-sm" (click)="linkPrjcts()">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-reply" viewBox="0 0 16 16">
@@ -20,34 +20,38 @@
 
     <ul class="nav nav-tabs mt-2">
       <li class="nav-item">
-        <a #tabScrinRef class="nav-link active" aria-current="page" href="javascript:;">화면</a>
+        <a #tabScrinRef class="nav-link" data-tab="SCRIN" aria-current="page" href="javascript:;" (click)="onTabClick(tabScrinRef)">화면</a>
       </li>
       <li class="nav-item">
-        <a #tabCompnRef class="nav-link" href="javascript:;">콤포넌트</a>
+        <a #tabMenuRef class="nav-link" data-tab="MENU" href="javascript:;" (click)="onTabClick(tabMenuRef)">메뉴</a>
       </li>
       <li class="nav-item">
-        <a #tabMenuRef class="nav-link" href="javascript:;">메뉴</a>
+        <a #tabCompnRef class="nav-link" data-tab="COMPN" href="javascript:;" (click)="onTabClick(tabCompnRef)">콤포넌트</a>
+      </li>
+      <li class="nav-item">
+        <a #tabPropertyRef class="nav-link" data-tab="PROPERTY" href="javascript:;" (click)="onTabClick(tabPropertyRef)">속성</a>
       </li>
     </ul>
 
-    <div #areaMenuRef class="d-none">
-      <app-menu #menuRef [prjctId]="prjctId" [editingScrinId]="editingScrinId"></app-menu>
+    <div #areaScrinRef class="area d-none" data-area="SCRIN">
+      <app-scrin-group #scrinGroupRef [prjctId]="prjctId" (initedEvent)="subComponentInitedEvent($event, 'SCRIN')" (saveEvent)="saveScrin()" (closeEvent)="closeScrin()"></app-scrin-group>
     </div>
-    <div #areaScrinRef class="d-none">
-      <app-scrin-group #scrinGroupRef [prjctId]="prjctId" (saveEvent)="saveScrin()" (closeEvent)="closeScrin()"></app-scrin-group>
+    <div #areaMenuRef class="area d-none" data-area="MENU">
+      <app-menu #menuRef [prjctId]="prjctId" [editingScrinId]="editingScrinId" (initedEvent)="subComponentInitedEvent($event, 'MENU')"></app-menu>
     </div>
-    <div #areaCompnRef class="d-none">
-      <app-compn #compnRef [prjctId]="prjctId" [editingScrinId]="editingScrinId" (tagSelectedEvent)="tagSelected($event)"></app-compn>
+    <div #areaCompnRef class="area d-none" data-area="COMPN">
+      <app-compn #compnRef [prjctId]="prjctId" [editingScrinId]="editingScrinId" (initedEvent)="subComponentInitedEvent($event, 'COMPN')" (tagSelectedEvent)="tagSelected($event)"></app-compn>
+    </div>
+    <div #areaPropertyRef class="area d-none" data-area="PROPERTY">
+      <app-tool [prjctId]="prjctId" (initedEvent)="subComponentInitedEvent($event, 'PROPERTY')"></app-tool>
+
+      <app-property [prjctId]="prjctId" [editingScrinId]="editingScrinId" (initedEvent)="subComponentInitedEvent($event, 'PROPERTY')" (elPropertyChangedEvent)="elChanged($event)"></app-property>
     </div>
   </div>
   <div class="col">
     <div class="content" style="position: relative"></div>
   </div>
-  <div class="col-3">
-    <app-tool [prjctId]="prjctId"></app-tool>
-
-    <app-property [prjctId]="prjctId" [editingScrinId]="editingScrinId" (elPropertyChangedEvent)="elChanged($event)"></app-property>
-  </div>
+  <div class="col-3"></div>
 </div>
 
 <div class="mt-2"></div>

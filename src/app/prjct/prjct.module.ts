@@ -6,6 +6,7 @@ import { PrjctUpdtDialogComponent } from './prjct-updt-dialog/prjct-updt-dialog.
 import { AppModule } from '../app.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectTrgetSysDialogComponent } from './select-trget-sys-dialog/select-trget-sys-dialog.component';
+import { HeaderComponent } from '../header/header.component';
 
 @NgModule({
   declarations: [PrjctListComponent, PrjctRegistDialogComponent, PrjctUpdtDialogComponent, SelectTrgetSysDialogComponent, SelectTrgetSysDialogComponent],
