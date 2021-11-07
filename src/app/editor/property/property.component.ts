@@ -1,3 +1,4 @@
+import { HtmlAstPath } from '@angular/compiler';
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Scrobot } from 'src/app/@types/scrobot';
@@ -301,7 +302,7 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   }
 
   /**
-   * 버튼 속성 목록 리턴
+   * 버튼 전용 속성 목록 리턴
    * @param $el 엘리먼트
    * @returns 속성 목록
    */
@@ -329,8 +330,42 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     return arr;
   }
 
+  private createInputPropertyOnly($el: JQuery<HTMLElement> | undefined): Property[] {
+    const arr: Property[] = [];
+
+    if (undefined === $el) {
+      return arr;
+    }
+
+    const tagName: string | undefined = ScUtil.getTagName($el);
+    if (ElService.TAG_NAME_INPUT_TEXT !== tagName) {
+      return arr;
+    }
+
+    arr.push(
+      {
+        key: 'minlength',
+        value: $el.children().first().attr('minlength') ?? '0',
+        text: '(입력)최소길이',
+        se: PropertySe.Value,
+        tagName,
+        $el,
+      },
+      {
+        key: 'maxlength',
+        value: $el.children().first().attr('maxlength') ?? '100',
+        text: '(입력)최대길이',
+        se: PropertySe.Value,
+        tagName,
+        $el,
+      }
+    );
+
+    return arr;
+  }
+
   /**
-   * 값 속성 목록 리턴
+   * input전용 값 속성 목록 리턴
    * @param $el 엘리먼트
    * @returns 속성 목록
    */
@@ -439,6 +474,7 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     this.properties = this.properties.concat(this.createValueProperty($el));
     this.properties = this.properties.concat(this.createTextProperty($el));
     this.properties = this.properties.concat(this.createItemProperty($el));
+    this.properties = this.properties.concat(this.createInputPropertyOnly($el));
   }
 
   /**
@@ -593,6 +629,22 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   }
 
   /**
+   * TODO 이거 처리해야 함. 지금 귀찮아서 안함. minlength, maxlength
+   * @param $el
+   * @returns
+   */
+  private applyInputPropertyOnly($el: JQuery<HTMLElement> | undefined): void {
+    if (undefined === $el) {
+      return;
+    }
+
+    if (ScUtil.isWrapperEl($el)) {
+      this.applyTextProperty($el.children().first());
+      return;
+    }
+  }
+
+  /**
    * 텍스트 적용. 텍스트 적용시 resizable관련 태그가 삭제됨. 해서, resizable destroy후 다시 설정함
    * @param $el 엘리먼트
    * @returns void
@@ -663,6 +715,7 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     this.applyCssFontSizeProperty($el);
     this.applyBtnProperty($el);
     this.applyTextProperty($el);
+    this.applyInputPropertyOnly($el);
     // TODO text, value 적용
 
     this.elPropertyChangedEvent.emit($el);
@@ -729,4 +782,30 @@ export const enum PropertySe {
   WordDicary = 'wordDicary',
   Btn = 'btn',
   Item = 'item',
+}
+
+/**
+ * 입력 방법 구분
+ */
+export const enum InputMthdSe {
+  /**
+   * 값 직접 입력-모든값 허용
+   */
+  Text = 'text',
+  /**
+   * 값 직접 입력-숫자만 허용
+   */
+  Number = 'number',
+  /**
+   * 목록에서 선택
+   */
+  Select = 'select',
+  /**
+   * 단어사전
+   */
+  WordDicary = 'wordDicary',
+  /**
+   * 색상 선택
+   */
+  Color = 'color',
 }

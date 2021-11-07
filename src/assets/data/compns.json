@@ -1,13 +1,14 @@
 {
   "data": [
-    { "name": "제목1", "tagName": "h1", "imgFileNm": "" },
-    { "name": "제목2", "tagName": "h2", "imgFileNm": "" },
-    { "name": "제목3", "tagName": "h3", "imgFileNm": "" },
-    { "name": "영역", "tagName": "div", "imgFileNm": "div.png" },
-    { "name": "레이블", "tagName": "span", "imgFileNm": "" },
-    { "name": "값입력", "tagName": "input", "imgFileNm": "input.png" },
-    { "name": "텍스트영역", "tagName": "textarea", "imgFileNm": "textarea.png" },
-    { "name": "버튼", "tagName": "button", "imgFileNm": "button.png" },
-    { "name": "테이블", "tagName": "table", "imgFileNm": "table.png" }
+    { "name": "제목1", "tagName": "h1", "imgFileNm": "", "html": "TODO" },
+    { "name": "제목2", "tagName": "h2", "imgFileNm": "", "html": "TODO" },
+    { "name": "제목3", "tagName": "h3", "imgFileNm": "", "html": "TODO" },
+    { "name": "영역", "tagName": "div", "imgFileNm": "div.png", "html": "TODO" },
+    { "name": "레이블", "tagName": "span", "imgFileNm": "", "html": "TODO" },
+    { "name": "값입력", "tagName": "input", "imgFileNm": "input.png", "html": "TODO" },
+    { "name": "텍스트영역", "tagName": "textarea", "imgFileNm": "textarea.png", "html": "TODO" },
+    { "name": "버튼", "tagName": "button", "imgFileNm": "button.png", "html": "TODO" },
+    { "name": "테이블", "tagName": "table", "imgFileNm": "table.png", "html": "TODO" },
+    { "name": "이미지", "tagName": "img", "imgFileNm": "img.png", "html": "TODO" }
   ]
 }

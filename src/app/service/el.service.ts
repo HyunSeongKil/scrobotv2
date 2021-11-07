@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { disableDebugTools } from '@angular/platform-browser';
 import { Scrobot } from '../@types/scrobot';
@@ -19,6 +20,7 @@ export class ElService {
   static TAG_NAME_BUTTON = `button`;
   static TAG_NAME_TABLE = `table`;
   static TAG_NAME_SELECT = `select`;
+  static TAG_NAME_IMG = `img`;
 
   @Output() elSelectedEvent = new EventEmitter<ElEventMessage>();
   @Output() endedEvent = new EventEmitter<ElEventMessage>();
@@ -215,6 +217,7 @@ export class ElService {
       case ElService.TAG_NAME_H2:
       case ElService.TAG_NAME_H3:
       case ElService.TAG_NAME_TABLE:
+      case ElService.TAG_NAME_IMG:
         $el.draggable({ containment: 'div.content' });
         break;
 
@@ -261,6 +264,7 @@ export class ElService {
       case ElService.TAG_NAME_H1:
       case ElService.TAG_NAME_H2:
       case ElService.TAG_NAME_H3:
+      case ElService.TAG_NAME_IMG:
         $el.resizable({ containment: 'div.content', handles: 'se' });
         break;
 
@@ -287,6 +291,8 @@ export class ElService {
     switch (tagName) {
       case ElService.TAG_NAME_INPUT_TEXT:
       case ElService.TAG_NAME_TEXTAREA:
+      case ElService.TAG_NAME_IMG:
+      case ElService.TAG_NAME_BUTTON:
         $el.on('click', (event, ui) => {
           event.stopPropagation();
 
@@ -297,10 +303,8 @@ export class ElService {
 
           const tagName = ScUtil.getTagName($(event.currentTarget)) ?? '';
           this.setDraggable(tagName, $(event.currentTarget)).draggable('enable');
-          // $(event.currentTarget).draggable({}).draggable('enable');
 
           this.setResizable(tagName, $(event.currentTarget)).resizable('enable');
-          // $(event.currentTarget).resizable({}).resizable('enable');
 
           $(event.currentTarget).css('border', '2px dashed red');
 
@@ -309,27 +313,30 @@ export class ElService {
           this.elSelectedEvent.emit({ e: 'click', tagName, $el: $(event.currentTarget) });
         });
 
-        // 마우스 업이면 input의 사이즈 변경
+        //
+        const selector: string = `${ElService.TAG_NAME_BUTTON},${ElService.TAG_NAME_INPUT_TEXT},${ElService.TAG_NAME_TEXTAREA},${ElService.TAG_NAME_IMG}`;
+
+        // 마우스 업이면 자식의 사이즈 변경
         $el.on('mouseup', (event) => {
           const w: number = event.currentTarget.clientWidth;
           $(event.currentTarget)
-            .find('input,textarea')
+            .find(selector)
             .css('width', w - 5 + 'px');
 
           const h: number = event.currentTarget.clientHeight;
           $(event.currentTarget)
-            .find('input,textarea')
+            .find(selector)
             .css('height', h - 5 + 'px');
         });
 
-        $el.find(`input,textarea`).on('mousedown', function (e) {
+        $el.find(selector).on('mousedown', function (e) {
           var mdown = document.createEvent('MouseEvents');
           // console.log(mdown);
           mdown.initMouseEvent('mousedown', false, true, window, 0, e.screenX, e.screenY, e.clientX, e.clientY, true, false, false, true, 0, null);
           $(this).closest('.wrapper')[0].dispatchEvent(mdown);
         });
 
-        $el.find('input,textarea').on('click', function (e) {
+        $el.find(selector).on('click', function (e) {
           // console.log($(this));
           var $draggable = $(this).closest('.wrapper');
           if ($draggable.data('preventBehaviour')) {
@@ -339,7 +346,6 @@ export class ElService {
         });
         break;
 
-      case ElService.TAG_NAME_BUTTON:
       case ElService.TAG_NAME_SPAN:
       case ElService.TAG_NAME_DIV:
       case ElService.TAG_NAME_TABLE:
@@ -353,13 +359,9 @@ export class ElService {
 
           const tagName = ScUtil.getTagName($(event.currentTarget)) ?? '';
           this.setDraggable(tagName, $(event.currentTarget)).draggable('enable');
-          // $(event.currentTarget).draggable('enable');
 
           //
           this.setResizable(tagName, $(event.currentTarget)).resizable('enable');
-          // if ($(event.currentTarget).hasClass('ui-resizable')) {
-          //   $(event.currentTarget).resizable('enable');
-          // }
 
           //
           $(event.currentTarget).css('border', '2px dashed red');
@@ -383,11 +385,9 @@ export class ElService {
 
           const tagName = ScUtil.getTagName($(event.target)) ?? '';
           this.setDraggable(tagName, $(event.target)).draggable('enable');
-          // $(event.target).draggable().draggable('enable');
 
           //
           this.setResizable(tagName, $(event.target)).resizable('enable');
-          // $(event.target).resizable().resizable('enable');
 
           $(event.target).css('border', '2px dashed red');
 
@@ -435,6 +435,9 @@ export class ElService {
 
       case ElService.TAG_NAME_BUTTON:
         return this.createButton(cn);
+
+      case ElService.TAG_NAME_IMG:
+        return this.createImg(cn);
 
       case ElService.TAG_NAME_TABLE:
         return this.createTable(cn);
@@ -575,6 +578,22 @@ export class ElService {
 
     const $el = $(`<button id="${id}" type="button" class="btn btn-primary" style="position:absolute; width:100px; height:50px; font-size:medium;" disabled>버튼</button>`);
     $el.attr('data-eng-abrv-nm', '').attr('data-hngl-abrv-nm', '').attr('data-btn-se', '');
+    $wrapper.append($el);
+
+    return $wrapper;
+  }
+
+  private createImg(cn: string = ''): JQuery<HTMLElement> {
+    if (0 < cn.length) {
+      return $(cn);
+    }
+
+    const id = ScUtil.createId();
+    const $wrapper = $(`<div id="${id}_wrapper" class="wrapper" data-wrapper="true" style="position:absolute; width:210px; height:110px;"></div>`);
+    $wrapper.attr('data-tag-name', ElService.TAG_NAME_IMG);
+
+    const $el = $(`<img id="${ScUtil.createId()}" src="" style="position:absolute; width:200px; height:100px;"/>`);
+    $el.attr('data-tag-name', ElService.TAG_NAME_IMG).attr('data-eng-abrv-nm', '').attr('data-hngl-abrv-nm', '');
     $wrapper.append($el);
 
     return $wrapper;
