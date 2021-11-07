@@ -244,7 +244,11 @@ export class ElService {
    * @param $el 엘리먼트
    * @returns 엘리먼트
    */
-  setResizable(tagName: string | undefined, $el: JQuery<HTMLElement>): JQuery<HTMLElement> {
+  setResizable(tagName: string | undefined, $el: JQuery<HTMLElement> | undefined): JQuery<HTMLElement> {
+    if (undefined === $el) {
+      throw new Error('undefined $el');
+    }
+
     if (undefined === tagName) {
       throw new Error('undefined tagName');
     }
@@ -488,7 +492,7 @@ export class ElService {
       return $(cn);
     }
 
-    const $el = $(`<h1 id="${ScUtil.createId()}" style="position:absolute; width:200px; height:50px;">제목1</h1>`);
+    const $el = $(`<h1 id="${ScUtil.createId()}" style="position:absolute; width:200px; height:50px;color:#000, background-color:#fff">제목1</h1>`);
     return $el.attr('data-tag-name', 'h1').attr('data-eng-abrv-nm', '').attr('data-hngl-abrv-nm', '');
   }
 

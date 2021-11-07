@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { HtmlAstPath } from '@angular/compiler';
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
@@ -44,6 +45,8 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
    */
   btnSes: Scrobot.CmmnCode[] = [];
 
+  rule: any;
+
   selectedEventSub: Subscription = new Subscription();
   unselectedEventSub: Subscription = new Subscription();
 
@@ -51,7 +54,11 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
    *
    * @param cmmnCodeService
    */
-  constructor(private cmmnCodeService: CmmnCodeService, private elService: ElService, private selectedElService: SelectedElService) {}
+  constructor(private http: HttpClient, private cmmnCodeService: CmmnCodeService, private elService: ElService, private selectedElService: SelectedElService) {
+    http.get(`./assets/data/property_rule.json`).subscribe((res: any) => {
+      this.rule = res;
+    });
+  }
   ngAfterViewInit(): void {
     this.initedEvent.emit(this);
   }
@@ -94,13 +101,62 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
    */
   ngOnInit(): void {
     this.selectedEventSub = this.selectedElService.selectedEvent.subscribe(($el) => {
-      this.properties = [];
+      this.removeAllRows();
+
       this.getBtnSes();
       this.showProperty($el);
     });
     this.unselectedEventSub = this.selectedElService.unselectedEvent.subscribe(() => {
-      this.properties = [];
+      this.removeAllRows();
     });
+  }
+
+  private removeAllRows(): void {
+    $('table.table.property > tbody > tr.attr').remove();
+    $('table.table.property > tbody > tr.css').remove();
+    $('table.table.property > tbody > tr.element').remove();
+    $('table.table.property > tbody > tr.word-dicary').remove();
+    $('table.table.property > tbody > tr.button').remove();
+  }
+
+  private showWordDicaryProperty($el: JQuery<HTMLElement> | undefined): void {
+    if (undefined === $el) {
+      return;
+    }
+
+    const wdRule = this.rule.wordDicary;
+
+    if (!this.isTargetEl($el, wdRule.target)) {
+      return;
+    }
+
+    let $el2 = $el.clone();
+    if (ScUtil.isWrapperEl($el2)) {
+      $el2 = $el.children().first();
+    }
+
+    const eng = $el2.attr('data-eng-abrv-nm');
+    const hngl = $el2.attr('data-hngl-abrv-nm');
+
+    let s = '';
+    s += `<tr class="word-dicary">`;
+    s += `  <th>${wdRule.name}</th>`;
+    s += `  <td>`;
+    s += `    <input type="text" class="form-control w-75 d-inline" data-eng-abrv-nm="${eng}" data-hngl-abrv-nm="${hngl}"  value="${hngl}" readonly />`;
+    s += `    <button type="button" class="btn btn-outline-secondary btn-sm mx-1" >조회</button>`;
+    s += `  </td>`;
+    s += `</tr>`;
+
+    //
+    $('table.table.property > tbody > tr.word-dicary').remove();
+    //
+    $('table.table.property > tbody').append(s);
+
+    $('table.table.property > tbody > tr.word-dicary')
+      .find('button')
+      .on('click', () => {
+        this.selectWordDicary('word-dicary');
+      });
   }
 
   /**
@@ -301,6 +357,50 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     return arr;
   }
 
+  private showBtnProperty($el: JQuery<HTMLElement> | undefined): void {
+    const getOptionString = (initValue: string): string => {
+      let s = '';
+
+      this.btnSes.forEach((x) => {
+        s += `<option value="${x.cmmnCode}" ${initValue === x.cmmnCode ? 'selected' : ''}>${x.cmmnCodeNm}</option>`;
+      });
+
+      return s;
+    };
+
+    //
+    if (undefined === $el) {
+      return;
+    }
+
+    const buttonRule = this.rule.button;
+
+    if (!this.isTargetEl($el, buttonRule.target)) {
+      return;
+    }
+
+    let $el2 = $el.clone();
+    if (ScUtil.isWrapperEl($el2)) {
+      $el2 = $el.children().first();
+    }
+
+    //
+    let s = '';
+    s += `<tr class="button">`;
+    s += `  <th>${buttonRule.name}</th>`;
+    s += `  <td>`;
+    s += `    <select class="form-select">`;
+    s += `      <option value="">없음</option>`;
+    s += getOptionString($el2.attr('data-btn-se') ?? '');
+    s += `    </select>`;
+    s += `  </td>`;
+    s += `</tr>`;
+
+    //
+    $('table.table.property > tbody > tr.button').remove();
+    //
+    $('table.table.property > tbody').append(s);
+  }
   /**
    * 버튼 전용 속성 목록 리턴
    * @param $el 엘리먼트
@@ -466,15 +566,247 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
       return;
     }
 
-    this.properties = this.properties.concat(this.createWordDicaryProperty($el));
-    this.properties = this.properties.concat(this.createCssProperty($el));
-    this.properties = this.properties.concat(this.createCssColorProperty($el));
-    this.properties = this.properties.concat(this.createCssFontSizeProperty($el));
-    this.properties = this.properties.concat(this.createBtnProperty($el));
-    this.properties = this.properties.concat(this.createValueProperty($el));
-    this.properties = this.properties.concat(this.createTextProperty($el));
+    // this.properties = this.properties.concat(this.createWordDicaryProperty($el));
+    // this.properties = this.properties.concat(this.createCssProperty($el));
+    // this.properties = this.properties.concat(this.createCssColorProperty($el));
+    // this.properties = this.properties.concat(this.createCssFontSizeProperty($el));
+    // this.properties = this.properties.concat(this.createBtnProperty($el));
+    // this.properties = this.properties.concat(this.createValueProperty($el));
+    // this.properties = this.properties.concat(this.createTextProperty($el));
     this.properties = this.properties.concat(this.createItemProperty($el));
-    this.properties = this.properties.concat(this.createInputPropertyOnly($el));
+    // this.properties = this.properties.concat(this.createInputPropertyOnly($el));
+
+    this.showAttrProperty($el);
+    this.showCssProperty($el);
+    this.showElementProperty($el);
+    this.showWordDicaryProperty($el);
+    this.showBtnProperty($el);
+  }
+
+  /**
+   * 엘리먼트 속성 표시
+   * @param $el 엘리먼트
+   * @returns vod
+   */
+  private showElementProperty($el: JQuery<HTMLElement> | undefined): void {
+    const getValue = ($el: JQuery<HTMLElement> | undefined, selector: string): string => {
+      if (undefined === $el) {
+        return '';
+      }
+
+      if ('text' === selector) {
+        if (ScUtil.isWrapperEl($el)) {
+          return $el.children().first().text();
+        } else {
+          return $el.text();
+        }
+      }
+
+      throw new Error('NOT IMPL ' + selector);
+    };
+
+    //
+    if (undefined === $el) {
+      return;
+    }
+
+    let s = '';
+
+    Object.keys(this.rule.element).forEach((selector) => {
+      const elementRule = this.rule.element[selector];
+
+      if (!this.isTargetEl($el, elementRule.target)) {
+        return;
+      }
+
+      s += `<tr class="element" data-element-key="${selector}">`;
+      s += `  <th>${elementRule.name} ${undefined !== elementRule.unit ? '(' + elementRule.unit + ')' : ''} </th>`;
+      s += `  <td>`;
+      if ('text' === elementRule.valid) {
+        s += `  <input type="text" class="form-control" value="${getValue($el, selector)}">`;
+      }
+      s += `  </td>`;
+      s += `</tr>`;
+    });
+
+    //
+    $('table.table.property > tbody > tr.element').remove();
+    //
+    $('table.table.property > tbody').append(s);
+  }
+
+  /**
+   * css
+   * @param $el 엘리먼트
+   * @returns void
+   */
+  private showCssProperty($el: JQuery<HTMLElement> | undefined): void {
+    /**
+     * 엘리먼트의 값 추출
+     * @param $el 엘리먼트
+     * @returns 값
+     */
+    const getValue = ($el: JQuery<HTMLElement>, selector: string): string => {
+      let $el2 = $el.clone();
+      if (ScUtil.isWrapperEl($el2)) {
+        $el2 = $el2.children().first();
+      }
+
+      return $el2.css(selector) ?? '';
+    };
+
+    /**
+     * rgb 색상을 16진 색상으로...
+     * @param $el 엘리먼트
+     * @param selector 선택자
+     * @returns 색상
+     */
+    const getRgbToHexa = ($el: JQuery<HTMLElement>, selector: string): string => {
+      let $el2 = $el.clone();
+      if (ScUtil.isWrapperEl($el2)) {
+        $el2 = $el.children().first();
+      }
+
+      let s = $el2.css(selector);
+      s = s.replace(/rgb\(/gi, '').replace(/\)/gi, '').replace(/ /gi, '');
+      const rgb = s.split(',');
+      const hex = ScUtil.rgbToHex(Number(rgb[0]), Number(rgb[1]), Number(rgb[2]));
+
+      return hex;
+    };
+
+    if (undefined === $el) {
+      return;
+    }
+
+    let s = '';
+    Object.keys(this.rule.css).forEach((selector) => {
+      const cssRule = this.rule.css[selector];
+
+      if (!this.isTargetEl($el, cssRule.target)) {
+        return;
+      }
+
+      s += `<tr class="css" data-css-key="${selector}">`;
+      s += `  <th>${cssRule.name} ${undefined !== cssRule.unit ? '(' + cssRule.unit + ')' : ''} </th>`;
+      s += `  <td>`;
+      if ('color' === cssRule.valid) {
+        s += `  <input type="color" class="form-control" value="${getRgbToHexa($el, selector)}">`;
+      }
+      if ('text' === cssRule.valid) {
+        s += `  <input type="text" class="form-control" value="${getValue($el, selector)}">`;
+      }
+      if ('number' === cssRule.valid) {
+        let v = getValue($el, selector);
+
+        //
+        if (0 === v.length && undefined !== cssRule.defaultValue) {
+          v = cssRule.defaultValue;
+        }
+
+        //
+        if (undefined !== cssRule.unit) {
+          v = ScUtil.replaceAll(v, cssRule.unit, '');
+        }
+
+        s += `  <input type="number" class="form-control" value="${v}">`;
+      }
+      s += `  </td>`;
+      s += `</tr>`;
+    });
+
+    // 기존 정보 제거
+    $('table.table.property > tbody > tr.css').remove();
+
+    if (0 < s.length) {
+      // 추가
+      $('table.table.property > tbody').append(s);
+    }
+  }
+
+  /**
+   * 속성 표시
+   * @param $el 엘리먼트
+   * @returns void
+   */
+  private showAttrProperty($el: JQuery<HTMLElement> | undefined): void {
+    /**
+     * 엘리먼트의 값 추출
+     * @param $el 엘리먼트
+     * @returns 값
+     */
+    const getValue = ($el: JQuery<HTMLElement>, selector: string): string => {
+      let $el2 = $el.clone();
+      if (ScUtil.isWrapperEl($el2)) {
+        $el2 = $el2.children().first();
+      }
+
+      return $el2.attr(selector) ?? '';
+    };
+
+    //
+    if (undefined === $el) {
+      return;
+    }
+
+    let s = '';
+    Object.keys(this.rule.attr).forEach((selector) => {
+      const attrRule = this.rule.attr[selector];
+
+      if (!this.isTargetEl($el, attrRule.target)) {
+        return;
+      }
+
+      s += `<tr class="attr" data-attr-key="${selector}">`;
+      s += `  <th>${attrRule.name} ${undefined !== attrRule.unit ? '(' + attrRule.unit + ')' : ''}</th>`;
+      s += `  <td>`;
+      if ('text' === attrRule.valid) {
+        s += `  <input type="text" class="form-control" value="${getValue($el, selector)}">`;
+      }
+      if ('number' === attrRule.valid) {
+        let v = getValue($el, selector);
+
+        if (undefined !== attrRule.unit) {
+          v = ScUtil.replaceAll(v, attrRule.unit, '');
+        }
+
+        s += `  <input type="number" class="form-control" value="${v}">`;
+      }
+      s += `  </td>`;
+      s += `</tr>`;
+    });
+
+    // 기존 정보 제거
+    $('table.table.property > tbody > tr.attr').remove();
+
+    if (0 < s.length) {
+      // 추가
+      $('table.table.property > tbody').append(s);
+    }
+  }
+
+  private applyWordDicaryProperty2($el: JQuery<HTMLElement> | undefined): void {
+    if (undefined === $el) {
+      return;
+    }
+
+    $('table.table.property > tbody > tr.word-dicary').each((i, item) => {
+      const $tr = $(item);
+      const $input = $tr.find('input');
+      if (undefined === $input) {
+        return;
+      }
+
+      if (ScUtil.isWrapperEl($el)) {
+        $el
+          .children()
+          .first()
+          .attr('data-eng-abrv-nm', $input.attr('data-eng-abrv-nm') ?? '')
+          .attr('data-hngl-abrv-nm', $input.attr('data-hngl-abrv-nm') ?? '');
+      } else {
+        throw new Error('NOT IMPL ');
+      }
+    });
   }
 
   /**
@@ -509,6 +841,112 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
       // const v = $input.val() as string;
 
       // $el.attr('data-' + dataName, v);
+    });
+  }
+
+  /**
+   *
+   * @param $el
+   * @returns
+   */
+  private applyElementProperty2($el: JQuery<HTMLElement> | undefined): void {
+    //
+    if (undefined === $el) {
+      return;
+    }
+
+    $('table.table.property > tbody > tr.element').each((i, item) => {
+      const $tr = $(item);
+      const selector = $tr.attr('data-element-key') ?? '';
+      const elementRule = this.rule.element[selector];
+
+      if (!this.isTargetEl($el, elementRule.target)) {
+        return;
+      }
+
+      const v: string = $tr.find('input').val() as string;
+      // console.log(cssRule, v);
+
+      //
+      $el?.resizable({}).resizable('destroy');
+
+      if (ScUtil.isWrapperEl($el)) {
+        $el = $el?.children().first();
+      }
+
+      if ('text' === selector) {
+        $el?.text(v);
+      } else {
+        throw new Error('NOT IMPL ' + selector);
+      }
+
+      //
+      if (ScUtil.existsParentWrapperEl($el)) {
+        this.elService.setResizable(ScUtil.getTagName($el?.parent()), $el?.parent());
+      } else {
+        this.elService.setResizable(ScUtil.getTagName($el), $el);
+      }
+    });
+  }
+
+  /**
+   *
+   * @param $el
+   * @returns
+   */
+  private applyCssProperty2($el: JQuery<HTMLElement> | undefined): void {
+    //
+    if (undefined === $el) {
+      return;
+    }
+
+    $('table.table.property > tbody > tr.css').each((i, item) => {
+      const $tr = $(item);
+      const selector = $tr.attr('data-css-key') ?? '';
+      const cssRule = this.rule.css[selector];
+
+      if (!this.isTargetEl($el, cssRule.target)) {
+        return;
+      }
+
+      const v = $tr.find('input').val();
+      // console.log(cssRule, v);
+
+      if (ScUtil.isWrapperEl($el)) {
+        $el = $el?.children().first();
+      }
+
+      $el?.css(selector, v + (undefined !== cssRule.unit ? cssRule.unit : ''));
+    });
+  }
+  /**
+   *
+   * @param $el
+   * @returns
+   */
+  private applyAttrProperty2($el: JQuery<HTMLElement> | undefined): void {
+    //
+    if (undefined === $el) {
+      return;
+    }
+
+    $('table.table.property > tbody > tr.attr').each((i, item) => {
+      const $tr = $(item);
+      const selector = $tr.attr('data-attr-key') ?? '';
+      const attrRule = this.rule.attr[selector];
+
+      if (!this.isTargetEl($el, attrRule.target)) {
+        return;
+      }
+
+      const v = $tr.find('input').val();
+      // console.log(cssRule, v);
+
+      if (ScUtil.isWrapperEl($el)) {
+        $el = $el?.children().first();
+      }
+
+      $el?.attr(selector, v + (undefined !== attrRule.unit ? attrRule.unit : ''));
     });
   }
 
@@ -599,12 +1037,37 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     });
   }
 
+  private applyBtnProperty2($el: JQuery<HTMLElement> | undefined): void {
+    if (undefined === $el) {
+      return;
+    }
+
+    const buttonRule = this.rule.button;
+
+    if (!this.isTargetEl($el, buttonRule.target)) {
+      return;
+    }
+
+    //
+    $('table.table.property > tbody > tr.button').each((i, item) => {
+      const $tr = $(item);
+      const $select = $tr.find('select');
+
+      if (ScUtil.isWrapperEl($el)) {
+        $el
+          .children()
+          .first()
+          .attr('data-btn-se', ($select.find('option:selected').val() ?? '') + '');
+      }
+    });
+  }
+
   /**
    * 버튼 속성 적용
    * @param $el 엘리먼트
    * @returns void
    */
-  applyBtnProperty($el: JQuery<HTMLElement> | undefined): void {
+  private applyBtnProperty($el: JQuery<HTMLElement> | undefined): void {
     if (undefined === $el) {
       return;
     }
@@ -626,22 +1089,6 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
 
       $el.attr('data-' + dataName, '' + ($select.find('option:selected').val() ?? ''));
     });
-  }
-
-  /**
-   * TODO 이거 처리해야 함. 지금 귀찮아서 안함. minlength, maxlength
-   * @param $el
-   * @returns
-   */
-  private applyInputPropertyOnly($el: JQuery<HTMLElement> | undefined): void {
-    if (undefined === $el) {
-      return;
-    }
-
-    if (ScUtil.isWrapperEl($el)) {
-      this.applyTextProperty($el.children().first());
-      return;
-    }
   }
 
   /**
@@ -709,13 +1156,17 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
       $el = this.selectedElService.getOne();
     }
 
-    this.applyWordDicaryProperty($el);
-    this.applyCssProperty($el);
-    this.applyCssColorProperty($el);
-    this.applyCssFontSizeProperty($el);
-    this.applyBtnProperty($el);
-    this.applyTextProperty($el);
-    this.applyInputPropertyOnly($el);
+    // this.applyWordDicaryProperty($el);
+    // this.applyCssProperty($el);
+    this.applyCssProperty2($el);
+    this.applyAttrProperty2($el);
+    this.applyElementProperty2($el);
+    this.applyWordDicaryProperty2($el);
+    this.applyBtnProperty2($el);
+    // this.applyCssColorProperty($el);
+    // this.applyCssFontSizeProperty($el);
+    // this.applyBtnProperty($el);
+    // this.applyTextProperty($el);
     // TODO text, value 적용
 
     this.elPropertyChangedEvent.emit($el);
@@ -755,10 +1206,29 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   wordDicarySelected(wdsMessage: WordDicarySelectMessage): void {
     const elName = wdsMessage.ref;
 
-    const $el = $(`table.property [name="${elName}"]`);
+    // const $el = $(`table.property [name="${elName}"]`);
+    const $el = $('table.table.property > tbody > tr.word-dicary').find('input');
     $el.attr('data-eng-abrv-nm', wdsMessage.data[0].eng.toLowerCase());
     $el.attr('data-hngl-abrv-nm', wdsMessage.data[0].kor);
     $el.val(wdsMessage.data[0].kor);
+  }
+
+  /**
+   * 처리대상 엘리먼트인지 여부
+   * @param target 대상 목록
+   * @param tagName 태그명
+   * @returns 처리대상이면 true
+   */
+  isTargetEl($el: JQuery<HTMLElement> | undefined, target: string[] | null | undefined): boolean {
+    if (undefined === $el) {
+      return false;
+    }
+
+    if (null === target || undefined === target || 0 === target.length) {
+      return true;
+    }
+
+    return target.includes(ScUtil.getTagName($el) ?? '');
   }
 }
 
@@ -782,30 +1252,4 @@ export const enum PropertySe {
   WordDicary = 'wordDicary',
   Btn = 'btn',
   Item = 'item',
-}
-
-/**
- * 입력 방법 구분
- */
-export const enum InputMthdSe {
-  /**
-   * 값 직접 입력-모든값 허용
-   */
-  Text = 'text',
-  /**
-   * 값 직접 입력-숫자만 허용
-   */
-  Number = 'number',
-  /**
-   * 목록에서 선택
-   */
-  Select = 'select',
-  /**
-   * 단어사전
-   */
-  WordDicary = 'wordDicary',
-  /**
-   * 색상 선택
-   */
-  Color = 'color',
 }

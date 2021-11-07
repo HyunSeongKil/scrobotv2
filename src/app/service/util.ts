@@ -9,6 +9,10 @@ export class ScUtil {
     return 'id_' + new Date().getTime();
   }
 
+  static replaceAll(str: string, search: string, replace: string): string {
+    return str.split(search).join(replace);
+  }
+
   /**
    *
    * @returns

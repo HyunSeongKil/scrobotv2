@@ -7,6 +7,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr class="word-dicary">
+        <th></th>
+        <td></td>
+      </tr>
+
       <tr *ngFor="let x of properties">
         <td>{{ x.text }}</td>
         <td>
@@ -22,21 +27,21 @@
           </ng-container>
 
           <!-- css || data || value || text -->
-          <ng-container *ngIf="'css' === x.se || 'data' === x.se || 'value' === x.se || 'text' === x.se">
+          <!-- <ng-container *ngIf="'css' === x.se || 'data' === x.se || 'value' === x.se || 'text' === x.se">
             <input type="text" class="form-control" attr.data-se="{{ x.se }}" [name]="x.key" [value]="x.value" />
-          </ng-container>
+          </ng-container> -->
 
           <!-- css > color -->
-          <ng-container *ngIf="'cssColor' === x.se">
+          <!-- <ng-container *ngIf="'cssColor' === x.se">
             <input type="color" class="form-control w-50" [attr.data-se]="x.se" [name]="x.key" [value]="x.value" />
-          </ng-container>
+          </ng-container> -->
 
           <!-- css > font-size -->
-          <ng-container *ngIf="'cssFontSize' === x.se">
+          <!-- <ng-container *ngIf="'cssFontSize' === x.se">
             <select class="form-select" [attr.data-se]="x.se" [name]="x.key">
               <option [value]="v" [selected]="x.value === v" *ngFor="let v of x.items">{{ v }}</option>
             </select>
-          </ng-container>
+          </ng-container> -->
 
           <!-- item -->
           <ng-container *ngIf="'item' === x.se">
@@ -44,10 +49,10 @@
           </ng-container>
 
           <!-- wordDicary -->
-          <ng-container *ngIf="'wordDicary' === x.se">
+          <!-- <ng-container *ngIf="'wordDicary' === x.se">
             <input type="text" class="form-control w-75 d-inline" [attr.data-se]="x.se" [name]="x.key" [value]="x.value" readonly />
             <button type="button" class="btn btn-outline-secondary btn-sm mx-1" (click)="selectWordDicary(x.key)">조회</button>
-          </ng-container>
+          </ng-container> -->
         </td>
       </tr>
 
@@ -55,7 +60,7 @@
         <td colspan="2" class="text-center">선택된 콤포넌트가 없습니다.</td>
       </tr>
     </tbody>
-    <tfoot *ngIf="0 < properties.length">
+    <tfoot>
       <tr>
         <td colspan="2">
           <button type="button" class="btn btn-outline-primary btn-sm" (click)="applyProperty()">
