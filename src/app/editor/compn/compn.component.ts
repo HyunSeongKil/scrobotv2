@@ -18,6 +18,7 @@ export class CompnComponent implements OnInit, AfterViewInit {
 
   TAG_NAME_BUTTON = ElService.TAG_NAME_BUTTON;
   TAG_NAME_INPUT_TEXT = ElService.TAG_NAME_INPUT_TEXT;
+  TAG_NAME_TEXTAREA = ElService.TAG_NAME_TEXTAREA;
   TAG_NAME_SPAN = ElService.TAG_NAME_SPAN;
   TAG_NAME_DIV = ElService.TAG_NAME_DIV;
   TAG_NAME_H1 = ElService.TAG_NAME_H1;

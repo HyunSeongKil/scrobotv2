@@ -12,6 +12,7 @@ export class ElService {
   static TAG_NAME_DIV = `div`;
   static TAG_NAME_SPAN = `span`;
   static TAG_NAME_INPUT_TEXT = `input`;
+  static TAG_NAME_TEXTAREA = `textarea`;
   static TAG_NAME_H1 = `h1`;
   static TAG_NAME_H2 = `h2`;
   static TAG_NAME_H3 = `h3`;
@@ -218,6 +219,7 @@ export class ElService {
         break;
 
       case ElService.TAG_NAME_INPUT_TEXT:
+      case ElService.TAG_NAME_TEXTAREA:
         $el.draggable({
           containment: 'div.content',
           start: function (event, ui) {
@@ -254,6 +256,7 @@ export class ElService {
       case ElService.TAG_NAME_DIV:
       case ElService.TAG_NAME_SPAN:
       case ElService.TAG_NAME_INPUT_TEXT:
+      case ElService.TAG_NAME_TEXTAREA:
       case ElService.TAG_NAME_BUTTON:
       case ElService.TAG_NAME_H1:
       case ElService.TAG_NAME_H2:
@@ -283,6 +286,7 @@ export class ElService {
 
     switch (tagName) {
       case ElService.TAG_NAME_INPUT_TEXT:
+      case ElService.TAG_NAME_TEXTAREA:
         $el.on('click', (event, ui) => {
           event.stopPropagation();
 
@@ -309,23 +313,23 @@ export class ElService {
         $el.on('mouseup', (event) => {
           const w: number = event.currentTarget.clientWidth;
           $(event.currentTarget)
-            .find('input')
+            .find('input,textarea')
             .css('width', w - 5 + 'px');
 
           const h: number = event.currentTarget.clientHeight;
           $(event.currentTarget)
-            .find('input')
+            .find('input,textarea')
             .css('height', h - 5 + 'px');
         });
 
-        $el.find(`input`).on('mousedown', function (e) {
+        $el.find(`input,textarea`).on('mousedown', function (e) {
           var mdown = document.createEvent('MouseEvents');
           // console.log(mdown);
           mdown.initMouseEvent('mousedown', false, true, window, 0, e.screenX, e.screenY, e.clientX, e.clientY, true, false, false, true, 0, null);
           $(this).closest('.wrapper')[0].dispatchEvent(mdown);
         });
 
-        $el.find('input').on('click', function (e) {
+        $el.find('input,textarea').on('click', function (e) {
           // console.log($(this));
           var $draggable = $(this).closest('.wrapper');
           if ($draggable.data('preventBehaviour')) {
@@ -416,6 +420,9 @@ export class ElService {
 
       case ElService.TAG_NAME_INPUT_TEXT:
         return this.createInput(cn);
+
+      case ElService.TAG_NAME_TEXTAREA:
+        return this.createTextarea(cn);
 
       case ElService.TAG_NAME_H1:
         return this.createH1(cn);
@@ -525,6 +532,27 @@ export class ElService {
     $wrapper.attr('data-tag-name', 'input');
 
     const $el = $(`<input type="text" id="${id}" style="width:100px; height:25px; padding:0.5em; background-color:#efefef;" readonly focus ></input>`);
+    $el.attr('data-eng-abrv-nm', '').attr('data-hngl-abrv-nm', '');
+
+    $wrapper.append($el);
+    return $wrapper;
+  }
+
+  /**
+   * textarea 엘리먼트 생성
+   * @param cn 태그 내용
+   * @returns 엘리먼트
+   */
+  private createTextarea(cn: string = ''): JQuery<HTMLElement> {
+    if (0 < cn.length) {
+      return $(cn);
+    }
+
+    const id = ScUtil.createId();
+    const $wrapper = $(`<div id="${id}_wrapper" class="wrapper" style="position:absolute; width:510px; height:210px;"></div>`);
+    $wrapper.attr('data-tag-name', 'textarea');
+
+    const $el = $(`<textarea id="${id}" rows="10" style="width:500px; height:200px; padding:0.5em; background-color:#efefef;" readonly focus ></textarea>`);
     $el.attr('data-eng-abrv-nm', '').attr('data-hngl-abrv-nm', '');
 
     $wrapper.append($el);
