@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="myPage">
+
+	<select id="selecetMberDetail" parameterType="HashMap"
+		resultType="HashMap">
+
+		/* myPage.selecetMberDetail*/
+		SELECT
+		MBR_NM
+		,MBR_TELNO
+		,MBR_ID
+		FROM MBR WHERE
+		BINARY(MBR_ID)
+		=#{USER_ID}
+
+	</select>
+
+	<update id="updateMber" parameterType="HashMap">
+
+		/* myPage.updateMber*/
+
+		UPDATE MBR SET
+		MBR_NM = #{NAME}
+		, MBR_TELNO =
+		#{PHONE}
+		<if test='updatePwYn == "Y"'>
+			, PASSWORD = #{PASS}
+		</if>
+		WHERE BINARY(MBR_ID)
+		=#{USER_ID}
+
+	</update>
+
+	<delete id="deleteMber" parameterType="HashMap">
+
+		/* myPage.deleteMber*/
+
+		UPDATE MBR SET
+		WHDWL_YN='Y'
+		,WHDWL_ID=#{SECSN_CD}
+		,WHDWL_YMD=(SELECT
+		DATE_FORMAT(curdate(),'%Y%m%d') FROM DUAL)
+		,IMPRVM_MATTER
+		=#{IMPRVM_MATTER}
+		WHERE BINARY(MBR_ID)
+		=#{USER_ID}
+
+	</delete>
+
+</mapper>

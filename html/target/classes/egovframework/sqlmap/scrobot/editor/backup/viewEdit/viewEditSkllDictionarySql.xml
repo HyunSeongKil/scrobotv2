@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="viewEditSkllDictionary">
+
+<select id="getSkllWordList" resultType="Map">
+	SELECT
+	SKLL_NM
+	,SKLL_DC
+	FROM
+	SKLL
+	ORDER BY SKLL_DVS_CD, SKLL_NM;
+</select>
+</mapper>

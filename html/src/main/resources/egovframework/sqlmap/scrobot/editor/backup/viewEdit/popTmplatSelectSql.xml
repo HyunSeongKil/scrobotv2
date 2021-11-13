@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="popTmplatSelect">
+
+	<select id="retrieveTmplatList" parameterType="hashmap" resultType ="HashMap">
+
+	    	/* view010101P03.retrieveTmplatList */
+	    	
+			SELECT TP.PRJ_ID
+     			 , TMPLAT_ID
+     			 , TMPLAT_DVS_CD
+     			 , TMPLAT_NM
+     			 , DC.CMN_CD_NM AS TMPLAT_DVS_CD_NM
+			FROM VIEW VI
+  			   , TMPLAT TP
+  			   , (SELECT CMN_CD_NM, CMN_CD FROM DETAIL_CD WHERE CMN_DVS_CD = 'TMPLAT_DVS_CD') DC
+			WHERE VI.PRJ_ID = TP.PRJ_ID
+			AND TP.TMPLAT_DVS_CD = DC.CMN_CD
+			AND VI.VIEW_ID = #{VIEW_ID}
+	</select>
+			
+
+
+
+</mapper>

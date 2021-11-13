@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="acntSearch">
+
+	<select id="selectIdDetail" parameterType="HashMap"
+		resultType="HashMap">
+
+		/* acntSearch.selectIdDetail*/
+		SELECT MBR_ID FROM MBR
+		WHERE MBR_NM = #{name}
+		AND MBR_TELNO = #{phone}
+
+	</select>
+
+	<select id="selectIdExistDetail" parameterType="HashMap"
+		resultType="HashMap">
+
+		/* acntSearch.selectIdExistDetail*/
+		SELECT CASE WHEN
+		COUNT(*) = 0
+		THEN 'N'
+		ELSE 'Y' END AS idExistCheckYn
+		FROM MBR WHERE
+		MBR_NM = #{name}
+		AND MBR_TELNO = #{phone}
+
+
+	</select>
+
+	<select id="selectPwExistDetail" parameterType="HashMap"
+		resultType="HashMap">
+
+		/* acntSearch.selectPwExistDetail*/
+		SELECT CASE WHEN
+		COUNT(*) = 0
+		THEN 'N'
+		ELSE 'Y' END AS pwExistCheckYn
+		FROM MBR WHERE
+		MBR_NM = #{name}
+		AND BINARY(MBR_ID) = #{email}
+
+
+	</select>
+
+	<select id="updatePassword" parameterType="HashMap">
+
+		/*
+		acntSearch.updatePassword*/
+		UPDATE MBR SET PASSWORD = #{pass}
+		WHERE
+		BINARY(MBR_ID) = #{user_id}
+
+
+	</select>
+</mapper>

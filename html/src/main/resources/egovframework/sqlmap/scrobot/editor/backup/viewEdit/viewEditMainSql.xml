@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="viewEditMain">
+
+
+	<insert id="mergeViewDrawWrk" parameterType="hashmap">
+					/* view010101.insertViewDrawWrk*/
+			
+			INSERT INTO VIEW
+				  ( VIEW_ID
+				  , VIEW_NM
+				  , HTML_SOURCE
+				  , CONTROLLER_SOURCE
+				  , SERVICE_SOURCE
+				  , JSP_SOURCE
+				  , SQL_SOURCE
+				  , CHNG_HISTRY_DTTM
+				  , CRTR_ID)
+			VALUES (
+					#{VIEW_ID}
+				  , #{VIEW_NM}
+				  , #{HTML_SOURCE}
+				  , #{CONTROLLER_SOURCE}
+				  , #{SERVICE_SOURCE}
+				  , #{JSP_SOURCE}
+				  , #{SQL_SOURCE}
+				  , SYSDATE()
+				  , #{USER_ID})
+		    ON DUPLICATE KEY UPDATE
+		    	VIEW_NM = #{VIEW_NM}
+		      , HTML_SOURCE = #{HTML_SOURCE}
+		      , CONTROLLER_SOURCE = #{CONTROLLER_SOURCE}
+			  , SERVICE_SOURCE = #{SERVICE_SOURCE}
+			  , JSP_SOURCE = #{JSP_SOURCE}
+			  , SQL_SOURCE = #{SQL_SOURCE}
+		      , CHNG_HISTRY_DTTM = SYSDATE()
+		      , CRTR_ID = #{USER_ID}
+	</insert>
+	
+	
+
+	<insert id="insertViewDrawWrkHistry" parameterType="hashmap">
+
+			/* view010101.insertViewDrawWrkHistry*/
+			
+			INSERT INTO VIEW_HISTRY
+				  ( MAKE_DTTM
+				  , VIEW_ID
+				  , VIEW_NM
+				  , HTML_SOURCE
+				  , CONTROLLER_SOURCE
+				  , SERVICE_SOURCE
+				  , JSP_SOURCE
+				  , SQL_SOURCE 
+				  , CRTR_ID
+					)
+			VALUES (
+					SYSDATE()
+				  , #{VIEW_ID}
+				  , #{VIEW_NM}
+				  , #{HTML_SOURCE}
+				  , #{CONTROLLER_SOURCE}
+				  , #{SERVICE_SOURCE}
+				  , #{JSP_SOURCE}
+				  , #{SQL_SOURCE}
+				  , #{USER_ID}
+				  )
+
+	</insert>
+	
+	
+	<select id="retrieveTmplatInfo" parameterType="hashMap" resultType="hashMap">
+	
+		/* view010101.retrieveTmplatInfo*/
+		
+		SELECT PR05.TMPLAT_ID
+             , PR05.PRJ_ID
+             , PR05.TMPLAT_NM
+             , PR05.TMPLAT_DVS_CD
+             , PR05.TMPLAT_CTNT
+             , PR05.TMPLAT_COURS
+             , PR05.OBJCT_USE_YN
+             , PR05.MAKE_DTTM
+             , PR05.CRTR_ID
+             , PR01.PRJ_NM
+		FROM TMPLAT PR05
+		   , PRJCT PR01
+		WHERE PR01.PRJ_ID = PR05.PRJ_ID
+		AND TMPLAT_ID = #{TMPLAT_ID}
+		
+	</select>
+	
+	<select id="retrievePrjNm" parameterType="hashMap" resultType="String">
+	
+		/* view010101.retrievePrjNm*/
+		
+		SELECT PRJ_NM
+		FROM VIEW PR03
+		   , PRJCT PR01
+		WHERE PR03.PRJ_ID = PR01.PRJ_ID
+		AND VIEW_ID = #{VIEW_ID}
+		
+	</select>
+	<select id="countViewId" parameterType="Map" resultType="Map">
+
+		SELECT 
+			COUNT(*) AS COUNTER
+		,	VIEW_ID AS VIEW_ID
+		,	CRTR_ID AS CRTR_ID
+		FROM
+			VIEW
+		WHERE
+			VIEW_NM = #{VIEW_NM} 
+			AND
+			CRTR_ID = #{CRTR_ID}
+		
+	</select>
+
+	<select id="findViewId" parameterType="hashMap" resultType="HashMap">
+
+		SELECT VIEW_ID FROM VIEW WHERE VIEW_NM = #{VIEW_NM} AND CRTR_ID = #{CRTR_ID}
+		
+	</select>
+	
+	<select id="srchBtnNmSkllDic" parameterType="String" resultType="Map">
+		/* viewEditMain.srchBtnNmSkllDic */
+		SELECT SKLL_DVS_CD
+		FROM SKLL
+		WHERE SKLL_NM = #{SKLL_NM}
+	</select>
+	<select id="getTableInfo" resultType="HashMap">
+
+		SHOW TABLES
+		
+	</select>
+	<select id="getColumnInfo" parameterType="Map" resultType="HashMap">
+
+		SHOW FULL COLUMNS FROM ${tableBindCode}
+		
+	</select>
+	
+	
+	<select id="searchDataType" parameterType="hashMap" resultType="HashMap">
+	SELECT 
+		T.TERM_ENG_ABRV_NM
+	,	T.TERM_NM
+	,	D.DTYPE
+	FROM 
+		TERM T
+	INNER JOIN
+		(SELECT DOMN_NM , CONCAT(DATA_TY,'(',DATA_LT,')') AS DTYPE FROM DOMAIN) D
+	ON
+		T.DOMN_NM = D.DOMN_NM
+	WHERE
+		T.TERM_ENG_ABRV_NM 
+	IN
+	<foreach item="item" collection="list" index="index" open="(" close=")" separator=",">
+	#{item.key}
+	</foreach>
+		
+	</select>
+	
+	<select id="creationTable" parameterType="Map">
+
+		${sql}
+		
+	</select>
+	
+	<select id="alterTable" parameterType="Map">
+
+		${sql}
+	
+	</select>
+	
+	<insert id="insertTableList" parameterType="Map">
+		
+		INSERT INTO USER_TABLES
+		(
+			USER_ID
+		,	TABLE_NM
+		,	TABLE_CODE
+		,	GRID_CODE
+		)
+		VALUES
+		(
+			#{user_id}
+		,	#{TableBindCode}
+		,	#{tableSource}
+		,	#{gridSource}
+		)
+		
+	</insert>
+	
+	<select id="getMyTableNameList" parameterType="Map"  resultType="HashMap">
+		SELECT
+			TABLE_NM
+		FROM
+			USER_TABLES
+		WHERE
+			USER_ID = #{user_id}
+		GROUP BY
+			TABLE_NM	
+	</select>
+	
+	<select id="getMyTableCodeList" parameterType="Map"  resultType="HashMap">
+		SELECT
+			TABLE_NM
+		,	TABLE_CODE
+		FROM
+			USER_TABLES
+		WHERE
+			USER_ID = #{user_id}
+	</select>
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

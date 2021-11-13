@@ -1,0 +1,510 @@
+@charset "utf-8";
+
+@font-face {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 100;
+    src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.woff2) format('woff2'), url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.woff) format('woff'), url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 300;
+    src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.woff2) format('woff2'), url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.woff) format('woff'), url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 400;
+    src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.woff2) format('woff2'), url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.woff) format('woff'), url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 500;
+    src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.woff2) format('woff2'), url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.woff) format('woff'), url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 700;
+    src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff2) format('woff2'), url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff) format('woff'), url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 900;
+    src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.woff2) format('woff2'), url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.woff) format('woff'), url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.otf) format('opentype');
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+textarea,
+select {
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    /*    font-family: 'MalgunGothic', sans-serif;*/
+    color: #333;
+    /*font-weight: 400;*/
+    box-sizing: border-box;
+}
+
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5 {
+    margin: 0;
+    padding: 0;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+b {
+    font-weight: 600;
+}
+
+input,
+select,
+img {
+    box-sizing: border-box;
+}
+
+/*
+input[type="text"],
+input[type="password"] {
+    border: 1px solid #dcdcdc;
+    max-width: calc(100% - 12px);
+    padding-left: 10px;
+    height: 37px;
+}
+*/
+
+img {
+    border: 0;
+    max-width: 100%;
+}
+
+.float-right {
+    float: right !important;
+}
+
+/*.table-warp table {
+    border-collapse: collapse;
+    max-width: 100%;
+    width: 100%;
+    table-layout: fixed;
+}*/
+
+a {
+    display: inline-block;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+}
+
+
+
+.header-menu {
+    /*width: calc(100% - 294px);*/
+    /*width:82%;*/
+    position: relative;
+/*    padding: 0 40px;*/
+    height: 79px;
+    background: #fff;
+}
+
+.header-inner {
+    max-width: 1200px;
+}
+
+
+.Hmenu-bg {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 80px;
+    z-index: 9;
+    width: 100%;
+    height: 351px;
+    background: #f8f8f8;
+    border-bottom: 1px solid #000;
+    border-right: 1px solid #dcdcdc;
+}
+
+
+
+#gnb {
+    width: 77%;
+    float: left;
+    padding-left: 100px;
+}
+
+#gnb a {
+    transition: all 0.3s ease-in-out;
+}
+
+#gnb > li {
+    float: left;
+    display: table;
+    width: 16.66%;
+/*    width: 13%;*/
+    height: 58px;
+    text-align: center;
+    position: relative;
+}
+
+#gnb > li > a {
+    position: relative;
+    display: table-cell;
+    vertical-align: middle;
+    padding-top: 4px;
+    color: #333;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 69px;
+}
+
+#gnb > li > a::after {
+    display: none;
+    position: absolute;
+    top: 110%;
+    left: 50%;
+    bottom: -10px;
+    z-index: 11;
+    margin-left: -5px;
+    border-top: 10px solid #884018;
+    border-right: 6px solid transparent;
+    border-left: 6px solid transparent;
+    content: "";
+    transition: all 0.3s ease-in-out;
+}
+
+#gnb > li > a.on {
+    color: #884018;
+}
+
+#gnb > li > a.on::after {
+    display: block;
+}
+
+#gnb .depth2 {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 81px;
+    z-index: 10;
+    width: 100%;
+    height: 350px;
+    padding: 20px 5px 25px;
+    background: #f8f8f8;
+    border-bottom: 1px solid #000;
+}
+
+#gnb .depth2 > li:not(:first-child) {
+    margin-top: 6px;
+}
+
+#gnb .depth2 > li > a {
+    display: block;
+    height: 46px;
+    padding-top: 14px;
+    color: #333;
+    font-size: 12px;
+    background: #fff;
+    border: 1px solid #dedede;
+    border-radius: 10px;
+}
+
+#gnb .depth2 > li > a:hover {
+    color: #884018;
+    border: 1px solid #884018;
+}
+
+#gnb .depth3 {
+    padding: 15px;
+    text-align: left;
+}
+
+#gnb .depth3 > li:not(:first-child) {
+    margin-top: 10px;
+}
+
+#gnb .depth3 > li > a {
+    text-indent: -12px;
+    margin-left: 12px;
+    color: #6a6a6a;
+    font-size: 15px;
+}
+
+#gnb .depth3 > li > a:hover {
+    color: #884018;
+}
+
+.PCmenu-open {
+    position: absolute;
+    right: 40px;
+    bottom: 17px;
+}
+
+.PCmenu-open > span {
+    display: none;
+    vertical-align: top;
+    margin: 5px 5px 0 0;
+    color: #fff;
+    font-size: 16px;
+}
+
+.PCmenu-open.mo > span {
+    display: inline-block;
+}
+
+.menu-open {
+    display: none;
+    position: absolute;
+    top: 35px;
+    right: 20px;
+}
+
+.menu-close {
+    position: absolute;
+    top: 0;
+    right: -45px;
+}
+
+.mob-menutop {
+    display: none;
+    width: 300px;
+    background: #fff;
+    position: relative;
+}
+
+.mob-menutop > .logo {
+    float: left;
+    display: table;
+    width: 100%;
+    height: 84px;
+    padding: 15px;
+}
+
+.mob-menutop > .logo > a {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+
+.login-checkbox > span {
+    display: inline-block;
+}
+
+.login-checkbox > span > input[type="checkbox"] {
+    border: 1px solid #d4d4d4;
+    height: 17px;
+    width: 17px;
+    margin-right: 10px;
+}
+
+.login-checkbox > span > label {
+    font-weight: 500;
+    font-size: 17px;
+    color: #333333;
+}
+
+body {
+    background: #d5dee7;
+}
+
+#header {
+    background: #fff;
+/*    width: calc(100% - 294px);*/
+}
+
+/*#header > *{float:left;height:79px;}*/
+#header > .logo {
+    width: 150px;
+    text-align: center;
+    padding: 19px 0px 19px 32px;
+}
+
+#header > nav {
+    width: 500px;
+}
+
+#header > nav > ul {
+    margin-left: 7vw;
+    display: table;
+    /*max-width:824px;*/
+    width: 800px;
+}
+
+#header > nav > ul > li {
+    display: table-cell;
+    position: relative;
+    width: 150px;
+    padding: 30px 0;
+    text-align: center;
+    margin-left: -10px;
+}
+
+#header > nav > ul > li > a {
+    height: 84px;
+    vertical-align: middle;
+    text-align: center;
+    font-weight: 700;
+    font-size: 15px;
+    color: #454545;
+}
+
+#header > nav > ul > li:hover > a {
+    color: #884018;
+    text-decoration: underline;
+}
+
+#header > nav > ul > li > .deaph2 {
+    position: absolute;
+    width: 100%;
+    top: 84px;
+    padding: 10px;
+    left: 0;
+    background: #fff;
+    display: none;
+    z-index: 99;
+}
+
+#header > .gnb-btn {
+    float: right;
+    margin: 29px 0;
+    height: auto;
+    display: none
+}
+
+#header > .gnb-bg {
+    background: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100% !important;
+    width: 100%;
+    display: none;
+    z-index: 1;
+}
+
+
+/*
+@media screen and (max-width:1200px) {
+	#header > nav > ul{margin-left:100px;}
+	#header > nav > ul > li > a{width:120px;font-size: 15px}
+    	#header > nav > ul > li > ul>li>a{font-size: 12px}
+
+}
+*/
+
+@media screen and (max-width:1400px) {
+        #header nav ul li a {
+        font-size: 17px
+    }
+}
+
+
+@media screen and (max-width:1200px) {
+    #header nav ul {
+        margin-left: -30px;
+    }
+
+    #header nav ul li {
+        width: 16%;
+    }
+
+    #header nav ul li a {
+        width: 120px;
+        font-size: 15px
+    }
+
+    #header nav ul li ul li a {
+        font-size: 12px
+    }
+
+    #gnb .depth2{
+        padding: 10px 0;
+        margin-left:19px;
+
+    }
+    #gnb .depth2 li a{
+        width:80px;
+        font-size:0.7vw;
+    }
+
+
+.table_content1 table td input {
+    width: 26%;
+
+}
+
+
+    #header > nav > ul > li > a {
+        width: 120px;
+        font-size: 15px
+    }
+
+    #header > nav > ul > li > ul > li > a {
+        font-size: 12px
+    }
+
+
+}
+
+
+
+@media screen and (max-width:1024px) {
+        #header {
+        padding: 0 10px;
+        width: 100%;
+    }
+
+    #header nav {
+        display: none;
+    }
+
+    #header .logo {
+        width: auto;
+        text-align: left;
+    }
+
+    #header .gnb-btn {
+        display: block;
+    }
+
+    #header .logo {
+        width: 290px;
+/*        text-align: center;*/
+        margin-left: 3.7%;
+        padding: 0px 0;
+    }
+
+    .home {
+        margin-top: -20px;
+    }
+}

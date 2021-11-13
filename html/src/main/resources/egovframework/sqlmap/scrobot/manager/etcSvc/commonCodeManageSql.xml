@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="commonCodeManage">
+	
+	<select id="selectCmnCdList" resultType="HashMap">
+
+		/*
+		commonCodeManage.selectCmnCdList*/
+		<![CDATA[
+	SELECT
+		CMMN_CD
+		,CMMN_NM
+		,SORT
+		,CMMN_DC
+		FROM CMMN_CD_INFO
+		WHERE
+		DEL_YN = 'N' AND CMMN_GROUP_CD = #{paramMap}
+		ORDER BY SORT DESC
+		]]>
+
+	</select>
+	
+	
+	<insert id="insertCmnCd" parameterType="HashMap">
+
+		/*
+		commonCodeManage.insertCmnCd*/
+		INSERT INTO
+		CMMN_CD_INFO
+		(CMMN_CD,CMMN_NM,CMMN_DC,WRTER,WRT_YMD,CMMN_GROUP_CD,SORT)
+		VALUES
+		(
+		#{CMMN_CD}
+		,#{CMMN_NM}
+		,#{CMMN_DC}
+		,#{WRTER}
+		,NOW()
+		,#{CMMN_GROUP_CD}
+		,#{SORT}
+		)
+
+	</insert>
+	
+	
+	<select id="selectCmnCdDetail" resultType="HashMap"
+		parameterType="HashMap">
+
+		/*
+		commonCodeManage.selectCmnCdDetail*/
+
+		SELECT
+		CMMN_CD
+		,CMMN_NM
+		,CMMN_DC
+		,SORT
+		,(CASE
+		WHEN MDFCN_YMD IS NULL THEN
+		DATE_FORMAT(WRT_YMD,'%Y.%m.%d')
+		WHEN MDFCN_YMD IS NOT NULL THEN
+		DATE_FORMAT(MDFCN_YMD,'%Y.%m.%d')
+		END
+		) WRT_YMD
+		,(CASE
+		WHEN MDFR IS NULL
+		OR MDFR = 'NULL' THEN WRTER
+		WHEN MDFR IS NOT NULL THEN MDFR
+		END
+		) WRTER
+		FROM CMMN_CD_INFO
+		WHERE
+		CMMN_CD = #{CMMN_CD}
+		AND DEL_YN = "N"
+
+	</select>
+	
+		<!-- 공통 코드 삭제 -->
+	<update id="deleteCmnCd" parameterType="HashMap">
+
+		/*
+		CommonCodeGroupManage.deleteCmnCd*/
+		UPDATE
+		CMMN_CD_INFO
+		SET
+		DEL_YN='Y'
+		WHERE
+		CMMN_CD = #{CMMN_CD}
+	</update>
+	
+	
+	<!-- 공통 코드 수정 -->
+		<update id="updateCmnCd" parameterType="HashMap">
+
+		/*
+		CommonCodeGroupManage.updateCmnCd*/
+		UPDATE
+		CMMN_CD_INFO
+		SET
+		CMMN_NM=#{CMMN_NM}
+		,CMMN_DC=#{CMMN_DC}
+		,SORT=#{SORT}
+		,MDFR=#{MDFR}
+		,MDFCN_YMD=NOW()
+		WHERE
+		CMMN_CD =
+		#{CMMN_CD}
+
+	</update>
+</mapper>

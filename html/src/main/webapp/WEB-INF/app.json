@@ -1,0 +1,11 @@
+{
+	"overwrite" : true,
+	"targets" : ["controller", "service", "serviceImpl", "dao", "vo", "xml", "jsp", "js"],
+	
+	
+	"packagePath" : "sourceFileGenerator",
+	"outputPath" : "c:\\temp\\output"
+
+
+	
+}

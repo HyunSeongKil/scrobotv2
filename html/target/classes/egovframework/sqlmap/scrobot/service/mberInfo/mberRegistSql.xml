@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mberRegist">
+
+	<insert id="insertMber" parameterType="HashMap">
+
+		/* mberRegist.insertMber*/
+
+		INSERT INTO T_SP_MBR_009
+		( MBR_ID
+		, PASSWORD
+		, MBR_NM
+		, MBR_TELNO
+		, JOIN_YMD
+		)
+		VALUES (
+		#{USER_ID}
+		, #{PASS}
+		, #{NAME}
+		, #{PHONE}
+		,(SELECT DATE_FORMAT(curdate(), '%Y%m%d') FROM DUAL)
+		)
+
+	</insert>
+	<select id="selectIdCoDetail" parameterType="HashMap"
+		resultType="HashMap">
+
+		/* mberRegist.selectIdCoDetail*/
+		SELECT CASE WHEN COUNT(*) =
+		0
+		THEN 'N'
+		ELSE
+		'Y' END AS IdExistYn
+		FROM T_SP_MBR_009
+		WHERE BINARY(MBR_ID) = #{USER_ID}
+		
+		
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+

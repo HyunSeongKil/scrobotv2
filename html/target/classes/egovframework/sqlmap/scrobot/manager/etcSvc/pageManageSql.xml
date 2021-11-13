@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pageManage">
+
+	<!-- 화면 전체 글 목록 갯수 조회 -->
+		<select id="getPageCount" resultType ="Integer">
+		
+		/* pageManage.getPageCount */
+		
+			SELECT 
+				COUNT(*) AS COUNT_NUM 
+			FROM
+				SCREEN
+			WHERE 
+				DEL_YN = "N"
+		</select>
+	
+	<!-- 화면 목록 조회 -->
+	<select id="selectPageList" resultType="HashMap">
+	
+	/* pageManage.selectPageList */
+	
+	<![CDATA[
+		SELECT S.*
+			FROM(
+				SELECT
+					FORMAT(@ROWNUM := @ROWNUM-1, 0) AS NUMROW
+					, PAGE_ID
+					, PAGE_NM
+					, PAGE_URL
+					, PAGE_JSP_NM
+					, (CASE
+							WHEN MDFR IS NULL THEN WRTER
+							WHEN MDFR IS NOT NULL THEN MDFR
+							END
+						) WRTER
+					, (CASE
+							WHEN MDFCN_YMD IS NULL THEN DATE_FORMAT(WRT_YMD,'%Y.%m.%d')
+							WHEN MDFCN_YMD IS NOT NULL THEN DATE_FORMAT(MDFCN_YMD,'%Y.%m.%d')
+							END
+						) WRT_YMD
+				FROM 
+					SCREEN
+					, (SELECT @ROWNUM:=${maxNum} +1) temp
+				WHERE 1=1
+				AND DEL_YN = 'N'
+				ORDER BY PAGE_ID DESC
+				)S
+			WHERE 1=1
+			AND NUMROW <=${maxNum}-(#{pageNum}-1)*10
+			AND NUMROW>=${maxNum}-(#{pageNum}-1)*10-9
+			;
+	]]>
+	
+	</select>
+	
+	<!-- 화면 추가 -->
+	<insert id="insertPage" parameterType="HashMap">
+	
+	/* pageManage.insertPage */
+	
+	INSERT INTO
+	SCREEN
+	(PAGE_ID , PAGE_NM , PAGE_URL , PAGE_JSP_NM , WRTER , WRT_YMD ,PAGE_DC)
+	SELECT
+	IFNULL (MAX(PAGE_ID*1) + 1 , 1)
+	,#{PAGE_NM}
+	,#{PAGE_URL}
+	,#{PAGE_JSP_NM}
+	,#{WRTER}
+	,NOW()
+	,#{PAGE_DC}
+	FROM SCREEN;
+	
+	</insert>
+	
+	<!-- 화면 상세 조회 -->
+	<select id="selectPageDetail" resultType="HashMap"
+		parameterType="HashMap">
+
+		/*
+		pageManage.selectPageDetail*/
+
+		SELECT
+		PAGE_ID
+		,PAGE_NM
+		,PAGE_URL
+		,PAGE_JSP_NM
+		,PAGE_DC
+		,(CASE
+		WHEN MDFCN_YMD IS NULL THEN
+		DATE_FORMAT(WRT_YMD,'%Y.%m.%d')
+		WHEN MDFCN_YMD IS NOT NULL THEN
+		DATE_FORMAT(MDFCN_YMD,'%Y.%m.%d')
+		END
+		) WRT_YMD
+		,(CASE
+		WHEN MDFR IS NULL
+		OR MDFR = 'NULL' THEN WRTER
+		WHEN MDFR IS NOT NULL THEN MDFR
+		END
+		) WRTER
+		FROM SCREEN
+		WHERE
+		PAGE_ID = #{PAGE_ID}
+		AND DEL_YN = "N"
+
+	</select>
+	
+	<!-- 화면 삭제 -->
+	<update id="deletePage" parameterType="HashMap">
+
+		/*
+		pageManage.deletePage*/
+		
+		UPDATE
+		SCREEN
+		SET
+		DEL_YN='Y'
+		WHERE
+		PAGE_ID =
+		#{PAGE_ID}
+
+	</update>
+	
+	<!-- 화면 수정 -->
+	<update id="updatePage" parameterType="HashMap">
+
+		/*
+		pageManage.updatePage*/
+		UPDATE
+		SCREEN
+		SET
+		PAGE_NM=#{PAGE_NM}
+		,PAGE_URL=#{PAGE_URL}
+		,PAGE_JSP_NM=#{PAGE_JSP_NM}
+		,MDFR=#{MBR_NM}
+		,MDFCN_YMD=NOW()
+		,PAGE_DC=#{PAGE_DC}
+		WHERE
+		PAGE_ID =
+		#{PAGE_ID}
+
+	</update>
+	
+	<!-- 화면 검색 조건 적용 전체 갯수 조회 -->
+	<select id="getPageSearchCount" parameterType="Map" resultType ="Integer">
+	
+	/*
+		pageManage.getPageSearchCount*/
+	<![CDATA[
+	SELECT
+		COUNT(*)
+	FROM (
+		SELECT
+			 S.*
+		FROM
+			(SELECT
+			    PAGE_ID,
+			    PAGE_NM,
+			    PAGE_URL,
+			    PAGE_JSP_NM,
+			   (CASE
+					WHEN MDFR IS NULL OR MDFR = 'NULL' THEN WRTER
+					WHEN MDFR IS NOT NULL THEN MDFR
+					END
+					) WRTER,
+			    (
+			        CASE
+			            WHEN MDFCN_YMD IS NULL THEN DATE_FORMAT(WRT_YMD, '%Y.%m.%d')
+			            WHEN MDFCN_YMD IS NOT NULL THEN DATE_FORMAT(MDFCN_YMD, '%Y.%m.%d')
+			        END
+			     ) WRT_YMD
+				FROM SCREEN 
+			    WHERE 1 = 1
+			    AND 
+			    	DEL_YN = "N"
+			    ORDER BY
+					WRT_YMD DESC
+					)S
+			
+				WHERE 1=1
+			    ]]>
+					<if test="from != null and to != null">
+						AND
+						DATE_FORMAT(WRT_YMD,'%Y.%m.%d') BETWEEN #{from} AND
+						#{to}
+					</if>
+					<if test="from != null and to == null">
+						AND
+						DATE_FORMAT(WRT_YMD,'%Y.%m.%d') BETWEEN #{from} AND
+						(SELECT MAX(DATE_FORMAT(WRT_YMD,'%Y.%m.%d')))
+					</if>
+					<if test="from == null and to != null">
+						AND
+						DATE_FORMAT(WRT_YMD,'%Y.%m.%d') BETWEEN(SELECT 
+						MIN(DATE_FORMAT(WRT_YMD,'%Y.%m.%d'))) AND
+						#{to}
+					</if>
+					<if test="SearchStr != null and SearchType != null">
+						<if test="SearchType == 'all'">
+						AND
+						(	PAGE_NM LIKE '%/${SearchStr}%' ESCAPE '/'
+						OR
+							PAGE_ID LIKE '%/${SearchStr}%' ESCAPE '/'
+						)
+						 </if> 
+						 <if test="SearchType == 'sj'">
+						AND
+							PAGE_NM LIKE '%/${SearchStr}%' ESCAPE '/'
+						 </if>
+						 <if test="SearchType == 'id'">
+						AND
+							PAGE_ID LIKE '%/${SearchStr}%' ESCAPE '/'
+						 </if>
+					 </if>
+					ORDER BY
+					WRT_YMD DESC
+					)D
+	</select>
+	
+	<!-- 화면 검색 조회 -->
+	<select id="selectPageSearchList" parameterType="HashMap"
+		resultType="HashMap">
+
+		/*
+		pageManage.selectPageSearchList*/
+		<![CDATA[
+	SELECT
+		D.*
+	FROM (
+		SELECT
+			 FORMAT(@ROWNUM := @ROWNUM-1, 0) AS NUMROW,
+			 S.*
+		FROM
+			(SELECT
+			    PAGE_NM,
+			    PAGE_ID,
+			    PAGE_URL,
+			    PAGE_JSP_NM,
+			   (CASE
+					WHEN MDFR IS NULL OR MDFR = 'NULL' THEN WRTER
+					WHEN MDFR IS NOT NULL THEN MDFR
+					END
+					) WRTER,
+			    (
+			        CASE
+			            WHEN MDFCN_YMD IS NULL THEN DATE_FORMAT(WRT_YMD, '%Y.%m.%d')
+			            WHEN MDFCN_YMD IS NOT NULL THEN DATE_FORMAT(MDFCN_YMD, '%Y.%m.%d')
+			        END
+			     ) WRT_YMD
+				FROM SCREEN A 
+			    WHERE 1 = 1
+			    AND 
+			    	DEL_YN = "N"
+			    ORDER BY
+					WRT_YMD DESC
+					)S
+					,(select @ROWNUM:=${maxNum}+1) temp
+				WHERE 1=1
+			    ]]>
+					<if test="from != null and from != ''">
+					AND 
+						<![CDATA[
+						DATE_FORMAT(WRT_YMD,'%Y.%m.%d') >= IFNULL(#{from},'')
+						]]>
+					</if>
+					<if test="to != null and to != ''">
+					AND 
+						<![CDATA[
+						DATE_FORMAT(WRT_YMD,'%Y.%m.%d') <= IFNULL(#{to},'')
+						]]>
+					</if>
+						<if test="SearchStr != null and SearchType != null">
+						<if test="SearchType == 'all'">
+						AND
+						(	PAGE_NM LIKE '%/${SearchStr}%' ESCAPE '/'
+						OR
+							PAGE_ID LIKE '%/${SearchStr}%' ESCAPE '/'
+						)
+						 </if> 
+						 <if test="SearchType == 'sj'">
+						AND
+							PAGE_NM LIKE '%/${SearchStr}%' ESCAPE '/'
+						 </if>
+						 <if test="SearchType == 'id'">
+						AND
+							PAGE_ID LIKE '%/${SearchStr}%' ESCAPE '/'
+						 </if>
+					 </if>
+					ORDER BY
+					WRT_YMD DESC
+					)D
+						<![CDATA[
+						WHERE 1=1
+						AND NUMROW <=#{maxNum}-(#{pageNum}-1)*10
+						AND NUMROW>=#{maxNum}-(#{pageNum}-1)*10-9
+						;
+						]]>
+
+	</select>
+	
+		<!-- 화면 엑셀 추가 -->
+	<insert id="insertExcelPage" parameterType="HashMap">
+	
+	/* pageManage.insertExcelPage */
+	
+	INSERT INTO
+	SCREEN
+	(PAGE_ID , PAGE_NM , PAGE_URL , PAGE_JSP_NM , WRTER , WRT_YMD)
+	SELECT
+	IFNULL (MAX(PAGE_ID*1) + 1 , 1)
+	,#{PAGE_NM}
+	,#{PAGE_URL}
+	,#{PAGE_JSP_NM}
+	,#{WRTER}
+	,NOW()
+	FROM SCREEN;
+	
+	</insert>
+	
+		<!-- 화면 글 전체 갯수 + 1  조회 -->
+	<select id="getPageMaxCount" resultType="Integer">
+		/*
+		pageManage.getPageMaxCount*/
+	
+		SELECT
+			COUNT(*) + 1
+		FROM
+			SCREEN
+	</select>
+</mapper>

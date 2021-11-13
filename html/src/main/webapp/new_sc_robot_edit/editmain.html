@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>SC-ROBOT-EDIT</title>
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1, user-scalable=yes,initial-scale=1.0" />
+    <link rel="stylesheet" href="css/editmain.css" type="text/css">
+    <link rel="stylesheet" href="css/editmain_t.css" type="text/css">
+    <script src="js/jquery-1.12.3.js"></script>
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/jquery.easing.1.3.js"></script>
+    <script src="js/jquery.transit.min.js"></script>
+    <!--    <script src="js/index.js"></script>-->
+    <script>
+        $(function() {
+            var on_off = false;
+            $('.menu_btn').click(function() {
+                on_off = !on_off;
+                if (on_off) {
+                    $("aside").animate({
+                        left: "0"
+                    }, 1000, "easeOutExpo");
+                    $('section').animate({
+                        width: "75%"
+                    }, 1000, "easeOutExpo");
+                    $('.t_stick, .b_stick').animate({
+                        top: '24px'
+                    }, 500, "easeOutExpo").animate({
+                        rotate: '45deg'
+                    }, 500, "easeOutExpo");
+                    $('.m_stick').delay(500).animate({
+                        rotate: '-45deg'
+                    }, 500, "easeOutExpo");
+
+                } else {
+
+                    $("aside").animate({
+                        left: "-25%"
+                    }, 1000, "easeOutExpo");
+                    $("section").animate({
+                        width: "100%"
+                    }, 1000, "easeOutExpo");
+                    $(".menu_btn span").animate({
+                        rotate: '0'
+                    }, 500, "easeOutExpo");
+                    $('.t_stick').animate({
+                        top: "15px"
+                    }, 500, "easeOutExpo");
+                    $('.b_stick').animate({
+                        top: "33px"
+                    }, 500, "easeOutExpo");
+                }
+            });
+        });
+
+    </script>
+</head>
+
+<body>
+   <!--메뉴바-->
+    <aside>
+        <ul>
+            <li class="intro"><a href="#none">열기</a></li>
+            <li><a href="#none">저장</a></li>
+            <li><a href="#none">다른이름저장</a></li>
+            <li><a href="#none">미리보기</a></li>
+            <li><a href="#none">소스보기</a></li>
+            <li><a href="#none">HTML 다운로드</a></li>
+            <li><a href="#none">서비스 시작</a></li>
+        </ul>
+        <div class="menu_btn">
+            <span class="t_stick"></span>
+            <span class="m_stick"></span>
+            <span class="b_stick"></span>
+        </div>
+    </aside>
+    <header>
+        <!--       탑메뉴  -->
+        <div class="top_menu">
+            <div class="top_pc">
+                <div class="left_top">
+                    <ul>
+                        <li><a href="#none">SC-ROBOT</a></li>
+                        <li><a href="#none">열기</a></li>
+                        <li><a href="#none">저장</a></li>
+                        <li><a href="#none">다른이름 저장</a></li>
+                        <li><a href="#none">미리보기</a></li>
+                        <li><a href="#none">소스보기</a></li>
+                        <li><a href="#none">HTML 다운로드</a></li>
+                        <li><a href="#none">서비스 시작</a></li>
+                    </ul>
+                </div>
+                <div class="right_top">
+                    <ul>
+                        <li><a href="#none"><img src="images/l_arrow_box.png" alt="이전으로가기"></a></li>
+                        <li><a href="#none"><img src="images/r_arrow_box.png" alt="다음으로가기"></a></li>
+                        <li><a href="#none">모두제거</a></li>
+                        <li><a href="../main_br.html">홈</a></li>
+                        <li><a href="#" class="sch_button"><i class="fas fa-search"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--       메인헤더-좌측메뉴 -->
+        <!--      프로젝트박스 -->
+        <div id="wrap">
+            <div class="leftbox">
+                <div class="left_menu1">
+                    <h3>프로젝트 박스</h3>
+                    <nav class="nav1">
+                        <ul class="gnb">
+                            <li><a href="#none"><img src="images/tree2.png" alt="회색화살표"><img src="images/page.png" alt="페이지"> 공통상단영역&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/plus.png" alt="플러스">&nbsp;<img src="images/minus.png" alt="마이너스"></a></li>
+                            <li class="main_list"><a href="#"><i class="fas fa-angle-down"></i><img src="images/tree.png" alt="검정화살표"><img src="images/open_folder.png" alt="파란색폴더"> 메뉴화면</a>
+                                <ul class="sub">
+                                    <li><a href="#">&nbsp;&nbsp;&nbsp;<img src="images/brightStar.png" alt="노란별"><img src="images/open_folder.png" alt="파란색폴더"> 상품관리&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/grid_add.png" alt="메뉴"></a>
+                                        <ul class="sub_1">
+                                            <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/white_star.png" alt="흰별"><img src="images/page.png" alt="페이지"> 상품등록</a>
+                                            <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/white_star.png" alt="흰별"><img src="images/page.png" alt="페이지"> 상품확인</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <ul class="sub">
+                                    <li><a href="#">&nbsp;&nbsp;&nbsp;<img src="images/white_star.png" alt="흰별"><img src="images/open_folder.png" alt="파란색폴더"> 1:1문의</a>
+                                        <ul class="sub">
+                                            <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/white_star.png" alt="흰별"><img src="images/open_folder.png" alt="파란색폴더"> 소비자 문의</a>
+                                                <ul class="sub_1">
+                                                    <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/white_star.png" alt="흰별"><img src="images/page.png" alt="페이지"> 문의 목록</a></li>
+                                                    <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/white_star.png" alt="흰별"><img src="images/page.png" alt="페이지"> 문의 작성</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                        <ul class="sub">
+                                            <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/white_star.png" alt="흰별"><img src="images/open_folder.png" alt="파란색폴더"> 판매자 문의</a>
+                                                <ul class="sub_1">
+                                                    <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/white_star.png" alt="흰별"><img src="images/page.png" alt="페이지"> 문의 목록</a></li>
+                                                    <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/white_star.png" alt="흰별"><img src="images/page.png" alt="페이지"> 문의 작성</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="main_list"><a href="#"><i class="fas fa-angle-down"></i><img src="images/tree.png" alt="검정화살표"><img src="images/open_folder.png" alt="파란색폴더"> 기타화면&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/question_2.png" alt="물음표" class="question">&nbsp;<img src="images/plus.png" alt="플러스"></a>
+                                <ul class="sub">
+                                    <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/page.png" alt="페이지"> 회원</a></li>
+                                    <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/page.png" alt="페이지"> 상품 상세</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#none"><img src="images/tree2.png" alt="회색화살표"><img src="images/page.png" alt="페이지"> 공통하단영역&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/plus.png" alt="플러스">&nbsp;<img src="images/minus.png" alt="마이너스"></a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <!--      리모콘박스 -->
+                <div class="left_menu2">
+                    <h3>리모콘 박스</h3>
+                    <nav class="nav2">
+                        <ul class="gnb2">
+                            <li class="main_list2"><a href="#"><i class="fas fa-angle-down"></i><img src="images/tree.png" alt="검정화살표"><img src="images/open_folder.png" alt="파란색폴더"> 속성</a>
+                                <ul class="sub2">
+                                    <li class="main_list3"><a href="#">&nbsp;&nbsp;&nbsp;<img src="images/tree.png" alt="검정화살표"><img src="images/open_folder.png" alt="파란색폴더"> 우선순위&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                                        <ul class="sub2_2">
+                                            <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/icon_sort_front.png" alt="맨앞"> 맨앞으로 보내기</a></li>
+                                            <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/icon_sort_back.png" alt="맨뒤"> 맨뒤로 보내기</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <ul class="sub2">
+                                    <li class="main_list3"><a href="#">&nbsp;&nbsp;&nbsp;<img src="images/tree.png" alt="검정화살표"><img src="images/open_folder.png" alt="파란색폴더"> 변형</a>
+                                        <ul class="sub2_1">
+                                            <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;높이 : <input type="text" /></a></li>
+                                            <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;너비 : <input type="text" /></a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <ul class="sub2">
+                                    <li class="main_list3"><a href="#">&nbsp;&nbsp;&nbsp;<img src="images/tree.png" alt="검정화살표"><img src="images/open_folder.png" alt="파란색폴더"> 모양</a>
+                                        <ul class="sub2_2">
+                                            <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/page.png" alt="페이지"> 테두리</a>
+                                                <ul class="sub2_3">
+                                                    <li><a href="#none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;왼쪽 : &nbsp;&nbsp;&nbsp;<input type="text" /> <img src="images/border.png" alt="테두리"></a></li>
+                                                    <li><a href="#none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;오른쪽 : <input type="text" class="right_input" /> <img src="images/border.png" alt="테두리"></a></li>
+                                                    <li><a href="#none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;위 : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" /> <img src="images/border.png" alt="테두리"></a></li>
+                                                    <li><a href="#none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;아래 : &nbsp;&nbsp;&nbsp;<input type="text" class="right_input" /> <img src="images/border.png" alt="테두리"></a></li>
+                                                    <li><a href="#none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;전체 : &nbsp;&nbsp;&nbsp;<input type="text" class="right_input" /> <img src="images/border.png" alt="테두리"></a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/page.png" alt="페이지"> 칠 : <span class="black_box"></span></a></li>
+                                            <li><a href="#none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/page.png" alt="페이지"> 불투명도 : <select>
+                                                        <option value="100%">100%</option>
+                                                    </select></a></li>
+                                            <li><a href="#none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/page.png" alt="페이지"> 읽기전용 : <input type="checkbox" name="bb" /></a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <ul class="sub2">
+                                    <li class="main_list3"><a href="#">&nbsp;&nbsp;&nbsp;<img src="images/tree.png" alt="검정화살표"><img src="images/open_folder.png" alt="파란색폴더"> 문자</a>
+                                        <ul class="sub2_1">
+                                            <li><a href="#none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;문자검색 : <select>
+                                                        <option value="맑은고딕(본문)">맑은고딕(본문)</option>
+                                                    </select></a></li>
+                                            <li><a href="#none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;문자사이즈 : <select>
+                                                        <option value="10px">10px</option>
+                                                    </select></a></li>
+                                            <li><a href="#none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;문자굴기 : <select>
+                                                        <option value="Regular">Regular</option>
+                                                    </select></a></li>
+                                            <li><a href="#none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;문자정렬 : <img src="images/icon_sort_left.png" alt="좌측정렬">&nbsp;<img src="images/icon_sort_center.png" alt="중앙정렬" class="center_array">&nbsp;<img src="images/icon_sort_right.png" alt="우측정렬" class="right_array">&nbsp;<img src="images/icon_sort_both.png" alt="양쪽맞춤"></a></li>
+                                            <li><a href="#none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;문자색상 : <span class="black_box"></span></a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="creat_plus">
+                        <a href="#none">더보기 <img src="images/creat_plus.png" alt="더보기"></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 컴포넌트박스 -->
+            <section>
+                <div class="component_box">
+                    <h3>컴포넌트 박스</h3>
+                    <div class="inner">
+                        <ul>
+                            <li><a href="#none"><img src="images/div.png" alt="div아이콘"></a></li>
+                            <li><a href="#none"><img src="images/text.png" alt="text아이콘"></a></li>
+                            <li><a href="#none"><img src="images/file.png" alt="file아이콘"></a></li>
+                            <li><a href="#none"><img src="images/image.png" alt="image아이콘"></a></li>
+                            <li><a href="#none"><img src="images/button.png" alt="button아이콘"></a></li>
+                            <li><a href="#none"><img src="images/calendar.png" alt="calendar아이콘"></a></li>
+                            <li><a href="#none"><img src="images/textarea.png" alt="textarea아이콘"></a></li>
+                            <li><a href="#none"><img src="images/checkbox.png" alt="checkbox아이콘"></a></li>
+                            <li><a href="#none"><img src="images/table.png" alt="table아이콘"></a></li>
+                            <li><a href="#none"><img src="images/radiobox.png" alt="radiobox아이콘"></a></li>
+                            <li><a href="#none"><img src="images/input.png" alt="input아이콘"></a></li>
+                            <li><a href="#none"><img src="images/select.png" alt="select아이콘"></a></li>
+                            <li><a href="#none"><img src="images/grid.png" alt="grid아이콘"></a></li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </section>
+        </div>
+    </header>
+</body>
+
+</html>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="robotEditHeader">
+
+	<insert id="savePrjView" parameterType="hashmap">
+
+		/*robotEditHeader.savePrjView*/
+
+		INSERT INTO T_RE_SIF_005(
+		SCRIN_ID
+		, PRJCT_ID
+		, SCRIN_NM
+		, SCRIN_LEVEL
+		, UP_SCRIN_ID
+		, SCRIN_ORDR
+		, STRG_DT
+		, MBR_ID 
+		, SCRIN_SE
+		, HTML_SOURC
+		, CRTR_DATA
+		, SCRIN_KND
+		, HIDE_YN
+		, FOLDER_YN
+		, MAIN_YN
+		)
+		VALUES (
+		#{SCRIN_ID}
+		, #{PRJCT_ID}
+		, #{SCRIN_NM}
+		, #{SCRIN_LEVEL}
+		, #{UP_SCRIN_ID}
+		, #{SCRIN_ORDR}
+		, SYSDATE()
+		, #{MBR_ID}
+		, #{SCRIN_SE}
+		, #{HTML_SOURC} 
+		, #{CRTR_DATA}
+		, #{SCRIN_KND}
+		, #{HIDE_YN}
+		, #{FOLDER_YN}
+		, #{MAIN_YN}
+		)
+		ON DUPLICATE KEY
+		UPDATE
+		PRJCT_ID = #{PRJCT_ID}
+		, SCRIN_LEVEL = #{SCRIN_LEVEL}
+		, UP_SCRIN_ID = #{UP_SCRIN_ID}
+		, SCRIN_ORDR = #{SCRIN_ORDR}
+		, SCRIN_NM = #{SCRIN_NM}
+		, STRG_DT = SYSDATE()
+		, MBR_ID = #{MBR_ID}
+		, SCRIN_SE = #{SCRIN_SE}
+		, HTML_SOURC = #{HTML_SOURC}
+		, CRTR_DATA = #{CRTR_DATA}
+		, SCRIN_KND = #{SCRIN_KND}
+		, HIDE_YN = #{HIDE_YN}
+		, FOLDER_YN = #{FOLDER_YN}
+		, HIST_CHG_DT = SYSDATE() 
+		, MAIN_YN = #{MAIN_YN}
+		<!-- MAIN_YN 추가필요 -->
+	</insert>
+
+	<select id="retrievePrjInfo" parameterType="hashmap"
+		resultType="HashMap">
+		/* robotEditHeader.retrievePrjInfo */
+
+		SELECT PR.PRJCT_ID AS PRJ_ID
+		, PR.PRJCT_NM AS PRJ_NM
+		, PR.UPEND_USE_YN AS HEADER_OPEN_YN
+		, PR.LPT_USE_YN AS FOOTER_OPEN_YN
+		FROM T_RE_PRJ_004 PR 
+		WHERE PR.PRJCT_ID = #{PRJ_ID}
+	</select>
+
+
+	<select id="retrieveViewList" parameterType="hashmap"
+		resultType="HashMap">
+
+		/* robotEditHeader.retrieveViewList */
+
+		SELECT SI.SCRIN_ID AS VIEW_ID
+		, SI.PRJCT_ID AS PRJ_ID
+		, SI.SCRIN_NM AS VIEW_NM
+		, SI.SCRIN_LEVEL AS VIEW_LVL
+		, SI.UP_SCRIN_ID AS HRNK_VIEW_ID
+		, SI.SCRIN_ORDR AS VIEW_SEQ
+		, SI.SCRIN_SE AS VIEW_DVS
+		, SI.FOLDER_YN
+		, SI.HIDE_YN
+		, SI.MBR_ID AS CRTR_ID
+		, SI.HTML_SOURC AS HTML_SOURCE
+		, SI.SCRIN_KND
+		, SI.CRTR_DATA
+		, SI.MAIN_YN
+		FROM T_RE_SIF_005 SI
+		WHERE
+		SI.PRJCT_ID = #{PRJ_ID}
+		ORDER BY SCRIN_SE, SCRIN_LEVEL, SCRIN_ORDR
+
+	</select>
+
+</mapper>

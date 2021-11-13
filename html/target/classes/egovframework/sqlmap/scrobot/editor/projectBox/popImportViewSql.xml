@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="popImportView">
+
+	<select id="loadImportView" parameterType="string" resultType="map">
+		/* popImportView.loadImportView*/
+		
+		SELECT PRJ.PRJCT_NM
+			, SI.SCRIN_NM
+			, SI.SCRIN_ID
+			, SI.CRTR_DATA
+			, SI.SCRIN_KND
+			, DATE_FORMAT(SI.HIST_CHG_DT,'%y.%m.%d %H:%i') AS HIST_CHG_DT
+		FROM T_RE_SIF_005 SI
+		LEFT OUTER JOIN T_RE_PRJ_004 PRJ
+		ON SI.PRJCT_ID = PRJ.PRJCT_ID
+		WHERE SI.SCRIN_SE IN (1, 2)	
+		AND SI.MBR_ID = #{mbrId}
+		ORDER BY PRJCT_NM, HIST_CHG_DT
+		
+	</select>
+	
+
+</mapper>

@@ -1,0 +1,11 @@
+{
+	"overwrite" : true,
+	"targets" : ["html"],
+	
+	
+	"packagePath" : "sourceFileGenerator",
+	"outputPath" : "c:\\temp\\output"
+
+
+	
+}
