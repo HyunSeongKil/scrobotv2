@@ -40,6 +40,7 @@ export class Business28Component implements OnInit {
         //
         if ('B000' === rstlCd) {
           // TODO 본인인증 성공. 다음 페이지로 이동
+          alert('본인인증 성공. 어디로 이동하지???');
         } else {
           // TODO 오류발생
         }
