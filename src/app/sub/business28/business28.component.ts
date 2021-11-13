@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ScUtil } from 'src/app/service/util';
 import { environment } from 'src/environments/environment';
 
@@ -9,7 +10,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./business28.component.css'],
 })
 export class Business28Component implements OnInit {
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     ScUtil.loadStyle('../assets/css/business28.css');
   }
 
@@ -26,12 +27,12 @@ export class Business28Component implements OnInit {
 
     //
     const intvl = setInterval(() => {
-      const el: HTMLFormElement | null = document.querySelector('[name=form4]');
-      if (null === el) {
+      const form: HTMLFormElement | null = document.querySelector('[name=form4]');
+      if (null === form) {
         return;
       }
 
-      const rstlCd = (el.querySelector('[name=rslt_cd]') as HTMLInputElement).value;
+      const rstlCd = (form.querySelector('[name=rslt_cd]') as HTMLInputElement).value;
 
       //
       if ('' !== rstlCd) {
@@ -39,10 +40,12 @@ export class Business28Component implements OnInit {
 
         //
         if ('B000' === rstlCd) {
-          // TODO 본인인증 성공. 다음 페이지로 이동
-          alert('본인인증 성공. 어디로 이동하지???');
+          //  본인인증 성공. 다음 페이지로 이동
+          this.router.navigate(['sub/business4']);
         } else {
-          // TODO 오류발생
+          //  오류발생
+          alert('인증에 실패했습니다. 다시 시도하시기 바랍니다.');
+          location.href = './sub/business28';
         }
       }
     }, 500);

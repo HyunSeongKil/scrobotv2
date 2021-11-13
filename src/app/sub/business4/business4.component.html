@@ -1,1 +1,41 @@
-<p>business4 works!</p>
+<app-header></app-header>
+
+<div id="container">
+  <h1>회원가입</h1>
+  <div class="center">
+    <div class="table_content">
+      <form method="post" [formGroup]="form">
+        <table>
+          <tr>
+            <th>이메일 (회원 ID) <span class="red_f">*</span></th>
+            <td><input type="text" formControlName="userId" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="red_f d-none">*해당 이메일은 이미 가입된 이메일입니다.</span></td>
+          </tr>
+          <tr>
+            <th>비밀번호 <span class="red_f">*</span></th>
+            <td><input type="password" formControlName="password" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="gray_f">*6 ~ 20자 이하 대소문자, 숫자 조합으로 입력하세요.</span></td>
+          </tr>
+          <tr>
+            <th>비밀번호 확인</th>
+            <td><input type="password" formControlName="password2" /></td>
+          </tr>
+          <tr>
+            <th>이름</th>
+            <td><input type="text" formControlName="userNm" /></td>
+          </tr>
+          <tr>
+            <th>전화번호</th>
+            <td><input type="text" placeholder="- 없이 숫자만" formControlName="telno" /></td>
+          </tr>
+        </table>
+      </form>
+    </div>
+    <div class="btn">
+      <a href="javascript:;" (click)="onJoinClick()">회원가입</a>&nbsp;&nbsp;
+      <a routerLink="/index">취소</a>
+      <!-- <a href="business12_br.html">회원가입</a>&nbsp;&nbsp; -->
+      <!-- <a href="main_logout_br.html">취소</a> -->
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

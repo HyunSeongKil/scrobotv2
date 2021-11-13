@@ -30,18 +30,18 @@ export class SelfCrtfc3Component implements OnInit {
         clearInterval(intvl);
 
         //
-        if ('B000' === this.rsltCd) {
-          const form: HTMLFormElement | null = opener!.document.querySelector('[name=form4]');
-          if (null === form) {
-            return;
-          }
-
-          (form.querySelector('[name=rslt_cd]') as HTMLInputElement).value = this.rsltCd;
-          (form.querySelector('[name=rslt_msg]') as HTMLInputElement).value = this.rsltMsg;
-          (form.querySelector('[name=mdl_tkn]') as HTMLInputElement).value = this.mdlTkn;
-
-          self.close();
+        // if ('B000' === this.rsltCd) {
+        const form: HTMLFormElement | null = opener!.document.querySelector('[name=form4]');
+        if (null === form) {
+          return;
         }
+
+        (form.querySelector('[name=rslt_cd]') as HTMLInputElement).value = this.rsltCd;
+        (form.querySelector('[name=rslt_msg]') as HTMLInputElement).value = this.rsltMsg;
+        (form.querySelector('[name=mdl_tkn]') as HTMLInputElement).value = this.mdlTkn;
+
+        self.close();
+        // }
       }
     }, 500);
   }

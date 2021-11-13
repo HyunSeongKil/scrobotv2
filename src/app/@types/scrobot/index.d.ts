@@ -3,6 +3,7 @@ export namespace Scrobot {
     userId: string;
     userNm?: string;
     password?: string;
+    telno?: string;
   }
   export interface Prjct {
     prjctId: string;
