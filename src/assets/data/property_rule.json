@@ -71,5 +71,9 @@
     "target": ["button"],
     "name": "버튼구분"
   },
+  "img": {
+    "target": ["img"],
+    "name": "이미지 소스"
+  },
   "data": {}
 }

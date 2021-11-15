@@ -119,6 +119,48 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     $('table.table.property > tbody > tr.button').remove();
   }
 
+  /**
+   *
+   * @param $el
+   * @returns
+   */
+  private showImgProperty($el: JQuery<HTMLElement> | undefined): void {
+    if (undefined === $el) {
+      return;
+    }
+
+    const imgRule = this.rule.img;
+
+    if (!this.isTargetEl($el, imgRule.target)) {
+      return;
+    }
+
+    let $el2 = $el.clone();
+    if (ScUtil.isWrapperEl($el2)) {
+      $el2 = $el.children().first();
+    }
+
+    let s = '';
+    s += `<tr class="img">`;
+    s += `  <th>${imgRule.name}</th>`;
+    s += `  <td>`;
+    s += `    <input type="file" class="form-control d-inline" />`;
+    s += `  </td>`;
+    s += `</tr>`;
+
+    //
+    $('table.table.property > tbody > tr.img').remove();
+    //
+    $('table.table.property > tbody').append(s);
+    //
+    $('table.table.property > tbody > tr.img');
+  }
+
+  /**
+   *
+   * @param $el
+   * @returns
+   */
   private showWordDicaryProperty($el: JQuery<HTMLElement> | undefined): void {
     if (undefined === $el) {
       return;
@@ -581,6 +623,7 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     this.showElementProperty($el);
     this.showWordDicaryProperty($el);
     this.showBtnProperty($el);
+    this.showImgProperty($el);
   }
 
   /**
