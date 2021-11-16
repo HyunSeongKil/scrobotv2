@@ -93,6 +93,24 @@ export class ScUtil {
   }
 
   /**
+   * 이미지 파일인지 여부
+   * @param filename 파일명
+   * @returns 이미지 파일이면 true
+   */
+  static isImageFile(filename: string): boolean {
+    if ('' === filename) {
+      return false;
+    }
+
+    let b: boolean = false;
+    ['.jpg', '.png', '.gif', '.bmp', '.jpeg'].forEach((ext) => {
+      b ||= filename.toLowerCase().endsWith(ext);
+    });
+
+    return b;
+  }
+
+  /**
    * 부모가 랩퍼 엘리먼트인지 여부
    * @param $el 엘리먼트
    * @returns 부모가 랩퍼 엘리먼트이면 true

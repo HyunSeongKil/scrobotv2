@@ -3,10 +3,12 @@ import { HtmlAstPath } from '@angular/compiler';
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Scrobot } from 'src/app/@types/scrobot';
+import { AtchmnflService } from 'src/app/service/atchmnfl.service';
 import { CmmnCodeService } from 'src/app/service/cmmn-code.service';
 import { ElService } from 'src/app/service/el.service';
 import { SelectedElService } from 'src/app/service/selected-el.service';
 import { ScUtil } from 'src/app/service/util';
+import { environment } from 'src/environments/environment';
 import { WordDicarySelectDialogComponent, WordDicarySelectMessage } from '../word-dicary-select-dialog/word-dicary-select-dialog.component';
 import { TableItemEditDialogComponent } from './table-item-edit-dialog/table-item-edit-dialog.component';
 
@@ -50,11 +52,13 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   selectedEventSub: Subscription = new Subscription();
   unselectedEventSub: Subscription = new Subscription();
 
+  $selectedEl: JQuery<HTMLElement> | undefined = undefined;
+
   /**
    *
    * @param cmmnCodeService
    */
-  constructor(private http: HttpClient, private cmmnCodeService: CmmnCodeService, private elService: ElService, private selectedElService: SelectedElService) {
+  constructor(private http: HttpClient, private cmmnCodeService: CmmnCodeService, private elService: ElService, private selectedElService: SelectedElService, private atchmnflService: AtchmnflService) {
     http.get(`./assets/data/property_rule.json`).subscribe((res: any) => {
       this.rule = res;
     });
@@ -101,12 +105,14 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
    */
   ngOnInit(): void {
     this.selectedEventSub = this.selectedElService.selectedEvent.subscribe(($el) => {
+      this.$selectedEl = $el;
       this.removeAllRows();
 
       this.getBtnSes();
       this.showProperty($el);
     });
     this.unselectedEventSub = this.selectedElService.unselectedEvent.subscribe(() => {
+      this.$selectedEl = undefined;
       this.removeAllRows();
     });
   }
@@ -117,6 +123,7 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     $('table.table.property > tbody > tr.element').remove();
     $('table.table.property > tbody > tr.word-dicary').remove();
     $('table.table.property > tbody > tr.button').remove();
+    $('table.table.property > tbody > tr.img').remove();
   }
 
   /**
@@ -153,7 +160,33 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     //
     $('table.table.property > tbody').append(s);
     //
-    $('table.table.property > tbody > tr.img');
+    $('table.table.property > tbody > tr.img')
+      .find('input[type=file]')
+      .on('change', (e: any) => {
+        const el: HTMLInputElement = e.currentTarget as HTMLInputElement;
+        if (null === el || null === el.files) {
+          return;
+        }
+
+        if (0 === el.files.length) {
+          alert('파일을 선택하세요.');
+          return;
+        }
+
+        if (!ScUtil.isImageFile(el.files[0].name)) {
+          alert('이미지 파일만 첨부가능합니다.');
+          return;
+        }
+
+        //  파일 첨부
+        this.atchmnflService.regist(el.files[0]).then((res: any) => {
+          if (ScUtil.isWrapperEl($el)) {
+            const $el2 = $el.children().first();
+
+            $el2.attr('src', `${this.atchmnflService.getUrl(res.data)}`);
+          }
+        });
+      });
   }
 
   /**
@@ -955,11 +988,15 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
       const v = $tr.find('input').val();
       // console.log(cssRule, v);
 
-      if (ScUtil.isWrapperEl($el)) {
-        $el = $el?.children().first();
-      }
-
       $el?.css(selector, v + (undefined !== cssRule.unit ? cssRule.unit : ''));
+
+      if (ScUtil.isWrapperEl($el)) {
+        //
+        $el
+          ?.children()
+          .first()
+          .css(selector, v + (undefined !== cssRule.unit ? cssRule.unit : ''));
+      }
     });
   }
   /**
@@ -1080,6 +1117,39 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     });
   }
 
+  /**
+   * 이미지
+   * @param $el
+   * @returns
+   */
+  private applyImgProperty2($el: JQuery<HTMLElement> | undefined): void {
+    if (undefined === $el) {
+      return;
+    }
+
+    const imgRule = this.rule.img;
+
+    if (!this.isTargetEl($el, imgRule.target)) {
+      return;
+    }
+
+    const $img = $el.children().first();
+    const src = $img.attr('src');
+    if (null === src || undefined === src) {
+      return;
+    }
+
+    if (-1 === src.indexOf('=')) {
+      return;
+    }
+
+    const athmnflId = src.split('=')[1];
+    $img.attr('data-atchmnfl-id', athmnflId);
+  }
+
+  /**
+   * 버튼
+   */
   private applyBtnProperty2($el: JQuery<HTMLElement> | undefined): void {
     if (undefined === $el) {
       return;
@@ -1206,6 +1276,7 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     this.applyElementProperty2($el);
     this.applyWordDicaryProperty2($el);
     this.applyBtnProperty2($el);
+    this.applyImgProperty2($el);
     // this.applyCssColorProperty($el);
     // this.applyCssFontSizeProperty($el);
     // this.applyBtnProperty($el);
@@ -1272,6 +1343,46 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     }
 
     return target.includes(ScUtil.getTagName($el) ?? '');
+  }
+
+  /**
+   * 속성 취소
+   * @param $el 엘리먼트
+   */
+  cancelProperty($el: JQuery<HTMLElement> | undefined): void {
+    if (undefined === $el) {
+      $el = this.selectedElService.getOne();
+    }
+    this.cancelImgProperty($el);
+  }
+
+  /**
+   * 이미지 속성 취소
+   * @param $el 엘리먼트
+   * @returns
+   */
+  cancelImgProperty($el: JQuery<HTMLElement> | undefined): void {
+    if (undefined === $el) {
+      return;
+    }
+
+    const imgRule = this.rule.img;
+
+    if (!this.isTargetEl($el, imgRule.target)) {
+      return;
+    }
+
+    //
+    const $img = $el.children().first();
+    $img.attr('src', '');
+
+    const atchmnflId: string | undefined = $img.attr('data-atchmnfl-id');
+    if (undefined === atchmnflId || '' === atchmnflId) {
+      return;
+    }
+
+    // 예전 이미지로 표시
+    $img.attr('src', `${this.atchmnflService.getUrl(atchmnflId)}`);
   }
 }
 
