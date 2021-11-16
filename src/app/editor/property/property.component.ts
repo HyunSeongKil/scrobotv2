@@ -151,7 +151,8 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     s += `<tr class="img">`;
     s += `  <th>${imgRule.name}</th>`;
     s += `  <td>`;
-    s += `    <input type="file" class="form-control d-inline" />`;
+    s += `    <input type="file" class="form-control " />`;
+    s += `    <a href="javascript:;">X</a>`;
     s += `  </td>`;
     s += `</tr>`;
 
@@ -159,7 +160,15 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     $('table.table.property > tbody > tr.img').remove();
     //
     $('table.table.property > tbody').append(s);
-    //
+    // src 삭제 이벤트 처리
+    $('table.table.property > tbody > tr.img')
+      .find('a')
+      .on('click', () => {
+        const $img = this.$selectedEl?.children().first();
+        $img?.attr('src', '');
+      });
+
+    // 파일 선택 이벤트 처리
     $('table.table.property > tbody > tr.img')
       .find('input[type=file]')
       .on('change', (e: any) => {
@@ -179,7 +188,7 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
         }
 
         //  파일 첨부
-        this.atchmnflService.regist(el.files[0]).then((res: any) => {
+        this.atchmnflService.regist(this.prjctId, el.files[0]).then((res: any) => {
           if (ScUtil.isWrapperEl($el)) {
             const $el2 = $el.children().first();
 
@@ -1139,7 +1148,9 @@ export class PropertyComponent implements OnInit, OnChanges, AfterViewInit, OnDe
       return;
     }
 
+    // src에 값 없으면 data값도 삭제
     if (-1 === src.indexOf('=')) {
+      $img.attr('data-atchmnfl-id', '');
       return;
     }
 

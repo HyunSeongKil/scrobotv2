@@ -12,8 +12,9 @@ import { environment } from 'src/environments/environment';
 export class AtchmnflService {
   constructor(private http: HttpClient) {}
 
-  regist(f: File): Promise<any> {
+  regist(prjctId: string, f: File): Promise<any> {
     const fd = new FormData();
+    fd.append('prjctId', prjctId);
     fd.append('file', f);
 
     return this.http.post(`${environment.url}/atchmnfls`, fd).toPromise();
@@ -24,7 +25,11 @@ export class AtchmnflService {
    * @param atchmnflId 첩부파일 아이디
    * @returns 다운로드 url
    */
-  getUrl(atchmnflId: string | number): string {
+  getUrl(atchmnflId: string | number | undefined): string {
+    if (undefined === atchmnflId) {
+      return '';
+    }
+
     return `${environment.url}/atchmnfls/dwld-file?atchmnflId=` + atchmnflId;
   }
 }

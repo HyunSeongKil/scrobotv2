@@ -4,6 +4,7 @@ import * as $ from 'jquery';
 import 'jqueryui';
 import { Subscription } from 'rxjs';
 import { Scrobot } from '../@types/scrobot';
+import { AtchmnflService } from '../service/atchmnfl.service';
 import { EditorHeaderService } from '../service/editor-header.service';
 import { EditorService } from '../service/editor.service';
 import { ElService } from '../service/el.service';
@@ -89,7 +90,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
    * @param editorService
    * @returns
    */
-  constructor(route: ActivatedRoute, private router: Router, private renderer: Renderer2, private elService: ElService, private selectedElService: SelectedElService, private editorService: EditorService, private editorHeaderService: EditorHeaderService) {
+  constructor(route: ActivatedRoute, private router: Router, private renderer: Renderer2, private elService: ElService, private selectedElService: SelectedElService, private editorService: EditorService, private editorHeaderService: EditorHeaderService, private atchmnflService: AtchmnflService) {
     ScUtil.loadStyle('../assets/css/bootstrap.min.css');
 
     route.queryParams.subscribe((params) => {
@@ -266,6 +267,12 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
     $el.css('border', '2px dashed red');
     this.selectedElService.add($el.attr('id'), $el);
     this.$selectedEl = $el;
+
+    // img이면
+    if ('img' === $el.attr('data-tag-name')) {
+      const $img = $el.children().first();
+      $img.attr('src', this.atchmnflService.getUrl($img.attr('data-atchmnfl-id')));
+    }
 
     $('div.content').append($el);
   }
