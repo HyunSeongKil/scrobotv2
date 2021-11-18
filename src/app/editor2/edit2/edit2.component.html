@@ -1,0 +1,57 @@
+<header>
+  <!--       탑메뉴  -->
+  <div class="top_menu">
+    <div class="top_pc">
+      <div class="left_top">
+        <ul>
+          <li><a href="javascript:;">SC-ROBOT</a></li>
+          <li><a href="javascript:;">열기</a></li>
+          <li><a href="javascript:;" *ngIf="'' !== editingScrinId">저장</a></li>
+          <li><a href="javascript:;" *ngIf="'' !== editingScrinId" (click)="closeEditing()">닫기</a></li>
+          <li><a href="javascript:;">다른이름 저장</a></li>
+          <li><a href="javascript:;">미리보기</a></li>
+          <li><a href="javascript:;">소스보기</a></li>
+          <li><a href="javascript:;">HTML 다운로드</a></li>
+          <li><a href="javascript:;">서비스 시작</a></li>
+        </ul>
+      </div>
+      <div class="right_top">
+        <ul>
+          <li>
+            <a href="javascript:;"><img src="./assets/images/editor/l_arrow_box.png" alt="이전으로가기" /></a>
+          </li>
+          <li>
+            <a href="javascript:;"><img src="./assets/images/editor/r_arrow_box.png" alt="다음으로가기" /></a>
+          </li>
+          <li><a href="javascript:;">모두제거</a></li>
+          <li><a href="../main_br.html">홈</a></li>
+          <li>
+            <a href="#" class="sch_button"><i class="fas fa-search"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!--       메인헤더-좌측메뉴 -->
+
+  <section id="sec1" class="clear">
+    <ul class="tab" style="padding-left: 0">
+      <li class="on SCRIN" #tabScrin data-tab-se="SCRIN">
+        <a href="javascript:;" (click)="onTabClick('SCRIN')">화면</a>
+        <app-scrin2 (initedEvent)="initedEvent($event)" (scrinIdChangedEvent)="scrinIdChangedEvent($event)"></app-scrin2>
+      </li>
+      <li class="sec2 MENU" #tabMenu data-tab-se="MENU">
+        <a href="javascript:;" (click)="onTabClick('MENU')">메뉴</a>
+        <app-menu2 class="" (initedEvent)="initedEvent($event)"></app-menu2>
+      </li>
+      <li class="sec3 COMPN d-none" #tabCompn data-tab-se="COMPN">
+        <a href="javascript:;" (click)="onTabClick('COMPN')">콤포넌트</a>
+        <app-compn2 class="" (initedEvent)="initedEvent($event)" (selectedEvent)="compnSelectedEvent($event)"></app-compn2>
+      </li>
+      <li class="sec4 PROPERTY d-none" #tabProperty data-tab-se="PROPERTY">
+        <a href="javascript:;" (click)="onTabClick('PROPERTY')">속성</a>
+        <app-property2 class="" (initedEvent)="initedEvent($event)"></app-property2>
+      </li>
+    </ul>
+  </section>
+</header>

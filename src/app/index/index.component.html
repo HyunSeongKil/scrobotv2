@@ -246,4 +246,47 @@
   </div>
 </section>
 
+<!--팝업-->
+
+<!--팝업-->
+<div class="pop_bg2">
+  <div class="popup2">
+    <div class="top_header_pop">
+      <h2>프로젝트 불러오기<button class="close">X</button></h2>
+    </div>
+    <div id="div_pop">
+      <!-- 타이틀 -->
+
+      <div class="main_dot_">
+        <h3>환영합니다 sootechsys님.</h3>
+        <span>프로젝트</span>
+      </div>
+      <div class="center">
+        <ul class="fir_ul">
+          <li class="leftz">
+            <a href="#none"
+              ><img src="./assets/images/add_new_icon.png" alt="플러스" />
+              <div class="txt">
+                <h2>새 프로젝트 생성</h2>
+              </div>
+            </a>
+          </li>
+          <li *ngFor="let x of prjcts">
+            <a href="javascript:;">
+              <div class="txt">
+                <h3><input type="text" value="{{ x.prjctNm }}" readonly="readonly" /></h3>
+                <p>삭제</p>
+                <p>확인</p>
+              </div>
+              <div class="fir_div">화면 ㅣ 4개</div>
+              <div class="sec_div">최초생성</div>
+              <div class="btnn"><a href="javascript:;" (click)="gotoEditor(x.prjctId)">프로젝트 편집</a></div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
 <app-footer></app-footer>

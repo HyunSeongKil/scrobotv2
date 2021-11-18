@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { Scrobot } from '../@types/scrobot';
+import { AuthService } from '../service/auth.service';
+import { HeaderService } from '../service/header.service';
+import { PrjctService } from '../service/prjct.service';
 import { ScUtil } from '../service/util';
 
 declare const $: any;
@@ -8,10 +14,27 @@ declare const $: any;
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.css'],
 })
-export class IndexComponent implements OnInit, AfterViewInit {
-  constructor() {
+export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
+  loadPrjctsEventSub: Subscription = new Subscription();
+
+  prjcts: Scrobot.Prjct[] = [];
+
+  constructor(private router: Router, private headerService: HeaderService, private prjctService: PrjctService, private authService: AuthService) {
     ScUtil.loadStyle('../assets/css/main.css');
     ScUtil.loadStyle('../assets/css/jquery.bxslider.min.css');
+
+    //
+    this.loadPrjctsEventSub = headerService.loadPrjctsEvent.subscribe(() => {
+      prjctService.listByUserId(authService.getUserId()).then((res: any) => {
+        this.prjcts = res.data;
+      });
+    });
+  }
+  ngOnDestroy(): void {
+    //
+    if (!this.loadPrjctsEventSub.closed) {
+      this.loadPrjctsEventSub.unsubscribe();
+    }
   }
   ngAfterViewInit(): void {}
 
@@ -20,6 +43,7 @@ export class IndexComponent implements OnInit, AfterViewInit {
     ScUtil.loadScript('./assets/js/jquery.bxslider.min.js', () => {
       this.init();
     });
+    ScUtil.loadScript('../assets/js/index.js');
   }
 
   init(): void {
@@ -51,5 +75,13 @@ export class IndexComponent implements OnInit, AfterViewInit {
     }
     const noticeRollingOff = setInterval(noticeRolling, 3000);
     $('.rolling').append($('.rolling li').first().clone());
+  }
+
+  gotoEditor(prjctId: string): void {
+    if (!confirm('편집화면으로 이동하시겠습니까?')) {
+      return;
+    }
+
+    this.router.navigate(['/editor'], { queryParams: { prjctId } });
   }
 }

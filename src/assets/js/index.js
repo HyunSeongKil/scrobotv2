@@ -7,7 +7,7 @@ $(function () {
     $(".pop_bg").hide();
   });
 
-  //팝업_기능관리
+  //팝업_기능관리, 팝업_프로젝트불러오기
   $(".add_btn").click(function () {
     $(".pop_bg2").show();
   });
@@ -15,30 +15,56 @@ $(function () {
     $(".pop_bg2").hide();
   });
 
-  // /*헤더메뉴*/
-  // $('.gnb>li').mouseover(function () {
-  //     $(".sub", this).stop().slideDown();
-  //     //        $('.bg_ol').stop().slideDown();
+  //팝업_프로젝트불러오기
+  $(".add_btn2").click(function () {
+    $(".pop_bg2").show();
+  });
+  $(".close").click(function () {
+    $(".pop_bg2").hide();
+  });
 
-  // });
-  // $('.gnb>li').mouseout(function () {
-  //     $(".sub", this).stop().slideUp();
-  //     //        $('.bg_ol').stop().slideUp();
+  //팝업_회원탈퇴
+  $(".out a").click(function () {
+    $(".pop_bg3").show();
+  });
+  $(".close").click(function () {
+    $(".pop_bg3").hide();
+  });
 
-  // });
+  //팝업_첨부파일
 
-  // /*메뉴관리목록_서브*/
+  $("#contents").click(function () {
+    $("#popup").fadeIn();
+  });
 
-  // $('.gnb3>li').mouseover(function () {
-  //     $(".sub3", this).stop().slideDown();
-  //     //        $('.bg_ol').stop().slideDown();
+  $("#popup").click(function () {
+    $("#popup").fadeOut();
+  });
 
-  // });
-  // $('.gnb3>li').mouseout(function () {
-  //     $(".sub3", this).stop().slideUp();
-  //     //        $('.bg_ol').stop().slideUp();
+  /*헤더메뉴*/
+  $(".gnb>li").mouseover(function () {
+    $(".sub", this).stop().slideDown();
+    //        $('.bg_ol').stop().slideDown();
+  });
+  $(".gnb>li").mouseout(function () {
+    $(".sub", this).stop().slideUp();
+    //        $('.bg_ol').stop().slideUp();
+  });
 
-  // });
+  /*메뉴관리목록_서브*/
+
+  $(".gnb3>li").mouseover(function () {
+    $(".sub3", this).stop().slideDown();
+    //        $('.bg_ol').stop().slideDown();
+  });
+  $(".gnb3>li").mouseout(function () {
+    $(".sub3", this).stop().slideUp();
+    //        $('.bg_ol').stop().slideUp();
+  });
+  /* ver.PC serach_box */
+  $(".sch_button").click(function () {
+    $(".sch").fadeToggle();
+  });
 
   /*탭*/
 
@@ -48,17 +74,17 @@ $(function () {
 });
 
 $(function () {
-  //   $(".sootechsys_btn").mouseover(function () {
-  //     $(".sub2").stop().slideDown();
-  //     //        $('.bg_ol').stop().slideDown();
-  //   });
-  //   $(".sootechsys_btn").mouseout(function () {
-  //     $(".sub2").stop().slideUp();
-  //     //        $('.bg_ol').stop().slideUp();
-  //   });
-  //   $(".tab>li").click(function () {
-  //     $(this).addClass("on").siblings().removeClass("on");
-  //   });
+  $(".sootechsys_btn").mouseover(function () {
+    $(".sub2").stop().slideDown();
+    //        $('.bg_ol').stop().slideDown();
+  });
+  $(".sootechsys_btn").mouseout(function () {
+    $(".sub2").stop().slideUp();
+    //        $('.bg_ol').stop().slideUp();
+  });
+  $(".tab>li").click(function () {
+    $(this).addClass("on").siblings().removeClass("on");
+  });
 });
 
 $(function () {

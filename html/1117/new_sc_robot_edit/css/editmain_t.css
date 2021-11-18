@@ -1,0 +1,276 @@
+@charset "utf-8";
+
+
+@media screen and (max-width : 1024px) and (min-width: 768px) {
+
+    body{
+        overflow-x: hidden;
+    }
+    /*숨기기*/
+    .left_top {
+        display: none;
+    }
+
+    /*헤더*/
+    .top_pc {
+        width: 100%;
+        background: #535353;
+        height: 35px;
+        text-align: center;
+
+    }
+
+    .right_top ul li {
+        line-height: 35px;
+    }
+
+    .right_top ul li:nth-of-type(1) a,
+    .right_top ul li:nth-of-type(2) a {
+        width: 20px;
+        line-height: 32px;
+    }
+
+    /*메뉴바*/
+
+    aside {
+        width: 25%;
+        height: 100%;
+        position: absolute;
+        background: #fff;
+        left: -25%;
+        z-index: 999;
+        display: block;
+    }
+
+    aside .logo {
+        margin: 20px 0;
+    }
+
+    aside .logo img {
+        width: 100%;
+    }
+
+    aside ul li {
+        padding: 1rem 2rem;
+
+    }
+
+    aside ul li a {
+        color: #000;
+        font-size: 13px;
+        line-height: 1;
+        font-weight: 600;
+    }
+
+    .intro {
+        margin-top: 5px;
+
+    }
+
+    aside .menu_btn {
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        top: -8px;
+        left: 100%;
+        background: #535353;
+        cursor: pointer;
+    }
+
+    aside .menu_btn span {
+        display: block;
+        width: 30px;
+        height: 2.5px;
+        margin: 0 10px;
+        position: absolute;
+        background: #fff;
+        border-radius: 2px;
+    }
+
+    aside .menu_btn span.t_stick {
+        top: 15px;
+    }
+
+    aside .menu_btn span.m_stick {
+        top: 24px;
+    }
+
+    aside .menu_btn span.b_stick {
+        top: 33px;
+    }
+
+
+    /*컴포넌트박스*/
+    .component_box {
+        width: 100vw;
+        height: 243px;
+    }
+
+    .component_box h3 {
+        width: 99.2vw;
+    }
+
+    .inner {
+        width: 99.2vw;
+        height: 210px;
+        background: #fff;
+
+    }
+
+    .inner ul {
+        display: inherit;
+        
+    }
+
+    .inner ul li {
+        float: left;
+        width: 8%;
+        line-height: 50px;
+        text-align: center;
+        padding: 10px 10px 10px 30px;
+        margin-top:18px;
+    }
+
+    .inner ul li a img {
+        width: 150%;
+    }
+
+
+}
+
+@media screen and (max-width:767px) {
+    
+    body{
+        overflow-x: hidden;
+    }
+    /*숨기기*/
+    .left_top {
+        display: none;
+    }
+
+    /*헤더*/
+    .top_pc {
+        width: 100%;
+        background: #535353;
+        height: 35px;
+        text-align: center;
+
+    }
+
+    .right_top ul li {
+        line-height: 35px;
+    }
+
+    .right_top ul li:nth-of-type(1) a,
+    .right_top ul li:nth-of-type(2) a {
+        width: 20px;
+        line-height: 32px;
+    }
+
+    /*메뉴바*/
+
+    aside {
+        width: 25%;
+        height: 100%;
+        position: absolute;
+        background: #fff;
+        left: -25%;
+        z-index: 999;
+        display: block;
+    }
+
+    aside .logo {
+        margin: 20px 0;
+    }
+
+    aside .logo img {
+        width: 100%;
+    }
+
+    aside ul li {
+        padding: 1rem 2rem;
+
+    }
+
+    aside ul li a {
+        color: #000;
+        font-size: 13px;
+        line-height: 1;
+        font-weight: 600;
+    }
+
+    .intro {
+        margin-top: 5px;
+
+    }
+
+    aside .menu_btn {
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        top: -8px;
+        left: 100%;
+        background: #535353;
+        cursor: pointer;
+    }
+
+    aside .menu_btn span {
+        display: block;
+        width: 30px;
+        height: 2.5px;
+        margin: 0 10px;
+        position: absolute;
+        background: #fff;
+        border-radius: 2px;
+    }
+
+    aside .menu_btn span.t_stick {
+        top: 15px;
+    }
+
+    aside .menu_btn span.m_stick {
+        top: 24px;
+    }
+
+    aside .menu_btn span.b_stick {
+        top: 33px;
+    }
+
+
+    /*컴포넌트박스*/
+    .component_box {
+        width: 100vw;
+        height: 243px;
+    }
+
+    .component_box h3 {
+        width: 99.2vw;
+    }
+
+    .inner {
+        width: 99.2vw;
+        height: 210px;
+        background: #fff;
+
+    }
+
+    .inner ul {
+        display: inherit;
+        
+    }
+
+    .inner ul li {
+        float: left;
+        width: 8%;
+        line-height: 50px;
+        text-align: center;
+        padding: 1px 0 1px 10px;
+        
+    }
+
+    .inner ul li a img {
+        width: 80%;
+    }
+
+
+}

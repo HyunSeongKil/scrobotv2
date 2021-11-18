@@ -1,0 +1,52 @@
+<div class="notice">
+  <nav class="nav1">
+    <div>
+      <ul style="padding-left: 0">
+        <li class="mt-2" *ngFor="let x of compns">
+          <a href="javascript:;" *ngIf="'Y' === x.useAt" (click)="selectCompn(x.tagName)">
+            <img src="./assets/images/editor/{{ x.imgFileNm }}" alt="{{ x.name }}" title="{{ x.name }}" />
+          </a>
+        </li>
+        <!-- <li>
+          <a href="javascript:;"><img src="./assets/images/editor/div.png" alt="div아이콘" /></a>
+        </li>
+        <li>
+          <a href="javascript:;"><img src="./assets/images/editor/text.png" alt="text아이콘" /></a>
+        </li>
+        <li>
+          <a href="javascript:;"><img src="./assets/images/editor/file.png" alt="file아이콘" /></a>
+        </li>
+        <li>
+          <a href="javascript:;"><img src="./assets/images/editor/image.png" alt="image아이콘" /></a>
+        </li>
+        <li>
+          <a href="javascript:;"><img src="./assets/images/editor/button.png" alt="button아이콘" /></a>
+        </li>
+        <li>
+          <a href="javascript:;"><img src="./assets/images/editor/calendar.png" alt="calendar아이콘" /></a>
+        </li>
+        <li>
+          <a href="javascript:;"><img src="./assets/images/editor/textarea.png" alt="textarea아이콘" /></a>
+        </li>
+        <li>
+          <a href="javascript:;"><img src="./assets/images/editor/checkbox.png" alt="checkbox아이콘" /></a>
+        </li>
+        <li>
+          <a href="javascript:;"><img src="./assets/images/editor/table.png" alt="table아이콘" /></a>
+        </li>
+        <li>
+          <a href="javascript:;"><img src="./assets/images/editor/radiobox.png" alt="radiobox아이콘" /></a>
+        </li>
+        <li>
+          <a href="javascript:;"><img src="./assets/images/editor/input.png" alt="input아이콘" /></a>
+        </li>
+        <li>
+          <a href="javascript:;"><img src="./assets/images/editor/select.png" alt="select아이콘" /></a>
+        </li>
+        <li>
+          <a href="javascript:;"><img src="./assets/images/editor/grid.png" alt="grid아이콘" /></a>
+        </li> -->
+      </ul>
+    </div>
+  </nav>
+</div>

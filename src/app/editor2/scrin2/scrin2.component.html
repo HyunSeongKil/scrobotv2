@@ -1,0 +1,51 @@
+<div class="notice">
+  <nav class="nav1">
+    <ul class="gnb" style="padding-left: 0">
+      <div class="add_btn"><a href="javascript:;" (click)="openScrinGroupRegistDialog()">등록</a></div>
+
+      <!-- 화면 그룹 -->
+      <li class="main_list mb-2" *ngFor="let x of scrinGroups">
+        <div class="row">
+          <div class="col-6">
+            <i class="fas fa-angle-down"></i>
+            <img src="./assets/images/editor/tree.png" alt="검정화살표" style="width: 20px" />
+            <img src="./assets/images/editor/open_folder.png" alt="파란색폴더" style="width: 20px" />
+            {{ x.scrinGroupNm }}
+          </div>
+          <div class="col-6 text-end">
+            <img src="./assets/images/editor/plus3.png" alt="플러스" class="pl" style="width: 20px" (click)="openScrinRegistDialog(x.scrinGroupId)" />
+            <img src="./assets/images/editor/pencil.png" alt="연필" class="mx-1" style="width: 20px" (click)="openScrinGroupUpdateDialog(x.scrinGroupId)" />
+            <img src="./assets/images/editor/waste.png" alt="휴지통" style="width: 20px" (click)="deleteScrinGroup(x.scrinGroupId)" />
+          </div>
+        </div>
+
+        <!--화면-->
+        <ul class="sub">
+          <li *ngFor="let x2 of scrins">
+            <ng-container *ngIf="x.scrinGroupId === x2.scrinGroupId">
+              <div class="row">
+                <div class="col-6">{{ x2.scrinNm }} ({{ x2.scrinSeCode }})</div>
+                <div class="col-6 text-end">
+                  <img src="./assets/images/editor/box_.png" alt="이미지1" class="mx-1" style="width: 20px" (click)="editScrin(x2.scrinId)" />
+                  <img src="./assets/images/editor/notee.png" alt="이미지2" style="width: 20px" (click)="copyScrin(x2.scrinId)" />
+                  <img src="./assets/images/editor/penc.png" alt="이미지3" class="mx-1" style="width: 20px" (click)="updateScrin(x2.scrinId)" />
+                  <img src="./assets/images/editor/garbage.png" alt="이미지4" style="width: 20px" (click)="deleteScrin(x2.scrinId)" />
+                </div>
+              </div>
+            </ng-container>
+          </li>
+        </ul>
+      </li>
+      <!-- <li class="note__ ">
+        <a href="javascript:;"
+          ><img src="./assets/images/editor/tree2.png" alt="회색화살표" /><img src="./assets/images/editor/page.png" alt="페이지" /> 게시글 관리&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./assets/images/editor/plus3.png" alt="플러스" class="pl" />&nbsp;<img src="./assets/images/editor/pencil.png" alt="연필" />&nbsp;<img
+            src="./assets/images/editor/waste.png"
+            alt="휴지통"
+        /></a>
+      </li> -->
+    </ul>
+  </nav>
+</div>
+
+<app-scrin-group-regist-dialog #scrinGroupRegistDialogRef></app-scrin-group-regist-dialog>
+<app-scrin-regist-dialog #scrinRegistDialogRef></app-scrin-regist-dialog>

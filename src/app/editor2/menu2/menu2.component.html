@@ -1,0 +1,36 @@
+<div class="notice">
+  <nav class="nav1">
+    <ul class="gnb" style="padding-left: 0">
+      <div class="add_btn"><a href="javascript:;">등록</a></div>
+      <li class="main_list" *ngFor="let x of menus">
+        <ng-container *ngIf="'-' === x.prntsMenuId">
+          <div class="row">
+            <div class="col-6">
+              <i class="fas fa-angle-down"></i>
+              <img src="./assets/images/editor/tree.png" alt="검정화살표" style="width: 20px" />
+              <img src="./assets/images/editor/open_folder.png" alt="파란색폴더" style="width: 20px" />
+              {{ x.menuNm }}
+            </div>
+            <div class="col-6 text-end">
+              <img src="./assets/images/editor/plus3.png" alt="플러스" class="pl" style="width: 20px" (click)="openMenuRegistDialog(x.menuId)" />
+              <img src="./assets/images/editor/pencil.png" alt="연필" class="mx-1" style="width: 20px" (click)="openMenuUpdateDialog(x.menuId)" />
+              <img src="./assets/images/editor/waste.png" alt="휴지통" style="width: 20px" (click)="deleteMenu(x.menuId)" />
+            </div>
+          </div>
+        </ng-container>
+
+        <ul class="sub" *ngFor="let x2 of menus">
+          <li *ngIf="x.menuId === x2.prntsMenuId">
+            <div class="row">
+              <div class="col-6">{{ x2.menuNm }}</div>
+              <div class="col-6 text-end">
+                <img src="./assets/images/editor/penc.png" alt="이미지3" style="width: 20px" />
+                <img src="./assets/images/editor/garbage.png" alt="이미지4" style="width: 20px" />
+              </div>
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</div>

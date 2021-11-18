@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CrudComponent } from './biz/crud/crud.component';
 import { EditorComponent } from './editor/editor.component';
+import { Edit2Component } from './editor2/edit2/edit2.component';
+import { Editor2Module } from './editor2/editor2.module';
 import { IndexComponent } from './index/index.component';
 import { PrjctListComponent } from './prjct/prjct-list/prjct-list.component';
 import { XxxComponent } from './run/xxx/xxx.component';
@@ -39,6 +41,7 @@ const routes: Routes = [
     path: 'editor',
     component: EditorComponent,
   },
+
   {
     path: 'run/xxx/:mbUuid/:scrinGroupUuid/:scrinUuid',
     component: XxxComponent,
@@ -50,10 +53,12 @@ const routes: Routes = [
   },
 
   { path: 'prjcts', component: PrjctListComponent },
+
+  { path: 'edit2', component: Edit2Component },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
+  imports: [Editor2Module, RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

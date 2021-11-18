@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Scrobot } from '../@types/scrobot';
 import { AuthService } from '../service/auth.service';
 import { HeaderService } from '../service/header.service';
+import { PrjctService } from '../service/prjct.service';
 import { UserService } from '../service/user.service';
 
 @Component({
@@ -18,6 +19,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   form: FormGroup;
 
   intvl: any;
+
+  prjcts: Scrobot.Prjct[] = [];
 
   /**
    * 생성자
@@ -145,5 +148,9 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.signout(true);
       }
     }, 1000 * 10);
+  }
+
+  loadPrjcts(): void {
+    this.headerService.loadPrjctsEvent.emit('');
   }
 }
