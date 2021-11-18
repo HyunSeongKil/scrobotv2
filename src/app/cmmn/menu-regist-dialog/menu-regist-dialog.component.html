@@ -1,1 +1,29 @@
-<p>menu-regist-dialog works!</p>
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">메뉴 등록</h4>
+    <button type="button" class="btn btn-sm close d-none" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form">
+      <label for="menuNm">메뉴 명<span class="req">*</span></label>
+      <input type="text" class="form-control" id="menuNm" formControlName="menuNm" />
+
+      <label for="scrinId">이동할 화면</label>
+      <select id="scrinId" class="form-select" formControlName="scrinId">
+        <option value="">-없음-</option>
+        <ng-container *ngFor="let x of scrins">
+          <!-- 등록,목록만 표시 -->
+          <option value="{{ x.scrinId }}" *ngIf="'C' === x.scrinSeCode || 'L' === x.scrinSeCode">{{ x.scrinNm }}</option>
+        </ng-container>
+      </select>
+    </form>
+
+    <div class="mt-1 font-italic"><span class="req">*</span> 필수입력 항목입니다.</div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="modal.close('SAVE')">저장</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.close('CLOSE')">닫기</button>
+  </div>
+</ng-template>

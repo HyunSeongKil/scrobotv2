@@ -1,7 +1,7 @@
 <div class="notice">
   <nav class="nav1">
     <ul class="gnb" style="padding-left: 0">
-      <div class="add_btn"><a href="javascript:;">등록</a></div>
+      <div class="add_btn"><a href="javascript:;" (click)="openMenuRegistDialog('-')">등록</a></div>
       <li class="main_list" *ngFor="let x of menus">
         <ng-container *ngIf="'-' === x.prntsMenuId">
           <div class="row">
@@ -19,13 +19,14 @@
           </div>
         </ng-container>
 
+        <!--하위메뉴-->
         <ul class="sub" *ngFor="let x2 of menus">
           <li *ngIf="x.menuId === x2.prntsMenuId">
             <div class="row">
               <div class="col-6">{{ x2.menuNm }}</div>
               <div class="col-6 text-end">
-                <img src="./assets/images/editor/penc.png" alt="이미지3" style="width: 20px" />
-                <img src="./assets/images/editor/garbage.png" alt="이미지4" style="width: 20px" />
+                <img src="./assets/images/editor/penc.png" alt="이미지3" style="width: 20px" (click)="openMenuUpdateDialog(x2.menuId, x2.prntsMenuId)" />
+                <img src="./assets/images/editor/garbage.png" alt="이미지4" style="width: 20px" (click)="deleteMenu(x2.menuId)" />
               </div>
             </div>
           </li>
@@ -35,5 +36,5 @@
   </nav>
 </div>
 
-<app-menu-regist-dialog #menuRegistDialogRef></app-menu-regist-dialog>
-<app-menu-updt-dialog #menuUpdtDialogRef></app-menu-updt-dialog>
+<app-menu-regist-dialog #menuRegistDialogRef (initedEvent)="menuRegistInitedEvent($event)"></app-menu-regist-dialog>
+<app-menu-updt-dialog #menuUpdtDialogRef (initedEvent)="menuUpdtInitedEvent($event)"></app-menu-updt-dialog>
