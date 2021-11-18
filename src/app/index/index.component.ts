@@ -82,6 +82,6 @@ export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    this.router.navigate(['/editor'], { queryParams: { prjctId } });
+    this.router.navigate(['/edit2'], { queryParams: { prjctId } });
   }
 }
