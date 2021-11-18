@@ -44,7 +44,6 @@ export class Menu2Component implements OnInit, OnDestroy {
       if (TabSe.Menu === se) {
         this.service.listByPrjctId(this.hostComponent?.prjctId ?? '').then((res: any) => {
           this.menus = res.data;
-          console.log(this.menus);
         });
       }
     });
