@@ -1,5 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Scrobot } from 'src/app/@types/scrobot';
+import { AtchmnflService } from 'src/app/service/atchmnfl.service';
+import { CompnService } from 'src/app/service/compn.service';
 import { ElService } from 'src/app/service/el.service';
 import { SelectedElService } from 'src/app/service/selected-el.service';
 import { ScUtil } from 'src/app/service/util';
@@ -26,6 +29,9 @@ export class Edit2Component implements OnInit {
 
   prjctId: string = '';
   editingScrinId: string = '';
+  compns: Scrobot.Compn[] = [];
+
+  $selectedEl: JQuery<HTMLElement> | undefined;
 
   // TAB_SE = ['SCRIN', 'MENU', 'COMPN', 'PROPERTY'];
 
@@ -33,7 +39,7 @@ export class Edit2Component implements OnInit {
    *
    * @param route
    */
-  constructor(route: ActivatedRoute, private elService: ElService, private selectedElService: SelectedElService) {
+  constructor(route: ActivatedRoute, private compnService: CompnService, private atchmnflService: AtchmnflService, private elService: ElService, private selectedElService: SelectedElService) {
     ScUtil.loadStyle('../assets/css/editmain.css');
     ScUtil.loadStyle('../assets/css/editmain_t.css');
 
@@ -92,10 +98,40 @@ export class Edit2Component implements OnInit {
    */
   scrinIdChangedEvent(scrinId: string): void {
     this.editingScrinId = scrinId;
-    this.editingEvent.emit(scrinId);
 
-    this.showTab([TabSe.Compn, TabSe.Property]);
-    this.onTabClick(TabSe.Compn);
+    if ('' !== scrinId) {
+      if (!confirm('화면을 편집하시겠습니까?')) {
+        return;
+      }
+
+      //
+      this.editingEvent.emit(scrinId);
+
+      this.showTab([TabSe.Compn, TabSe.Property]);
+      this.onTabClick(TabSe.Compn);
+
+      //
+      this.getCompns(scrinId);
+    }
+  }
+
+  /**
+   * 콤포넌트 목록 조회
+   * @param scrinId 화면아이디
+   */
+  getCompns(scrinId: string): void {
+    this.compnService.listByScrinId(scrinId).then((res: any) => {
+      this.compns = res.data;
+
+      this.elService.removeAll();
+      this.compns.sort((a, b) => {
+        return a.ordrValue - b.ordrValue;
+      });
+
+      this.compns.forEach((x) => {
+        this.addEl(x.compnSeCode, x.compnCn);
+      });
+    });
   }
 
   /**
@@ -113,6 +149,45 @@ export class Edit2Component implements OnInit {
    * 콤포넌트 선택됨 이벤트
    */
   compnSelectedEvent(tagName: string): void {}
+
+  private addEl($elOrTagName: JQuery<HTMLElement> | string, cn = ''): void {
+    if ('string' === typeof $elOrTagName) {
+      const tagName = $elOrTagName;
+      let $el = this.elService.createEl($elOrTagName, cn);
+      this.addEl($el);
+      return;
+    }
+
+    //
+    this.elService.clearAllDraggable();
+    this.elService.clearAllResizable();
+    this.elService.clearAllBorder();
+
+    // let $el = this.elService.createEl($elOrTagName, cn);
+    let $el = $elOrTagName as JQuery<HTMLElement>;
+    const tagName = ScUtil.getTagName($el);
+    if (undefined === tagName) {
+      return;
+    }
+
+    $el = this.elService.setDraggable(tagName, $el);
+    $el = this.elService.setResizable(tagName, $el);
+    $el = this.elService.listen(tagName, $el);
+
+    this.elService.add($el.attr('id'), $el);
+
+    $el.css('border', '2px dashed red');
+    this.selectedElService.add($el.attr('id'), $el);
+    this.$selectedEl = $el;
+
+    // img이면
+    if ('img' === $el.attr('data-tag-name')) {
+      const $img = $el.children().first();
+      $img.attr('src', this.atchmnflService.getUrl($img.attr('data-atchmnfl-id')));
+    }
+
+    $('div.content').append($el);
+  }
 }
 
 export const enum TabSe {
