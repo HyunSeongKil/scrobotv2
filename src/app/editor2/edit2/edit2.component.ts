@@ -111,7 +111,7 @@ export class Edit2Component implements OnInit {
       this.onTabClick(TabSe.Compn);
 
       //
-      this.getCompns(scrinId);
+      this.loadCompns(scrinId);
     }
   }
 
@@ -119,7 +119,7 @@ export class Edit2Component implements OnInit {
    * 콤포넌트 목록 조회
    * @param scrinId 화면아이디
    */
-  getCompns(scrinId: string): void {
+  loadCompns(scrinId: string): void {
     this.compnService.listByScrinId(scrinId).then((res: any) => {
       this.compns = res.data;
 
@@ -138,11 +138,19 @@ export class Edit2Component implements OnInit {
    * 편집 닫기
    */
   closeEditing(): void {
+    if (!confirm('편집화면을 닫으시겠습니까?\n※주의 : 저장하지 않은 내용은 삭제됩니다.')) {
+      return;
+    }
+
     this.editingScrinId = '';
     this.closeEditingEvent.emit('');
 
     this.showTab([TabSe.Scrin, TabSe.Menu]);
     this.onTabClick(TabSe.Scrin);
+
+    //
+    this.elService.removeAll();
+    this.selectedElService.clearAll();
   }
 
   /**
@@ -150,6 +158,12 @@ export class Edit2Component implements OnInit {
    */
   compnSelectedEvent(tagName: string): void {}
 
+  /**
+   * 엘리먼트 화면에 추가
+   * @param $elOrTagName
+   * @param cn
+   * @returns
+   */
   private addEl($elOrTagName: JQuery<HTMLElement> | string, cn = ''): void {
     if ('string' === typeof $elOrTagName) {
       const tagName = $elOrTagName;
