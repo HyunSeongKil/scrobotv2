@@ -14,7 +14,7 @@
           </div>
           <div class="col-6 text-end">
             <img src="./assets/images/editor/plus3.png" alt="플러스" class="pl" style="width: 20px" (click)="openScrinRegistDialog(x.scrinGroupId)" />
-            <img src="./assets/images/editor/pencil.png" alt="연필" class="mx-1" style="width: 20px" (click)="openScrinGroupUpdateDialog(x.scrinGroupId)" />
+            <img src="./assets/images/editor/pencil.png" alt="연필" class="mx-1" style="width: 20px" (click)="openScrinGroupUpdtDialog(x.scrinGroupId)" />
             <img src="./assets/images/editor/waste.png" alt="휴지통" style="width: 20px" (click)="deleteScrinGroup(x.scrinGroupId)" />
           </div>
         </div>
@@ -47,5 +47,8 @@
   </nav>
 </div>
 
-<app-scrin-group-regist-dialog #scrinGroupRegistDialogRef></app-scrin-group-regist-dialog>
-<app-scrin-regist-dialog #scrinRegistDialogRef></app-scrin-regist-dialog>
+<app-scrin-group-regist-dialog #scrinGroupRegistDialogRef (initedEvent)="scrinGroupRegistInitedEvent($event)"></app-scrin-group-regist-dialog>
+<app-scrin-group-updt-dialog #scrinGroupUpdtDialogRef (initedEvent)="scrinGroupUpdtInitedEvent($event)"></app-scrin-group-updt-dialog>
+<app-scrin-regist-dialog #scrinRegistDialogRef (initedEvent)="scrinRegistInitedEvent($event)"></app-scrin-regist-dialog>
+<app-scrin-updt-dialog #scrinUpdtDialogRef (initedEvent)="scrinUpdtInitedEvent($event)"></app-scrin-updt-dialog>
+<app-scrin-copy-dialog #scrinCopyDialogRef (initedEvent)="scrinCopyInitedEvent($event)"></app-scrin-copy-dialog>

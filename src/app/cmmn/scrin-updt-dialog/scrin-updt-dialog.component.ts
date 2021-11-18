@@ -6,16 +6,16 @@ import { CmmnCodeService } from 'src/app/service/cmmn-code.service';
 import { ScrinService } from 'src/app/service/scrin.service';
 
 @Component({
-  selector: 'app-scrin-regist-dialog',
-  templateUrl: './scrin-regist-dialog.component.html',
-  styleUrls: ['./scrin-regist-dialog.component.css'],
+  selector: 'app-scrin-updt-dialog',
+  templateUrl: './scrin-updt-dialog.component.html',
+  styleUrls: ['./scrin-updt-dialog.component.css'],
 })
-export class ScrinRegistDialogComponent implements OnInit {
+export class ScrinUpdtDialogComponent implements OnInit {
   @ViewChild('content') content!: ElementRef<HTMLDivElement>;
 
   @Output() initedEvent = new EventEmitter<any>();
-  @Output() registingEvent = new EventEmitter<any>();
-  @Output() registedEvent = new EventEmitter<any>();
+  @Output() updtingEvent = new EventEmitter<any>();
+  @Output() updtedEvent = new EventEmitter<any>();
 
   form: FormGroup;
 
@@ -28,7 +28,7 @@ export class ScrinRegistDialogComponent implements OnInit {
 
   constructor(private modalService: NgbModal, private service: ScrinService, private cmmnCodeService: CmmnCodeService) {
     this.form = new FormGroup({
-      scrinGroupId: new FormControl('', [Validators.required]),
+      scrinId: new FormControl('', [Validators.required]),
       scrinNm: new FormControl('', [Validators.required]),
       scrinSeCode: new FormControl('', [Validators.required]),
     });
@@ -39,16 +39,18 @@ export class ScrinRegistDialogComponent implements OnInit {
 
   /**
    *
-   * @param scrinGroupId 화면 그룹 아이디
+   * @param scrinId 원본 화면 아이디
    */
-  open(scrinGroupId: string) {
+  open(scrinId: string) {
     // 화면 구분 코드 목록 조회
     this.cmmnCodeService.listByPrntsCmmnCode('scrin_se').then((res: any) => {
       this.scrinSeCodes = res.data;
     });
 
     //
-    this.form.patchValue({ scrinGroupId });
+    this.service.get(scrinId).then((res: any) => {
+      this.form.patchValue(res.data);
+    });
 
     this.modalService.open(this.content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
       (result: any) => {
@@ -61,7 +63,7 @@ export class ScrinRegistDialogComponent implements OnInit {
         if (!this.form.valid) {
           console.log(this.form.value);
           alert('입력값을 확인하시기 바랍니다.');
-          this.open(scrinGroupId);
+          this.open(scrinId);
           return;
         }
 
@@ -69,11 +71,11 @@ export class ScrinRegistDialogComponent implements OnInit {
           return;
         }
 
-        this.registingEvent.emit('');
+        this.updtingEvent.emit('');
 
         //
-        this.service.regist(this.form.value as Scrobot.Scrin).then((res: any) => {
-          this.registedEvent.emit('');
+        this.service.updt(this.form.value as Scrobot.Scrin).then((res: any) => {
+          this.updtedEvent.emit('');
         });
       },
       (reason: any) => {

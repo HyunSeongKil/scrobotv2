@@ -6,20 +6,20 @@ import { ScrinGroupService } from 'src/app/service/scrin-group.service';
 import { WordDicarySelectDialogComponent, WordDicarySelectMessage } from '../word-dicary-select-dialog/word-dicary-select-dialog.component';
 
 /**
- * 화면 그룹 등록 팝업
+ * 화면 그룹 수정 팝업
  */
 @Component({
-  selector: 'app-scrin-group-regist-dialog',
-  templateUrl: './scrin-group-regist-dialog.component.html',
-  styleUrls: ['./scrin-group-regist-dialog.component.css'],
+  selector: 'app-scrin-group-updt-dialog',
+  templateUrl: './scrin-group-updt-dialog.component.html',
+  styleUrls: ['./scrin-group-updt-dialog.component.css'],
 })
-export class ScrinGroupRegistDialogComponent implements OnInit {
+export class ScrinGroupUpdtDialogComponent implements OnInit {
   @ViewChild('content') content!: ElementRef<HTMLDivElement>;
   @ViewChild('wordDicarySelectDialogRef') wordDicarySelectDialogRef!: WordDicarySelectDialogComponent;
 
   @Output() initedEvent = new EventEmitter<any>();
-  @Output() registingEvent = new EventEmitter<any>();
-  @Output() registedEvent = new EventEmitter<any>();
+  @Output() updtingEvent = new EventEmitter<any>();
+  @Output() updtedEvent = new EventEmitter<any>();
 
   form: FormGroup;
 
@@ -28,6 +28,7 @@ export class ScrinGroupRegistDialogComponent implements OnInit {
   constructor(private modalService: NgbModal, private service: ScrinGroupService) {
     this.form = new FormGroup({
       prjctId: new FormControl('', [Validators.required]),
+      scrinGroupId: new FormControl('', [Validators.required]),
       scrinGroupNm: new FormControl('', [Validators.required]),
       engAbrvNm: new FormControl('', [Validators.required]),
     });
@@ -47,10 +48,15 @@ export class ScrinGroupRegistDialogComponent implements OnInit {
   /**
    * 팝업창 실행
    * @param prjctId 프로젝트 아이디
+   * @param scrinGroupId 화면 그룹 아이디
    * @param scrinGroups 화면 그룹 목록
    */
-  open(prjctId: string, scrinGroups: Scrobot.ScrinGroup[]) {
-    this.form.patchValue({ prjctId, scrinGroupNm: '', engAbrvNm: '' });
+  open(prjctId: string, scrinGroupId: string, scrinGroups: Scrobot.ScrinGroup[]) {
+    this.form.patchValue({ prjctId, scrinGroupId, scrinGroupNm: '', engAbrvNm: '' });
+
+    this.service.get(scrinGroupId).then((res: any) => {
+      this.form.patchValue(res.data);
+    });
 
     this.modalService.open(this.content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
       (result: any) => {
@@ -62,27 +68,27 @@ export class ScrinGroupRegistDialogComponent implements OnInit {
 
         if (!this.form.valid) {
           alert('입력값을 확인하시기 바랍니다.');
-          this.open(prjctId, scrinGroups);
+          this.open(prjctId, scrinGroupId, scrinGroups);
           return;
         }
 
         // 동일한 이름이 있는지 확인
         if (this.existsSameScrinGroupNm(this.form.controls.engAbrvNm.value, scrinGroups)) {
           alert('동일한 화면 그룹명이 존재합니다. 다른 명칭을 선택하시기 바랍니다.');
-          this.open(prjctId, scrinGroups);
+          this.open(prjctId, scrinGroupId, scrinGroups);
           return;
         }
 
         if (!confirm('저장하시겠습니까?')) {
-          this.open(prjctId, scrinGroups);
+          this.open(prjctId, scrinGroupId, scrinGroups);
           return;
         }
 
-        this.registingEvent.emit('');
+        this.updtingEvent.emit('');
 
         //
-        this.service.regist(this.form.value as Scrobot.ScrinGroup).then((res: any) => {
-          this.registedEvent.emit(res.data);
+        this.service.updt(this.form.value as Scrobot.ScrinGroup).then((res: any) => {
+          this.updtedEvent.emit('');
         });
       },
       (reason: any) => {

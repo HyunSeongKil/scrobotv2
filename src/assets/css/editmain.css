@@ -85,10 +85,12 @@ img {
   float: left;
 }
 
+/*
 body {
-  background: url(../images/editor/graphpaper.png) center center;
-  background-size: 40%;
+    background: url(../images/graphpaper.png) center center;
+    background-size: 40%;
 }
+*/
 
 aside {
   display: none;
@@ -148,6 +150,26 @@ header {
 
 .right_top ul li a img {
   width: 100%;
+}
+
+#contents {
+  width: 100%;
+  float: left;
+}
+
+#sec1 {
+  width: 314px;
+  float: left;
+}
+
+.imgbox1 > div > img {
+  width: 1589px;
+  /*    height: 150vh;*/
+  position: relative;
+}
+
+.imgbox_ {
+  overflow: auto;
 }
 
 /*탭*/
@@ -228,11 +250,7 @@ header {
     display: none;
   }
 */
-#sec1 {
-}
 
-.open_close {
-}
 .open_close img {
   width: 1.5%;
 }
@@ -240,11 +258,8 @@ header {
 .nav1,
 .nav2 {
   width: 314px;
-  height: 907px;
+  /*    height: 907px;*/
   background: #fff;
-  border-right: 1px solid #9999;
-  border-bottom: 1px solid #9999;
-  border-left: 1px solid #9999;
 }
 
 .nav1 div ul {

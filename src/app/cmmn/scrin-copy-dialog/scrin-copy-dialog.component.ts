@@ -6,16 +6,16 @@ import { CmmnCodeService } from 'src/app/service/cmmn-code.service';
 import { ScrinService } from 'src/app/service/scrin.service';
 
 @Component({
-  selector: 'app-scrin-regist-dialog',
-  templateUrl: './scrin-regist-dialog.component.html',
-  styleUrls: ['./scrin-regist-dialog.component.css'],
+  selector: 'app-scrin-copy-dialog',
+  templateUrl: './scrin-copy-dialog.component.html',
+  styleUrls: ['./scrin-copy-dialog.component.css'],
 })
-export class ScrinRegistDialogComponent implements OnInit {
+export class ScrinCopyDialogComponent implements OnInit {
   @ViewChild('content') content!: ElementRef<HTMLDivElement>;
 
   @Output() initedEvent = new EventEmitter<any>();
-  @Output() registingEvent = new EventEmitter<any>();
-  @Output() registedEvent = new EventEmitter<any>();
+  @Output() copyingEvent = new EventEmitter<any>();
+  @Output() copiedEvent = new EventEmitter<any>();
 
   form: FormGroup;
 
@@ -24,11 +24,12 @@ export class ScrinRegistDialogComponent implements OnInit {
    */
   scrinSeCodes: Scrobot.CmmnCode[] = [];
 
+  srcScrinId: string = '';
+
   closeResult = '';
 
   constructor(private modalService: NgbModal, private service: ScrinService, private cmmnCodeService: CmmnCodeService) {
     this.form = new FormGroup({
-      scrinGroupId: new FormControl('', [Validators.required]),
       scrinNm: new FormControl('', [Validators.required]),
       scrinSeCode: new FormControl('', [Validators.required]),
     });
@@ -39,16 +40,19 @@ export class ScrinRegistDialogComponent implements OnInit {
 
   /**
    *
-   * @param scrinGroupId 화면 그룹 아이디
+   * @param srcScrinId 원본 화면 아이디
    */
-  open(scrinGroupId: string) {
+  open(srcScrinId: string) {
     // 화면 구분 코드 목록 조회
     this.cmmnCodeService.listByPrntsCmmnCode('scrin_se').then((res: any) => {
       this.scrinSeCodes = res.data;
     });
 
-    //
-    this.form.patchValue({ scrinGroupId });
+    this.srcScrinId = srcScrinId;
+
+    this.service.get(srcScrinId).then((res: any) => {
+      this.form.controls.scrinNm.setValue(res.data.scrinNm + '(복사본)');
+    });
 
     this.modalService.open(this.content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
       (result: any) => {
@@ -61,19 +65,19 @@ export class ScrinRegistDialogComponent implements OnInit {
         if (!this.form.valid) {
           console.log(this.form.value);
           alert('입력값을 확인하시기 바랍니다.');
-          this.open(scrinGroupId);
+          this.open(this.srcScrinId);
           return;
         }
 
-        if (!confirm('저장하시겠습니까?')) {
+        if (!confirm('복사하시겠습니까?')) {
           return;
         }
 
-        this.registingEvent.emit('');
+        this.copyingEvent.emit('');
 
         //
-        this.service.regist(this.form.value as Scrobot.Scrin).then((res: any) => {
-          this.registedEvent.emit('');
+        this.service.copy(this.srcScrinId, this.form.value as Scrobot.Scrin).then((res: any) => {
+          this.copiedEvent.emit('');
         });
       },
       (reason: any) => {
