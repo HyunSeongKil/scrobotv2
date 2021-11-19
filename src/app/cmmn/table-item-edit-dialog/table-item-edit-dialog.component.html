@@ -1,0 +1,24 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">테이블 항목 편집</h4>
+    <button type="button" class="btn btn-sm close d-none" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngFor="let x of arr">
+      <label for="hngl_{{ x.i }}" class="d-block">{{ x.i + 1 }}번째 항목 <span class="req">*</span></label>
+      <input type="text" id="hngl_{{ x.i }}" class="form-control w-75 d-inline" readonly [value]="x.hnglAbrvNm ?? ''" />
+      <input type="hidden" id="eng_{{ x.i }}" [value]="x.engAbrvNm ?? ''" />
+      <button type="button" class="btn btn-outline-secondary btn-sm mx-1" (click)="selectWordDicary(x.i)">단어선택</button>
+    </div>
+
+    <div class="mt-1 font-italic"><span class="req">*</span> 필수입력 항목입니다.</div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="modal.close('SAVE')">저장</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.close('CLOSE')">닫기</button>
+  </div>
+</ng-template>
+
+<app-word-dicary-select-dialog #wordDicarySelectDialogRef (wordDicarySelectedEvent)="wordDicarySelected($event)"></app-word-dicary-select-dialog>

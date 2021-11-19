@@ -365,7 +365,9 @@ export class ElService {
           this.setDraggable(tagName, $(event.currentTarget)).draggable('enable');
 
           //
-          this.setResizable(tagName, $(event.currentTarget)).resizable('enable');
+          if ('table' !== tagName) {
+            this.setResizable(tagName, $(event.currentTarget)).resizable('enable');
+          }
 
           //
           $(event.currentTarget).css('border', '2px dashed red');

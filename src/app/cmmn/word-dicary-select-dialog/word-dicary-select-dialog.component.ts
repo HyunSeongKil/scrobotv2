@@ -14,6 +14,8 @@ import { WordDicaryService } from 'src/app/service/word-dicary.service';
 export class WordDicarySelectDialogComponent implements OnInit {
   @ViewChild('content') content!: ElementRef<HTMLDivElement>;
 
+  @Output() initedEvent = new EventEmitter<any>();
+
   /**
    * 저장중 이벤트
    */
@@ -42,7 +44,9 @@ export class WordDicarySelectDialogComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.initedEvent.emit(this);
+  }
 
   search(): void {
     // this.map.clear();

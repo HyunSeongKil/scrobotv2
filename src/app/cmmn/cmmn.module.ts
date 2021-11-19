@@ -9,10 +9,11 @@ import { ScrinUpdtDialogComponent } from './scrin-updt-dialog/scrin-updt-dialog.
 import { ScrinCopyDialogComponent } from './scrin-copy-dialog/scrin-copy-dialog.component';
 import { MenuRegistDialogComponent } from './menu-regist-dialog/menu-regist-dialog.component';
 import { MenuUpdtDialogComponent } from './menu-updt-dialog/menu-updt-dialog.component';
+import { TableItemEditDialogComponent } from './table-item-edit-dialog/table-item-edit-dialog.component';
 
 @NgModule({
-  declarations: [ScrinGroupRegistDialogComponent, WordDicarySelectDialogComponent, ScrinRegistDialogComponent, ScrinGroupUpdtDialogComponent, ScrinUpdtDialogComponent, ScrinCopyDialogComponent, MenuRegistDialogComponent, MenuUpdtDialogComponent],
+  declarations: [ScrinGroupRegistDialogComponent, WordDicarySelectDialogComponent, ScrinRegistDialogComponent, ScrinGroupUpdtDialogComponent, ScrinUpdtDialogComponent, ScrinCopyDialogComponent, MenuRegistDialogComponent, MenuUpdtDialogComponent, TableItemEditDialogComponent],
   imports: [CommonModule, ReactiveFormsModule, FormsModule],
-  exports: [ScrinGroupRegistDialogComponent, ScrinGroupUpdtDialogComponent, ScrinRegistDialogComponent, ScrinUpdtDialogComponent, ScrinCopyDialogComponent, MenuRegistDialogComponent, MenuUpdtDialogComponent],
+  exports: [TableItemEditDialogComponent, ScrinGroupRegistDialogComponent, ScrinGroupUpdtDialogComponent, ScrinRegistDialogComponent, ScrinUpdtDialogComponent, ScrinCopyDialogComponent, MenuRegistDialogComponent, MenuUpdtDialogComponent, WordDicarySelectDialogComponent],
 })
 export class CmmnModule {}

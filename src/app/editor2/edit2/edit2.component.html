@@ -33,27 +33,37 @@
   </div>
   <!--       메인헤더-좌측메뉴 -->
 
-  <section id="sec1" class="clear">
-    <ul class="tab" style="padding-left: 0">
-      <li class="on SCRIN" #tabScrin data-tab-se="SCRIN">
-        <a href="javascript:;" (click)="onTabClick('SCRIN')">화면</a>
-        <app-scrin2 (initedEvent)="initedEvent($event)" (scrinIdChangedEvent)="scrinIdChangedEvent($event)"></app-scrin2>
-      </li>
-      <li class="sec2 MENU" #tabMenu data-tab-se="MENU">
-        <a href="javascript:;" (click)="onTabClick('MENU')">메뉴</a>
-        <app-menu2 class="" (initedEvent)="initedEvent($event)"></app-menu2>
-      </li>
-      <li class="sec3 COMPN d-none" #tabCompn data-tab-se="COMPN">
-        <a href="javascript:;" (click)="onTabClick('COMPN')">콤포넌트</a>
-        <app-compn2 class="" (initedEvent)="initedEvent($event)" (selectedEvent)="compnSelectedEvent($event)"></app-compn2>
-      </li>
-      <li class="sec4 PROPERTY d-none" #tabProperty data-tab-se="PROPERTY">
-        <a href="javascript:;" (click)="onTabClick('PROPERTY')">속성</a>
-        <app-property2 class="" (initedEvent)="initedEvent($event)"></app-property2>
-      </li>
-    </ul>
-  </section>
-  <div class="imgbox1">
-    <div class="imgbox_ content" style="position: relative"><img src="./assets/images/editor/graphpaper.png" alt="모눈종이이미지" style="width: 100%" /></div>
+  <div class="row">
+    <div class="col-4" style="width: 350px">
+      <section id="sec1" class="clear">
+        <ul class="tab" style="padding-left: 0">
+          <li class="on SCRIN" #tabScrin data-tab-se="SCRIN">
+            <a href="javascript:;" (click)="onTabClick('SCRIN')">화면</a>
+            <app-scrin2 (initedEvent)="initedEvent($event)" (scrinIdChangedEvent)="scrinIdChangedEvent($event)"></app-scrin2>
+          </li>
+          <li class="sec2 MENU" #tabMenu data-tab-se="MENU">
+            <a href="javascript:;" (click)="onTabClick('MENU')">메뉴</a>
+            <app-menu2 class="" (initedEvent)="initedEvent($event)"></app-menu2>
+          </li>
+          <li class="sec3 COMPN d-none" #tabCompn data-tab-se="COMPN">
+            <a href="javascript:;" (click)="onTabClick('COMPN')">콤포넌트</a>
+            <app-compn2 class="" (initedEvent)="initedEvent($event)" (selectedEvent)="compnSelectedEvent($event)"></app-compn2>
+          </li>
+          <li class="sec4 PROPERTY d-none" #tabProperty data-tab-se="PROPERTY">
+            <a href="javascript:;" (click)="onTabClick('PROPERTY')">속성</a>
+            <app-property2 class="" (initedEvent)="initedEvent($event)"></app-property2>
+          </li>
+        </ul>
+      </section>
+    </div>
+    <div class="col-8">
+      <div class="content" style="position: relative; background-color: #efefef; height: 800px"></div>
+    </div>
   </div>
+
+  <!-- <div class="imgbox1">
+    <div class="imgbox_ content" style="position: relative">
+      <img src="./assets/images/editor/graphpaper.png" alt="모눈종이이미지" style="width: 100%" />
+    </div>
+  </div> -->
 </header>

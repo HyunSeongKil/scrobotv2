@@ -417,6 +417,7 @@ export class EditorComponent implements OnInit, OnDestroy, AfterViewInit {
    * @param tagName 태그 명
    */
   tagSelected(tagName: string): void {
+    debugger;
     this.addEl(tagName);
   }
 

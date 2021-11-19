@@ -49,7 +49,14 @@ export class Edit2Component implements OnInit {
   /**
    *
    */
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    $('div.content').on('click', () => {
+      this.selectedElService.clearAll();
+      this.elService.clearAllBorder();
+      this.elService.clearAllDraggable();
+      this.elService.clearAllResizable();
+    });
+  }
 
   /**
    * 탭 클릭됨
@@ -156,7 +163,9 @@ export class Edit2Component implements OnInit {
   /**
    * 콤포넌트 선택됨 이벤트
    */
-  compnSelectedEvent(tagName: string): void {}
+  compnSelectedEvent(tagName: string): void {
+    this.addEl(tagName);
+  }
 
   /**
    * 엘리먼트 화면에 추가

@@ -68,6 +68,6 @@ export class Compn2Component implements OnInit, OnDestroy {
    *
    */
   selectCompn(tagName: string): void {
-    this.selectedEvent.emit('tagName');
+    this.selectedEvent.emit(tagName);
   }
 }
