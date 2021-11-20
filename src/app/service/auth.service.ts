@@ -17,6 +17,7 @@ export class AuthService {
 
   setToken(token: string): void {
     localStorage.setItem(this.TOKEN_KEY, token);
+    localStorage.setItem('lastestTime', new Date().getTime() + '');
 
     console.log(this.jwtHelper.decodeToken(token));
   }
@@ -26,6 +27,7 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
+    //
     const token = this.getToken();
     if (null === token || undefined === token) {
       console.log('token null or empty');
@@ -41,6 +43,21 @@ export class AuthService {
    * @returns 만료이면 true
    */
   isTokenExpired(token: string) {
+    const lastestTime: string | null = localStorage.getItem('lastestTime');
+    if (null === lastestTime) {
+      return false;
+    }
+
+    //
+    const deltaTime: number = new Date().getTime() - Number(lastestTime);
+    console.log(deltaTime);
+    // 20min
+    if (deltaTime > 1000 * 1 * 60 * 20) {
+      // timeout
+      localStorage.removeItem('lastestTime');
+      return false;
+    }
+
     const dt = this.jwtHelper.getTokenExpirationDate();
     if (null !== dt) {
       // console.log(dt.valueOf(), new Date().valueOf(), dt.valueOf() - new Date().valueOf(), dt.valueOf() > new Date().valueOf());
