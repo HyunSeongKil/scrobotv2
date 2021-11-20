@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Scrobot } from 'src/app/@types/scrobot';
 import { AtchmnflService } from 'src/app/service/atchmnfl.service';
 import { CompnService } from 'src/app/service/compn.service';
@@ -27,6 +28,8 @@ export class Edit2Component implements OnInit {
   @Output() editingEvent = new EventEmitter<string>();
   @Output() closeEditingEvent = new EventEmitter<string>();
 
+  endedEventSub: Subscription | undefined = new Subscription();
+
   prjctId: string = '';
   editingScrinId: string = '';
   compns: Scrobot.Compn[] = [];
@@ -50,6 +53,13 @@ export class Edit2Component implements OnInit {
    *
    */
   ngOnInit(): void {
+    this.endedEventSub = this.elService.endedEvent.subscribe((res: any) => {
+      if ('REGIST' === res.e) {
+        alert('저장되었습니다.');
+      }
+    });
+
+    //
     $('div.content').on('click', () => {
       this.selectedElService.clearAll();
       this.elService.clearAllBorder();
@@ -139,6 +149,29 @@ export class Edit2Component implements OnInit {
         this.addEl(x.compnSeCode, x.compnCn);
       });
     });
+  }
+
+  /**
+   * 편집 저장
+   * @returns void
+   */
+  saveEditing(): void {
+    if (!confirm('수정된 내용을 저장하시겠습니까?')) {
+      return;
+    }
+
+    this.saveScrin();
+  }
+
+  /**
+   * 화면 저장 이벤트 구독
+   */
+  saveScrin(): void {
+    this.elService.clearAllBorder();
+    this.selectedElService.clearAll();
+    this.$selectedEl = undefined;
+
+    this.elService.regist(this.editingScrinId);
   }
 
   /**

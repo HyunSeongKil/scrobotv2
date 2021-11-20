@@ -17,7 +17,8 @@ export class TableItemEditDialogComponent implements OnInit {
   @ViewChild('content') content!: ElementRef<HTMLDivElement>;
   @ViewChild('wordDicarySelectDialogRef') wordDicarySelectDialogRef!: WordDicarySelectDialogComponent;
 
-  @Output() itemEditedEvent = new EventEmitter<any>();
+  @Output() initedEvent = new EventEmitter<any>();
+  @Output() itemEditedEvent = new EventEmitter<TableItemEditEventMessage[]>();
 
   form!: FormGroup;
 
@@ -31,7 +32,9 @@ export class TableItemEditDialogComponent implements OnInit {
     this.form = new FormGroup({});
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.initedEvent.emit(this);
+  }
 
   /**
    * 모달 창 실행
@@ -49,6 +52,7 @@ export class TableItemEditDialogComponent implements OnInit {
       });
     });
 
+    //
     this.modalService.open(this.content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
       (result: any) => {
         this.closeResult = `Closed with: ${result}`;
@@ -57,7 +61,7 @@ export class TableItemEditDialogComponent implements OnInit {
           return;
         }
 
-        const items: any[] = this.getItems();
+        const items: TableItemEditEventMessage[] = this.getItems();
 
         if (!this.isValid(items)) {
           alert('입력값을 확인하시기 바랍니다.');
@@ -77,14 +81,14 @@ export class TableItemEditDialogComponent implements OnInit {
    *
    * @returns
    */
-  getItems(): any[] {
-    const arr: any[] = [];
+  getItems(): TableItemEditEventMessage[] {
+    const arr: TableItemEditEventMessage[] = [];
 
     for (let i = 0; i < this.arr.length; i++) {
       arr.push({
         i,
-        engAbrvNm: $(`#eng_${i}`).val(),
-        hnglAbrvNm: $(`#hngl_${i}`).val(),
+        engAbrvNm: '' + $(`#eng_${i}`).val(),
+        hnglAbrvNm: '' + $(`#hngl_${i}`).val(),
       });
     }
 
@@ -130,4 +134,10 @@ export class TableItemEditDialogComponent implements OnInit {
     $(`#eng_${this.selectedIndex}`).val(engs.join('_'));
     $(`#hngl_${this.selectedIndex}`).val(hngls.join(' '));
   }
+}
+
+export interface TableItemEditEventMessage {
+  i: number;
+  hnglAbrvNm: string;
+  engAbrvNm: string;
 }

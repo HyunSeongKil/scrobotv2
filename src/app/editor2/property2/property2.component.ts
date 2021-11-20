@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Host, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Scrobot } from 'src/app/@types/scrobot';
-import { TableItemEditDialogComponent } from 'src/app/cmmn/table-item-edit-dialog/table-item-edit-dialog.component';
+import { TableItemEditDialogComponent, TableItemEditEventMessage } from 'src/app/cmmn/table-item-edit-dialog/table-item-edit-dialog.component';
 import { WordDicarySelectDialogComponent, WordDicarySelectMessage } from 'src/app/cmmn/word-dicary-select-dialog/word-dicary-select-dialog.component';
 import { AtchmnflService } from 'src/app/service/atchmnfl.service';
 import { CmmnCodeService } from 'src/app/service/cmmn-code.service';
@@ -34,6 +34,8 @@ export class Property2Component implements OnInit, OnDestroy {
 
   //
   wordDicarySelectedEventSub: Subscription | undefined = new Subscription();
+  //
+  tableItemEditedEventSub: Subscription | undefined = new Subscription();
 
   //
   $selectedEl: JQuery<HTMLElement> | undefined = undefined;
@@ -44,6 +46,17 @@ export class Property2Component implements OnInit, OnDestroy {
    */
   btnSes: Scrobot.CmmnCode[] = [];
 
+  editedTableItems: TableItemEditEventMessage[] = [];
+
+  /**
+   *
+   * @param hostCompnent
+   * @param http
+   * @param cmmnCodeService
+   * @param elService
+   * @param selectedElService
+   * @param atchmnflService
+   */
   constructor(@Host() hostCompnent: Edit2Component, http: HttpClient, private cmmnCodeService: CmmnCodeService, private elService: ElService, private selectedElService: SelectedElService, private atchmnflService: AtchmnflService) {
     this.hostComponent = hostCompnent;
 
@@ -51,6 +64,10 @@ export class Property2Component implements OnInit, OnDestroy {
       this.rule = res;
     });
   }
+
+  /**
+   *
+   */
   ngOnDestroy(): void {
     if (!this.tabChangedEventSub?.closed) {
       this.tabChangedEventSub?.unsubscribe();
@@ -66,6 +83,10 @@ export class Property2Component implements OnInit, OnDestroy {
 
     if (!this.wordDicarySelectedEventSub?.closed) {
       this.wordDicarySelectedEventSub?.unsubscribe();
+    }
+
+    if (!this.tableItemEditedEventSub?.closed) {
+      this.tableItemEditedEventSub?.unsubscribe();
     }
   }
 
@@ -92,6 +113,149 @@ export class Property2Component implements OnInit, OnDestroy {
 
       $('table.table.property > tbody').html('<tr><td colspan="2">선택된 콤포넌트가 없습니다.</td></tr>');
     });
+  }
+
+  /**
+   * z-index 앞으로
+   */
+  forward(): void {
+    const iter = this.selectedElService.getAll();
+    Array.from(iter).forEach((entry) => {
+      entry[1].insertAfter(entry[1].next());
+    });
+
+    this.elService.rebind($('div.content').children());
+  }
+
+  /**
+   * z-index 뒤로
+   */
+  backward(): void {
+    const iter = this.selectedElService.getAll();
+    Array.from(iter).forEach((entry) => {
+      entry[1].insertBefore(entry[1].prev());
+    });
+
+    this.elService.rebind($('div.content').children());
+  }
+
+  /**
+   * 테이블 행 추가
+   * TODO 행이 1도 없을때 추가 처리 필요
+   */
+  addTableRow(): void {
+    const $el: JQuery<HTMLElement> | undefined = this.selectedElService.getOne();
+    if (undefined === $el) {
+      return;
+    }
+
+    if (ElService.TAG_NAME_TABLE !== $el.attr('data-tag-name')) {
+      return;
+    }
+
+    const $table = $el.children().first();
+    const $tr = $table.find('tbody > tr:last');
+    $table.find('tbody').append($tr.clone());
+
+    const h = $table.css('height');
+    $el.css('height', h);
+  }
+
+  /**
+   * 테이블 행 삭제
+   */
+  deleteTableRow(): void {
+    const $el: JQuery<HTMLElement> | undefined = this.selectedElService.getOne();
+    if (undefined === $el) {
+      return;
+    }
+
+    if (ElService.TAG_NAME_TABLE !== $el.attr('data-tag-name')) {
+      return;
+    }
+
+    const $table = $el.children().first();
+    // 삭제 전 행 갯수
+    const trCo = $table.find('tbody > tr').length;
+
+    if (1 === trCo) {
+      alert('행을 삭제할 수 없습니다.\n남은 행이 1개 일때는 삭제할 수 없습니다.');
+      return;
+    }
+
+    $table.find('tbody > tr:last').remove();
+
+    const h = $table.css('height');
+    $el.css('height', h);
+  }
+
+  /**
+   * 테이블 열 추가
+   */
+  addTableCol(): void {
+    const $el: JQuery<HTMLElement> | undefined = this.selectedElService.getOne();
+    if (undefined === $el) {
+      return;
+    }
+
+    if (ElService.TAG_NAME_TABLE !== $el.attr('data-tag-name')) {
+      return;
+    }
+
+    const $table = $el.children().first();
+    // 추가 전 th 1개의 넓이
+    const thWidth: number = Number($table.find('thead > tr:last > th:last').css('width').replace(/px/gi, ''));
+
+    const $th = $table.find('thead > tr:last > th:last');
+    $table.find('thead > tr:last').append($th.clone());
+
+    // 추가 후 전체 th 갯수
+    const thCo = $table.find('thead > tr:last > th').length;
+
+    // tr 갯수만큼 td 추가
+    $table.find('tbody > tr').each((i, item) => {
+      const $tr = $(item);
+      const $td = $tr.find('td:last');
+      $tr.append($td.clone());
+    });
+
+    $el.css('width', thWidth * thCo);
+  }
+
+  /**
+   * 테이블 열 삭제
+   */
+  deleteTableCol(): void {
+    const $el: JQuery<HTMLElement> | undefined = this.selectedElService.getOne();
+    if (undefined === $el) {
+      return;
+    }
+
+    if (ElService.TAG_NAME_TABLE !== $el.attr('data-tag-name')) {
+      return;
+    }
+
+    //
+    const $table = $el.children().first();
+    // 삭제 전 th 1개의 넓이
+    const thWidth: number = Number($table.find('thead > tr:last > th:last').css('width').replace(/px/gi, ''));
+    // 삭제 전 전체 th 갯수
+    let thCo: number = $table.find('thead > tr:last > th').length;
+
+    if (1 === thCo) {
+      alert('열을 삭제할 수 없습니다.\n남은 열이 1개일 때는 삭제할 수 없습니다.');
+      return;
+    }
+
+    $table.find('thead > tr:last > th:last').remove();
+
+    // tr 갯수만큼 td 삭제
+    $table.find('tbody > tr').each((i, item) => {
+      const $tr = $(item);
+      $tr.find('td:last').remove();
+    });
+
+    $el.css('width', (thCo - 1) * thWidth);
   }
 
   /**
@@ -139,6 +303,18 @@ export class Property2Component implements OnInit, OnDestroy {
         $el.attr('data-hngl-abrv-nm', wdsMessage.data[0].kor);
         $el.val(wdsMessage.data[0].kor);
       }
+    });
+  }
+
+  /**
+   * 테이블항목편집 콤포넌트 초기화 완료됨 이벤트
+   * @param a 테이블항목편집 다이얼로그 콤포넌트 인스턴스
+   */
+  tableItemEditInitedEvent(a: TableItemEditDialogComponent): void {
+    this.tableItemEditDialogRef = a;
+
+    this.tableItemEditedEventSub = this.tableItemEditDialogRef.itemEditedEvent.subscribe((res: TableItemEditEventMessage[]) => {
+      this.editedTableItems = res;
     });
   }
 
@@ -203,6 +379,7 @@ export class Property2Component implements OnInit, OnDestroy {
     }
 
     if (ElService.TAG_NAME_TABLE === tagName) {
+      this.editedTableItems = [];
       this.tableItemEditDialogRef.open($el);
     }
   }
@@ -587,6 +764,37 @@ export class Property2Component implements OnInit, OnDestroy {
     this.applyWordDicaryProperty2(this.$selectedEl);
     this.applyBtnProperty2(this.$selectedEl);
     this.applyImgProperty2(this.$selectedEl);
+    this.applyTableProperty(this.$selectedEl);
+  }
+
+  /**
+   * 테이블 속성 적용
+   * @param $el 엘리먼트
+   * @returns VOID
+   */
+  private applyTableProperty($el: JQuery<HTMLElement> | undefined): void {
+    if (undefined === $el) {
+      return;
+    }
+
+    if (!this.isTargetEl($el, [ElService.TAG_NAME_TABLE])) {
+      return;
+    }
+
+    //
+    const $table: JQuery<HTMLElement> | undefined = this.$selectedEl?.children().first();
+    if (undefined === $table) {
+      return;
+    }
+
+    if (0 === this.editedTableItems.length) {
+      return;
+    }
+
+    $table.find('th').each((i, item) => {
+      const $th = $(item);
+      $th.attr('data-i', i).attr('data-hngl-abrv-nm', this.editedTableItems[i].hnglAbrvNm).attr('data-eng-abrv-nm', this.editedTableItems[i].engAbrvNm).text(this.editedTableItems[i].hnglAbrvNm);
+    });
   }
 
   /**

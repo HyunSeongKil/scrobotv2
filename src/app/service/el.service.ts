@@ -44,6 +44,7 @@ export class ElService {
   regist(scrinId: string): void {
     const dtos: Scrobot.Compn[] = [];
 
+    //
     this.els.forEach(($el, i) => {
       const $cloneEl = $el.clone();
       // draggle, resizable 클래스 제거
@@ -64,10 +65,11 @@ export class ElService {
       });
     });
 
-    //
+    // 콤포넌트 삭제
     this.compnService.deleteByScrinId(scrinId).then(() => {
+      // 콤포넌트 등록
       this.compnService.regist(dtos).then(() => {
-        this.endedEvent.emit({ e: 'regist' });
+        this.endedEvent.emit({ e: 'REGIST' });
       });
     });
   }
@@ -364,8 +366,8 @@ export class ElService {
           const tagName = ScUtil.getTagName($(event.currentTarget)) ?? '';
           this.setDraggable(tagName, $(event.currentTarget)).draggable('enable');
 
-          //
-          if ('table' !== tagName) {
+          // 테이블은  resize불가
+          if (ElService.TAG_NAME_TABLE !== tagName) {
             this.setResizable(tagName, $(event.currentTarget)).resizable('enable');
           }
 
@@ -629,6 +631,16 @@ export class ElService {
   }
 
   /**
+   * 드래그기능 파괴
+   */
+  destroyAllDraggable(): void {
+    this.els.forEach(($el) => {
+      // $el.draggable('disable');
+      $el.draggable({}).draggable('destroy');
+    });
+  }
+
+  /**
    * 모든 엘리먼트의 draggable() 비활성화
    */
   clearAllDraggable(): void {
@@ -644,6 +656,15 @@ export class ElService {
     }
 
     $el.draggable('disable');
+  }
+
+  /**
+   * resize 기능 파괴
+   */
+  destroyAllResizable(): void {
+    this.els.forEach(($el) => {
+      $el.resizable({}).resizable('destroy');
+    });
   }
 
   /**
