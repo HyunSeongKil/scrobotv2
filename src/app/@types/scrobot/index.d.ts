@@ -1,4 +1,18 @@
 export namespace Scrobot {
+  export interface Atchmnfl {
+    atchmnflId: number;
+    atchmnflGroupId: number;
+    originalFileNm: string;
+    atchmnflFileszValue: number;
+  }
+  export interface Bbs {
+    bbsId: number;
+    bbsSeCd: string;
+    bbsSjNm: string;
+    bbsCn: string;
+    atchmnflGroupId: number;
+    registDt: string;
+  }
   export interface User {
     userId: string;
     userNm?: string;

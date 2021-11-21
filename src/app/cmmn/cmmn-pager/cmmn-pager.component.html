@@ -1,0 +1,16 @@
+<div class="pager">
+  <ul class="">
+    <li>
+      <button type="button" class="btn start-page" (click)="pageClicked(paged!.startPage)">◁</button>
+    </li>
+
+    <li *ngFor="let x of paged?.pages">
+      <button type="button" class="btn btn-outline-primary on" *ngIf="paged?.pageNo === x" (click)="pageClicked(x)">{{ x }}</button>
+      <button type="button" class="btn" *ngIf="paged?.pageNo !== x" (click)="pageClicked(x)">{{ x }}</button>
+    </li>
+
+    <li>
+      <button type="button" class="btn end-page" (click)="pageClicked(paged!.endPage)">▷</button>
+    </li>
+  </ul>
+</div>

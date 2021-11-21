@@ -1,0 +1,9 @@
+<form [formGroup]="form">
+  <div><input type="text" formControlName="bbsId" /></div>
+  <div><input type="text" formControlName="bbsSjNm" /></div>
+  <div><input type="text" formControlName="bbsCn" /></div>
+  <div><input type="text" formControlName="bbsSeCd" /></div>
+</form>
+
+<button (click)="onUpdtClick()">수정</button>
+<button (click)="onCancelClick()">취소</button>

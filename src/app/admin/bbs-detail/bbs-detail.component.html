@@ -1,0 +1,13 @@
+<div>{{ bbs?.bbsSeCd }}</div>
+<div>{{ bbs?.bbsId }}</div>
+<div>{{ bbs?.bbsSjNm }}</div>
+<div>{{ bbs?.bbsCn }}</div>
+<div>{{ bbs?.atchmnflGroupId }}</div>
+<div *ngFor="let x of atchmnfls">
+  <div>{{ x.originalFileNm }} ({{ x.atchmnflFileszValue | number }} Bytes)</div>
+</div>
+<div>{{ bbs?.registDt }}</div>
+
+<button (click)="onUpdtClick()">수정</button>
+<button (click)="onDeleteClick()">삭제</button>
+<button (click)="onListClick()">목록</button>

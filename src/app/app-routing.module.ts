@@ -1,5 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { BbsDetailComponent } from './admin/bbs-detail/bbs-detail.component';
+import { BbsListComponent } from './admin/bbs-list/bbs-list.component';
+import { BbsRegistComponent } from './admin/bbs-regist/bbs-regist.component';
+import { BbsUpdtComponent } from './admin/bbs-updt/bbs-updt.component';
 import { CrudComponent } from './biz/crud/crud.component';
 import { EditorComponent } from './editor/editor.component';
 import { Edit2Component } from './editor2/edit2/edit2.component';
@@ -55,6 +59,11 @@ const routes: Routes = [
   { path: 'prjcts', component: PrjctListComponent },
 
   { path: 'edit2', component: Edit2Component },
+
+  { path: 'admin/bbs-list', component: BbsListComponent },
+  { path: 'admin/bbs-regist', component: BbsRegistComponent },
+  { path: 'admin/bbs-detail/:bbsId', component: BbsDetailComponent },
+  { path: 'admin/bbs-updt/:bbsId', component: BbsUpdtComponent },
 ];
 
 @NgModule({

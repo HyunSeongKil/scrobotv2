@@ -1,0 +1,8 @@
+<form [formGroup]="form">
+  <input type="text" formControlName="bbsSeCd" />
+  <input type="text" formControlName="bbsSjNm" />
+  <textarea formControlName="bbsCn"></textarea>
+  <input type="file" name="f" multiple />
+</form>
+
+<button (click)="regist()">등록</button>

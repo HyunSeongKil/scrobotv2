@@ -2,6 +2,18 @@ import { HtmlAstPath } from '@angular/compiler';
 
 export class ScUtil {
   /**
+   * 행번호 계산
+   * @param totcnt 전체건수
+   * @param pageNo 현재 페이지 번호
+   * @param pageSize 페이징 크기
+   * @param i 현재 인덱스
+   * @returns 행번호
+   */
+  static itemNo(totcnt: number, pageNo: number, pageSize: number, i: number): number {
+    return totcnt - (pageNo - 1) * pageSize - i;
+  }
+
+  /**
    * 랜덤한 id 문자열 생성
    * @returns string
    */

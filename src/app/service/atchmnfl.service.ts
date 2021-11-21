@@ -10,7 +10,29 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class AtchmnflService {
+  BIZ_URI = `${environment.url}/atchmnfls`;
+
   constructor(private http: HttpClient) {}
+
+  /**
+   * 파일 목록 등록
+   * @param files 파일 목록
+   * @returns 첨부파일그룹아이디
+   */
+  registFiles(files: FileList | null): Promise<any> {
+    if (null == files) {
+      return new Promise((resolve) => {
+        resolve(null);
+      });
+    }
+
+    const fd: FormData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      fd.append('files', files[i]);
+    }
+
+    return this.http.post(`${environment.url}/atchmnfls/files`, fd).toPromise();
+  }
 
   regist(prjctId: string, f: File): Promise<any> {
     const fd = new FormData();
@@ -31,5 +53,9 @@ export class AtchmnflService {
     }
 
     return `${environment.url}/atchmnfls/dwld-file?atchmnflId=` + atchmnflId;
+  }
+
+  findAllByAtchmnflGroupId(atchmnflGroupId: number): Promise<any> {
+    return this.http.get(`${this.BIZ_URI}/atchmnfl-group?atchmnflGroupId=` + atchmnflGroupId).toPromise();
   }
 }
