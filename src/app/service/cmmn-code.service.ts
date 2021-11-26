@@ -17,4 +17,8 @@ export class CmmnCodeService {
   listByPrntsCmmnCode(prntsCmmnCode: string): Promise<any> {
     return this.http.get(`${this.BIZ_URI}/${prntsCmmnCode}`).toPromise();
   }
+
+  findByPrntsCmmnCodeAndCmmnCode(prntsCmmnCode: string, cmmnCode: string): Promise<any> {
+    return this.http.get(`${this.BIZ_URI}/${prntsCmmnCode}/` + cmmnCode).toPromise();
+  }
 }

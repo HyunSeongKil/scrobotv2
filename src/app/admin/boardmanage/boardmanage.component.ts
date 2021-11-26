@@ -1,45 +1,44 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Scrobot } from 'src/app/@types/scrobot';
 import { CmmnPagerComponent } from 'src/app/cmmn/cmmn-pager/cmmn-pager.component';
 import { AuthService } from 'src/app/service/auth.service';
 import { BbsService } from 'src/app/service/bbs.service';
 import { CmmnCodeService } from 'src/app/service/cmmn-code.service';
 import { ScUtil } from 'src/app/service/util';
+import { AdminLnbComponent } from '../admin-lnb/admin-lnb.component';
 
-/**
- * 질문답변 목록
- */
 @Component({
-  selector: 'app-business2',
-  templateUrl: './business2.component.html',
-  styleUrls: ['./business2.component.css'],
+  selector: 'app-boardmanage',
+  templateUrl: './boardmanage.component.html',
+  styleUrls: ['./boardmanage.component.css'],
 })
-export class Business2Component implements OnInit {
+export class BoardmanageComponent implements OnInit, AfterViewInit {
   @ViewChild('cmmnPagerRef') cmmnPagerRef!: CmmnPagerComponent;
 
-  /**
-   * 게시판구분코드
-   */
-  bbsSeCd: string = '';
+  adminLnbRef!: AdminLnbComponent;
+
+  bbsSeCd: string = 'NOTICE';
+
+  bbses: Scrobot.Bbs[] = [];
 
   /**
    * 폼
    */
   searchForm: FormGroup;
-  /**
-   * 게시글 목록
-   */
-  bbses: Scrobot.Bbs[] = [];
 
-  isAuth: boolean = false;
+  constructor(private authService: AuthService, private bbsService: BbsService, private cmmnCodeService: CmmnCodeService) {
+    ScUtil.loadStyle('../assets/css/boardmanage_main.css');
+    ScUtil.loadStyle('../assets/css/common_1.css');
+    ScUtil.loadStyle('../assets/css/login_1.css');
+    ScUtil.loadStyle('../assets/css/sub_1.css');
+    ScUtil.loadStyle('../assets/css/sub2_1.css');
+    ScUtil.loadStyle('../assets/css/jquery-ui.min.css');
 
-  constructor(route: ActivatedRoute, private cmmnCodeService: CmmnCodeService, private router: Router, private service: BbsService, authService: AuthService) {
-    ScUtil.loadStyle('../assets/css/business14.css');
-
-    //
-    this.bbsSeCd = route.snapshot.queryParamMap.get('bbsSeCd') ?? '';
+    ScUtil.loadScript('../assets/js/jquery-1.11.3.min.js');
+    ScUtil.loadScript('../assets/js/jquery-ui.min.js');
+    ScUtil.loadScript('../assets/js/common_1.js');
+    ScUtil.loadScript('../assets/js/index.js');
 
     //
     this.searchForm = new FormGroup({
@@ -49,33 +48,16 @@ export class Business2Component implements OnInit {
       searchCondition: new FormControl('SJ'),
       searchValue: new FormControl(''),
     });
-
-    this.isAuth = authService.isAuthenticated();
   }
+  ngAfterViewInit(): void {}
 
   ngOnInit(): void {
     this.onSearchClick();
-    console.log('<<init', this);
   }
 
-  /**
-   * 페이저 초기화 완료
-   * @param a 콤포넌트 인스턴스
-   */
   cmmnPagerInited(a: CmmnPagerComponent): void {
     this.cmmnPagerRef = a;
-    this.cmmnPagerRef.pageClickEvent.subscribe((pageNo: number) => {
-      console.log(pageNo);
-      this.onSearchClick(pageNo - 1);
-    });
-  }
-
-  /**
-   * 상세조회 클릭
-   * @param bbsId 게시글아이디
-   */
-  onDetailClick(bbsId: number): void {
-    location.href = `sub/business3?bbsSeCd=${this.bbsSeCd}&bbsId=` + bbsId;
+    this.cmmnPagerRef.pageClickEvent.subscribe((pageNo: number) => {});
   }
 
   /**
@@ -96,7 +78,7 @@ export class Business2Component implements OnInit {
     }
 
     //
-    this.service.findAllBySearchDto(this.searchForm.value as Scrobot.Bbs, page).then((res: any) => {
+    this.bbsService.findAllBySearchDto(this.searchForm.value as Scrobot.Bbs, page).then((res: any) => {
       this.bbses = res.data;
 
       //
@@ -124,9 +106,15 @@ export class Business2Component implements OnInit {
   }
 
   /**
-   * 등록 클릭
+   * lnb 초기화 완료
+   * @param a lnb 인스턴스
    */
-  onRegistClick(): void {
-    location.href = `sub/business?bbsSeCd=` + this.bbsSeCd;
+  adminLnbInited(a: AdminLnbComponent): void {
+    this.adminLnbRef = a;
+    this.adminLnbRef.onMenu('board', 'a');
+
+    this.adminLnbRef.menuClickedEvent.subscribe((message) => {
+      console.log(message);
+    });
   }
 }

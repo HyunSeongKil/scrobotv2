@@ -3,7 +3,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Scrobot } from 'src/app/@types/scrobot';
 import { AtchmnflService } from 'src/app/service/atchmnfl.service';
+import { AuthService } from 'src/app/service/auth.service';
 import { BbsService } from 'src/app/service/bbs.service';
+import { CmmnCodeService } from 'src/app/service/cmmn-code.service';
 import { ScUtil } from 'src/app/service/util';
 import { environment } from 'src/environments/environment';
 
@@ -30,7 +32,7 @@ export class Business3Component implements OnInit {
   atchmnfls: Scrobot.Atchmnfl[] = [];
   form: FormGroup;
 
-  constructor(route: ActivatedRoute, private router: Router, private service: BbsService, private atchmnflService: AtchmnflService) {
+  constructor(route: ActivatedRoute, private router: Router, private authService: AuthService, private service: BbsService, private atchmnflService: AtchmnflService, private cmmnCodeService: CmmnCodeService) {
     ScUtil.loadStyle('../assets/css/business3.css');
 
     //
@@ -45,6 +47,8 @@ export class Business3Component implements OnInit {
       bbsCn: new FormControl(''),
       atchmnflGroupId: new FormControl(''),
       inqireCo: new FormControl(''),
+      qaaSeCd: new FormControl(''),
+      qaaSeCdNm: new FormControl(''),
       registerId: new FormControl(''),
       registerNm: new FormControl(''),
       registDt: new FormControl(''),
@@ -55,6 +59,12 @@ export class Business3Component implements OnInit {
     this.service.findById(this.bbsId).then((res) => {
       this.form.patchValue(res.data);
 
+      //
+      this.cmmnCodeService.findByPrntsCmmnCodeAndCmmnCode('qaa_se', this.form.controls.qaaSeCd.value).then((res2: any) => {
+        this.form.controls.qaaSeCdNm.setValue(res2.data.cmmnCodeNm);
+      });
+
+      //
       if (null !== this.form.controls.atchmnflGroupId.value) {
         this.atchmnflService.findAllByAtchmnflGroupId(this.form.controls.atchmnflGroupId.value).then((res2: any) => {
           this.atchmnfls = res2.data;
@@ -87,5 +97,19 @@ export class Business3Component implements OnInit {
    */
   onDwldFileClick(atchmnflGroupId: number, atchmnflId: number): void {
     location.href = `${environment.url}/atchmnfls/dwld-file?atchmnflId=` + atchmnflId;
+  }
+
+  onDeleteClick(): void {
+    if (!confirm('삭제하시겠습니까?')) {
+      return;
+    }
+
+    this.service.delete(this.form.controls.bbsId.value).then(() => {
+      this.onListClick();
+    });
+  }
+
+  getUserId(): string {
+    return this.authService.isAuthenticated() ? this.authService.getUserId() : '';
   }
 }

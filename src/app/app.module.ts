@@ -102,7 +102,7 @@ export function tokenGetter() {
     Business3Component,
     BusinessComponent,
   ],
-  exports: [HeaderComponent],
+  exports: [HeaderComponent, FooterComponent],
   imports: [CmmnModule, AdminModule, BrowserModule, AppRoutingModule, HttpClientModule, BizModule, ServiceModule, PrjctModule, FormsModule, NgbModule, ReactiveFormsModule, JwtModule.forRoot(JWT_Module_Options)],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],

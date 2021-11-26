@@ -40,7 +40,7 @@
               </tr>
               <tr>
                 <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;문의 유형</th>
-                <td colspan="3"><input type="text" value="" readonly="readonly" /></td>
+                <td colspan="3"><input type="text" readonly="readonly" formControlName="qaaSeCdNm" /></td>
               </tr>
               <tr class="disabled_box">
                 <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;작성자</th>
@@ -59,7 +59,9 @@
                 <td class="file_box" colspan="2">
                   <div class="file_input">
                     <ul *ngIf="0 < atchmnfls.length">
-                      <li *ngFor="let x of atchmnfls" (click)="onDwldFileClick(x.atchmnflGroupId, x.atchmnflId)"><img src="./assets/images/disk.png" alt="첨부파일이미지" />&nbsp;{{ x.originalFileNm }}</li>
+                      <li *ngFor="let x of atchmnfls">
+                        <a href="javascript:;" (click)="onDwldFileClick(x.atchmnflGroupId, x.atchmnflId)"> <img src="./assets/images/disk.png" alt="첨부파일이미지" />&nbsp;{{ x.originalFileNm }} </a>
+                      </li>
                     </ul>
                   </div>
                 </td>
@@ -67,8 +69,8 @@
             </table>
           </form>
           <div class="btn">
-            <a href="business2_br.html">삭제</a>&nbsp; <a href="javascript:;">수정</a>&nbsp;
-            <a href="business2_br.html">목록</a>
+            <a href="javascript:;" *ngIf="form.controls.registerId.value === getUserId()" (click)="onDeleteClick()">삭제</a>&nbsp; <a href="javascript:;" *ngIf="form.controls.registerId.value === getUserId()">수정</a>&nbsp;
+            <a href="javascript:;" (click)="onListClick()">목록</a>
           </div>
         </div>
       </div>

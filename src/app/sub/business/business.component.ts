@@ -36,6 +36,7 @@ export class BusinessComponent implements OnInit {
       bbsCn: new FormControl(''),
       atchmnflGroupId: new FormControl(''),
       inqireCo: new FormControl(0),
+      qaaSeCd: new FormControl(''),
       registerId: new FormControl(authService.getUserId()),
       registerNm: new FormControl(authService.getUserNm()),
       registDt: new FormControl(new Date()),

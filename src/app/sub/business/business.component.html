@@ -40,7 +40,7 @@
               <tr>
                 <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;문의 유형</th>
                 <td colspan="3">
-                  <select>
+                  <select formControlName="qaaSeCd">
                     <option *ngFor="let x of qaaSes" value="{{ x.cmmnCode }}">{{ x.cmmnCodeNm }}</option>
                   </select>
                 </td>

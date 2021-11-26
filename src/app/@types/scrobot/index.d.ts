@@ -12,6 +12,8 @@ export namespace Scrobot {
     bbsCn: string;
     atchmnflGroupId: number;
     inqireCo: number;
+    qaaSeCd: string;
+    qaaSeCdNm?: string;
     registerId: string;
     registerNm: string;
     registDt: string;

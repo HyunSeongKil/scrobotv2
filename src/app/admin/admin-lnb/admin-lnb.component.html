@@ -1,0 +1,28 @@
+<div class="lnb">
+  <p class="gnb-close-btn">
+    <a href="javascript:;"><img src="./assets/images/gnb-close-btn.gif" alt="메뉴닫기" /></a>
+  </p>
+  <h3 class="member">
+    <b>{{ getUserNm() }}</b
+    ><span>님 로그인 되었습니다.</span>
+    <a href="javascript:;" class="log-out" (click)="onLogoutClick()"><img src="./assets/images/logout.png" alt="로그아웃" /></a>
+  </h3>
+  <div class="lnb-list">
+    <ul>
+      <ng-container *ngFor="let x of menus">
+        <li (click)="onMenuClick(x.id)" [ngClass]="x.on ? 'on' : ''">
+          <a href="javascript:;">
+            <img src="./assets/images/computer.png" alt="컴퓨터이미지" /><span>{{ x.nm }}</span>
+          </a>
+          <ul class="deaph2">
+            <ng-container *ngFor="let x2 of x.sub">
+              <li (click)="onMenuClick(x.id, x2.id)" [ngClass]="x2.on ? 'on' : ''">
+                <a href="{{ x2.link }}">{{ x2.nm }}</a>
+              </li>
+            </ng-container>
+          </ul>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+</div>

@@ -4,6 +4,7 @@ import { BbsDetailComponent } from './admin/bbs-detail/bbs-detail.component';
 import { BbsListComponent } from './admin/bbs-list/bbs-list.component';
 import { BbsRegistComponent } from './admin/bbs-regist/bbs-regist.component';
 import { BbsUpdtComponent } from './admin/bbs-updt/bbs-updt.component';
+import { BoardmanageComponent } from './admin/boardmanage/boardmanage.component';
 import { CrudComponent } from './biz/crud/crud.component';
 import { EditorComponent } from './editor/editor.component';
 import { Edit2Component } from './editor2/edit2/edit2.component';
@@ -47,6 +48,8 @@ const routes: Routes = [
 
   { path: 'sub/self-crtfc1', component: SelfCrtfc1Component },
   { path: 'sub/self-crtfc3', component: SelfCrtfc3Component },
+
+  { path: 'admin/boardmanage', component: BoardmanageComponent },
 
   { path: 'signin', component: SigninComponent },
   {
