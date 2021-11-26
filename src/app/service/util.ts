@@ -26,7 +26,11 @@ export class ScUtil {
    * @param str 문자열
    * @returns 변경된 문자열
    */
-  static nl2br(str: string): string {
+  static nl2br(str: string | null | undefined): string {
+    if (null === str || undefined === str) {
+      return '';
+    }
+
     return str.replace(/\n/gi, '<br/>').replace(/ /gi, '&nbsp;');
   }
 
