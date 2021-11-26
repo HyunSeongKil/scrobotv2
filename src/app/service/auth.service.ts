@@ -29,7 +29,7 @@ export class AuthService {
   isAuthenticated(): boolean {
     //
     const token = this.getToken();
-    if (null === token || undefined === token) {
+    if (null === token || undefined === token || 0 == token.length) {
       console.log('token null or empty');
       return false;
     }
