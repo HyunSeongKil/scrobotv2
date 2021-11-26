@@ -9,7 +9,7 @@ export class ScUtil {
    * @param i 현재 인덱스
    * @returns 행번호
    */
-  static itemNo(totcnt: number, pageNo: number, pageSize: number, i: number): number {
+  static rowNo(totcnt: number, pageNo: number, pageSize: number, i: number): number {
     return totcnt - (pageNo - 1) * pageSize - i;
   }
 
@@ -19,6 +19,15 @@ export class ScUtil {
    */
   static createId(): string {
     return 'id_' + new Date().getTime();
+  }
+
+  /**
+   * 엔터를 br로 변경, 공백을 &nbsp;로 변경
+   * @param str 문자열
+   * @returns 변경된 문자열
+   */
+  static nl2br(str: string): string {
+    return str.replace(/\n/gi, '<br/>').replace(/ /gi, '&nbsp;');
   }
 
   static replaceAll(str: string, search: string, replace: string): string {
