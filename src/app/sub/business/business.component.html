@@ -1,0 +1,76 @@
+<app-header></app-header>
+<!--
+    <div id="wrap">
+    </div>
+    <div class="banner_txt">고객지원</div>
+-->
+
+<div id="banner">
+  <ul>
+    <li>
+      <!--                <img src="./assets/images/banner01_22.png" alt="배너" class="ban">-->
+      <div class="banner_info">
+        <img src="./assets/images/banner01_222.png" alt="배너안에이미지" class="pu" />
+        <p>고객지원</p>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<!--    <div class="tab_line2"></div>-->
+<section id="sec1">
+  <div class="sec1_inner">
+    <div>
+      <p>Home > 고객지원 > <span class="bold_f">문의하기</span></p>
+      <div class="center">
+        <div class="notice">
+          <ul class="left_txt">
+            <li class="sec1_txt1"><img src="./assets/images/brownbar.png" alt="갈색바" />&nbsp;1:1 문의 등록</li>
+            <!--                            <div class="tab_line"></div>-->
+          </ul>
+        </div>
+
+        <div class="table_content">
+          <form method="post" [formGroup]="form">
+            <table>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;제목</th>
+                <td colspan="3"><input type="text" formControlName="bbsSjNm" /></td>
+              </tr>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;문의 유형</th>
+                <td colspan="3">
+                  <select>
+                    <option *ngFor="let x of qaaSes" value="{{ x.cmmnCode }}">{{ x.cmmnCodeNm }}</option>
+                  </select>
+                </td>
+              </tr>
+              <tr class="disabled_box">
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;작성자</th>
+                <td colspan="1"><input type="text" readonly formControlName="registerNm" /></td>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;작성일자</th>
+                <td colspan="1"><input type="text" [value]="form.controls.registDt.value | date: 'yyyy-MM-dd'" disabled="disabled" /></td>
+              </tr>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;문의 내용</th>
+                <td valign="top" class="tool_img" colspan="3"><!--<a href="javascript:;"><img src="./assets/images/toolbar_2.png" alt="툴바"></a>--><textarea class="txtarea_1" formControlName="bbsCn"></textarea></td>
+              </tr>
+              <tr class="file_tr">
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;첨부파일 목록</th>
+                <td class="file_box" colspan="2">
+                  <input type="file" id="f" class="form-control" />
+                </td>
+              </tr>
+            </table>
+          </form>
+          <div class="btn">
+            <a href="javascript:;" (click)="onRegistClick()">등록</a>&nbsp;
+            <a href="javascript:" (click)="onListClick()">목록</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

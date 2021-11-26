@@ -23,7 +23,7 @@
         </div>
 
         <div class="top_tit">
-          <p>(총 007건)</p>
+          <p>(총 {{ cmmnPagerRef.getTotcnt() }}건)</p>
         </div>
         <div class="table_content">
           <form method="post">
@@ -38,106 +38,31 @@
                 <th class="th7">조회수</th>
               </tr>
 
-              <tr>
-                <td>7</td>
-                <td><a href="business3_br.html">에디터 사용 방법 문의입니다.</a></td>
-                <td>사용방법</td>
-                <td>2021.05.31</td>
-                <td>홍길동</td>
+              <tr *ngFor="let x of bbses; index as i">
+                <td>{{ rowNo(i) }}</td>
                 <td>
-                  <a href="#none"><img src="./assets/images/disk.png" alt="디스크이미지" /></a>
+                  <a href="javascript:;" (click)="onDetailClick(x.bbsId)">{{ x.bbsSjNm }}</a>
                 </td>
-                <td>2</td>
-              </tr>
-              <tr>
-                <td>6</td>
-                <td><a href="business18_br.html">&nbsp;&nbsp;&nbsp;&nbsp;[답변] 에디터 사용 문의 답변드립니다.</a></td>
-                <td>사용방법</td>
-                <td>2021.05.31</td>
-                <td>관리자</td>
+                <td>TODO</td>
+                <td>{{ x.registDt | date: "yyyy-MM-dd" }}</td>
+                <td>{{ x.registerNm }}</td>
                 <td>
-                  <a href="#none"><img src="./assets/images/disk.png" alt="디스크이미지" /></a>
+                  <a href="javascript:;" *ngIf="null !== x.atchmnflGroupId"><img src="./assets/images/disk.png" alt="디스크이미지" /></a>
                 </td>
-                <td>3</td>
+                <td>{{ x.inqireCo }}</td>
               </tr>
-              <tr>
-                <td>5</td>
-                <td><a href="#none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[추가문의] 에디터 안들어가져요..</a></td>
-                <td>사용방법</td>
 
-                <td>2021.03.26</td>
-                <td>홍길동</td>
-                <td>
-                  <a href="#none"><img src="./assets/images/disk.png" alt="디스크이미지" /></a>
-                </td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td><a href="#none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[답변] 에디터 안들어가져요.. 문의 답변드립니다.</a></td>
-                <td>사용방법</td>
-                <td>2021.03.21</td>
-                <td>관리자</td>
-                <td>
-                  <a href="#none"><img src="./assets/images/disk.png" alt="디스크이미지" /></a>
-                </td>
-                <td>3</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td><a href="#none">에디터 위에 메뉴는 어떻게 사용하는 건가요?</a></td>
-                <td>사용방법</td>
-                <td>2021.03.18</td>
-                <td>홍길동</td>
-                <td>
-                  <a href="#none"><img src="./assets/images/disk.png" alt="디스크이미지" /></a>
-                </td>
-                <td>3</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td><a href="#none">&nbsp;&nbsp;&nbsp;&nbsp;[답변] 에디터 위에 메뉴는 어떻게 사용하는 건가요?</a></td>
-                <td>사용방법</td>
-                <td>2021.03.12</td>
-                <td>관리자</td>
-                <td>
-                  <a href="#none"><img src="./assets/images/disk.png" alt="디스크이미지" /></a>
-                </td>
-                <td>3</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td><a href="#none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[추가문의] 에디터 위에 메뉴는 어떻게 사용하는 건가요?</a></td>
-                <td>사용방법</td>
-                <td>2021.03.09</td>
-                <td>홍길동</td>
-                <td>
-                  <a href="#none"><img src="./assets/images/disk.png" alt="디스크이미지" /></a>
-                </td>
-                <td>2</td>
+              <tr *ngIf="0 === bbses.length">
+                <td colspan="7" class="text-center">데이터가 없습니다.</td>
               </tr>
             </table>
           </form>
         </div>
 
-        <div class="btn2">
-          <a href="#none">≪</a>
-          <a href="#none">＜</a>
-          <a href="#none">1</a>
-          <a href="#none">2</a>
-          <a href="#none">3</a>
-          <a href="#none">4</a>
-          <a href="#none">5</a>
-          <a href="#none">6</a>
-          <a href="#none">7</a>
-          <a href="#none">8</a>
-          <a href="#none">9</a>
-          <a href="#none">10</a>
-          <a href="#none">＞</a>
-          <a href="#none">≫</a>
-        </div>
-        <div class="btn">
-          <a href="business_br.html">문의하기 →</a>
+        <app-cmmn-pager #cmmnPagerRef (initedEvent)="cmmnPagerInited($event)"></app-cmmn-pager>
+
+        <div class="btn" *ngIf="isAuth">
+          <a href="javascript:;" (click)="onRegistClick()">문의하기 →</a>
         </div>
       </div>
     </div>
