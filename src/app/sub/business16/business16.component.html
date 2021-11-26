@@ -14,11 +14,11 @@
 <section id="sec1">
   <div class="sec1_inner">
     <div>
-      <p>Home > 고객지원 > <span class="bold_f">공지사항</span></p>
+      <p>Home > 고객지원 > <span class="bold_f">FAQ</span></p>
       <div class="center">
         <div class="notice">
           <ul class="left_txt">
-            <li class="sec1_txt1"><img src="./assets/images/brownbar.png" alt="갈색바" />&nbsp;공지사항</li>
+            <li class="sec1_txt1"><img src="./assets/images/brownbar.png" alt="갈색바" />&nbsp;FAQ</li>
             <!--                            <div class="tab_line"></div>-->
           </ul>
         </div>
@@ -34,23 +34,22 @@
                 <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;작성자</th>
                 <td colspan="1"><input type="text" readonly="readonly" formControlName="registerNm" /></td>
                 <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;작성일자</th>
-                <td colspan="1"><input type="text" readonly="readonly" [value]="form.controls.registDt.value | date: 'yyyy-MM-dd'" /></td>
+                <td colspan="1"><input type="text" readonly="readonly" [value]="this.form.controls.registDt.value | date: 'yyyy-MM-dd'" /></td>
               </tr>
               <tr>
                 <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;작성 내용</th>
                 <td valign="top" class="tool_img" colspan="3">
-                  {{ nl2br(form.controls.bbsCn.value) }}
+                  <div class="txt1">[문의]<br />{{ nl2br(form.controls.bbsCn.value) }}</div>
+                  <!-- <span class="bold_font_point">[답변]<br />안녕하세요 SC_ROBOT 입니다.<br />에디터는 상단에 SC_ROBOT 실행 버튼을 누르시면 새창에서 사용 가능하십니다.</span> -->
                 </td>
               </tr>
               <tr class="file_tr">
                 <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;첨부파일 목록</th>
                 <td class="file_box" colspan="2">
                   <div class="file_input">
-                    <ng-container *ngIf="0 < atchmnfls.length">
-                      <ul>
-                        <li *ngFor="let x of atchmnfls" (click)="onDwldFileClick(x.atchmnflGroupId, x.atchmnflId)"><img src="./assets/images/disk.png" alt="첨부파일이미지" />&nbsp;{{ x.originalFileNm }}</li>
-                      </ul>
-                    </ng-container>
+                    <ul * ngIf="0 < atchmnfls.length">
+                      <li *ngFor="let x of atchmnfls"><img src="./assets/images/disk.png" alt="첨부파일이미지" />&nbsp;{{ x.originalFileNm }}</li>
+                    </ul>
                   </div>
                 </td>
               </tr>
@@ -62,10 +61,10 @@
           </div>
           <!-- <div class="bottom_txt2">
             <p>
-              <a href="#none"><img src="./assets/images/arrow_up.png" alt="화살표위" />&nbsp;&nbsp;<span class="weight_b">이전글</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4/9 공지사항</a>
+              <a href="javascript:;"><img src="./assets/images/arrow_up.png" alt="화살표위" />&nbsp;&nbsp;<span class="weight_b">이전글</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4/9 공지사항</a>
             </p>
             <p>
-              <a href="#none"><img src="./assets/images/arrow_down.png" alt="화살표아래" />&nbsp;&nbsp;<span class="weight_b">다음글</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4/7 공지사항</a>
+              <a href="javascript:;"><img src="./assets/images/arrow_down.png" alt="화살표아래" />&nbsp;&nbsp;<span class="weight_b">다음글</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4/7 공지사항</a>
             </p>
           </div> -->
         </div>

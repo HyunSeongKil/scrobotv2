@@ -7,15 +7,12 @@ import { BbsService } from 'src/app/service/bbs.service';
 import { ScUtil } from 'src/app/service/util';
 import { environment } from 'src/environments/environment';
 
-/**
- * 공지사항 상세조회
- */
 @Component({
-  selector: 'app-business15',
-  templateUrl: './business15.component.html',
-  styleUrls: ['./business15.component.css'],
+  selector: 'app-business16',
+  templateUrl: './business16.component.html',
+  styleUrls: ['./business16.component.css'],
 })
-export class Business15Component implements OnInit {
+export class Business16Component implements OnInit {
   /**
    * 게시판 구분 코드
    */
@@ -28,15 +25,16 @@ export class Business15Component implements OnInit {
    * 첨부파일 목록
    */
   atchmnfls: Scrobot.Atchmnfl[] = [];
-
   form: FormGroup;
 
   constructor(route: ActivatedRoute, private router: Router, private service: BbsService, private atchmnflService: AtchmnflService) {
-    ScUtil.loadStyle('../assets/css/business15.css');
+    ScUtil.loadStyle('../assets/css/business16.css');
 
+    //
     this.bbsSeCd = route.snapshot.queryParamMap.get('bbsSeCd') ?? '';
     this.bbsId = Number(route.snapshot.queryParamMap.get('bbsId'));
 
+    //
     this.form = new FormGroup({
       bbsId: new FormControl(''),
       bbsSeCd: new FormControl(''),
@@ -66,12 +64,8 @@ export class Business15Component implements OnInit {
    * 목록 클릭
    */
   onListClick(): void {
-    location.href = 'sub/business11?bbsSeCd=' + this.bbsSeCd;
-    // this.router.navigate(['sub/business11'], { queryParams: { bbsSeCd: this.bbsSeCd } });
-  }
-
-  onDwldFileClick(atchmnflGroupId: number, atchmnflId: number): void {
-    location.href = `${environment.url}/atchmnfls/dwld-file?atchmnflId=` + atchmnflId;
+    location.href = 'sub/business14?bbsSeCd=' + this.bbsSeCd;
+    // this.router.navigate(['sub/business14'], { queryParams: { bbsSeCd: this.bbsSeCd } });
   }
 
   /**
@@ -81,5 +75,9 @@ export class Business15Component implements OnInit {
    */
   nl2br(str: string): string {
     return ScUtil.nl2br(str);
+  }
+
+  onDwldFileClick(atchmnflGroupId: number, atchmnflId: number): void {
+    location.href = `${environment.url}/atchmnfls/dwld-file?atchmnflId=` + atchmnflId;
   }
 }

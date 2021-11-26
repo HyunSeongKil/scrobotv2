@@ -87,7 +87,7 @@
                 <th class="th6">조회수</th>
               </tr>
               <tr *ngFor="let x of bbses; index as i">
-                <td>{{ itemNo(i) }}</td>
+                <td>{{ rowNo(i) }}</td>
                 <td>
                   <a href="javascript:;" (click)="onDetailClick(x.bbsId)">{{ x.bbsSjNm }}</a>
                 </td>

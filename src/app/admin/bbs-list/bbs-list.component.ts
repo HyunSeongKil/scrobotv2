@@ -64,6 +64,6 @@ export class BbsListComponent implements OnInit {
   }
 
   itemNo(i: number): number {
-    return ScUtil.itemNo(this.cmmnPagerRef.getTotcnt(), this.cmmnPagerRef.getPageNo(), this.cmmnPagerRef.getPageSize(), i);
+    return ScUtil.rowNo(this.cmmnPagerRef.getTotcnt(), this.cmmnPagerRef.getPageNo(), this.cmmnPagerRef.getPageSize(), i);
   }
 }

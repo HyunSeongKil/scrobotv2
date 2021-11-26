@@ -6,6 +6,9 @@ import { CmmnPagerComponent } from 'src/app/cmmn/cmmn-pager/cmmn-pager.component
 import { BbsService } from 'src/app/service/bbs.service';
 import { ScUtil } from 'src/app/service/util';
 
+/**
+ * 공지사항 목록
+ */
 @Component({
   selector: 'app-business11',
   templateUrl: './business11.component.html',
@@ -14,8 +17,17 @@ import { ScUtil } from 'src/app/service/util';
 export class Business11Component implements OnInit, AfterViewInit {
   @ViewChild('cmmnPagerRef') cmmnPagerRef!: CmmnPagerComponent;
 
+  /**
+   * 게시판 구분 코드
+   */
   bbsSeCd: string = '';
+  /**
+   * 폼
+   */
   searchForm: FormGroup;
+  /**
+   * 게시판 목록
+   */
   bbses: Scrobot.Bbs[] = [];
 
   constructor(route: ActivatedRoute, private router: Router, private service: BbsService) {
@@ -28,7 +40,7 @@ export class Business11Component implements OnInit, AfterViewInit {
       bbsSeCd: new FormControl(this.bbsSeCd, [Validators.required]),
       bbsSjNm: new FormControl(''),
       bbsCn: new FormControl(''),
-      searchCondition: new FormControl(''),
+      searchCondition: new FormControl('SJ'),
       searchValue: new FormControl(''),
     });
   }
@@ -53,10 +65,19 @@ export class Business11Component implements OnInit, AfterViewInit {
     });
   }
 
+  /**
+   * 상세조회 클릭
+   * @param bbsId 게시판아이디
+   */
   onDetailClick(bbsId: number): void {
     location.href = `sub/business15?bbsSeCd=${this.bbsSeCd}&bbsId=` + bbsId;
   }
 
+  /**
+   * 검색 클릭
+   * @param page 페이지번호. 0부터 시작
+   * @returns VOID
+   */
   onSearchClick(page: number = 0): void {
     if (!this.searchForm.valid) {
       return;
@@ -77,7 +98,12 @@ export class Business11Component implements OnInit, AfterViewInit {
     });
   }
 
-  itemNo(i: number): number {
-    return ScUtil.itemNo(this.cmmnPagerRef.getTotcnt(), this.cmmnPagerRef.getPageNo(), this.cmmnPagerRef.getPageSize(), i);
+  /**
+   * 아이템 번호 생성
+   * @param i 인덱스
+   * @returns 아이템 번호
+   */
+  rowNo(i: number): number {
+    return ScUtil.rowNo(this.cmmnPagerRef.getTotcnt(), this.cmmnPagerRef.getPageNo(), this.cmmnPagerRef.getPageSize(), i);
   }
 }
