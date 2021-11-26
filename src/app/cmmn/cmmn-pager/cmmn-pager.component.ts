@@ -57,8 +57,6 @@ export class CmmnPagerComponent implements OnInit {
   }
 
   pageClicked(pageNo: number): void {
-    console.log(pageNo);
-
     this.pageClickEvent?.emit(pageNo);
   }
 

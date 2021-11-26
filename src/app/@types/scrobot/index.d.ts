@@ -11,6 +11,9 @@ export namespace Scrobot {
     bbsSjNm: string;
     bbsCn: string;
     atchmnflGroupId: number;
+    inqireCo: number;
+    registerId: string;
+    registerNm: string;
     registDt: string;
   }
   export interface User {

@@ -39,34 +39,42 @@
                   </table>
               </div>
 -->
-
         <div class="table_content1">
-          <form method="post">
+          <form method="post" [formGroup]="searchForm">
             <table>
               <tr>
                 <th>검색어&nbsp;&nbsp;&nbsp;</th>
                 <td>
-                  <select>
-                    <option>제목</option>
-                    <option>내용</option>
+                  <select name="searchCondition" formControlName="searchCondition">
+                    <option value="SJ" selected>제목</option>
+                    <option value="CN">내용</option>
                     <option>작성일자</option></select
-                  >&nbsp;<input type="text" />
+                  >&nbsp;<input type="text" name="searchValue" formControlName="searchValue" />
                 </td>
               </tr>
               <tr>
                 <th><label for="start">날짜&nbsp;&nbsp;</label></th>
-                <td class="search_hover"><input type="date" id="start" name="trip-start" value="2021-08-13" min="2021-08-01" max="2050-08-31" /> ~ <input type="date" id="start" name="trip-start" value="2021-08-13" min="2021-08-01" max="2050-08-31" />&nbsp;&nbsp;<a href="#none">조회&nbsp;</a></td>
+                <td class="search_hover">
+                  <input type="date" id="start" name="trip-start" value="2021-08-13" min="2021-08-01" max="2050-08-31" /> ~ <input type="date" id="start" name="trip-start" value="2021-08-13" min="2021-08-01" max="2050-08-31" />&nbsp;&nbsp;
+                  <a href="javascript:;" (click)="onSearchClick()">조회&nbsp;</a>
+                </td>
               </tr>
             </table>
           </form>
         </div>
 
         <div class="dot_list">
-          <h3><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;공지사항 목록</h3>
+          <h3>
+            <img src="./assets/images/dot.png" alt="목록아이콘" />
+            &nbsp;
+            <ng-container *ngIf="'NOTICE' === bbsSeCd">공지사항</ng-container>
+            목록
+          </h3>
         </div>
         <div class="top_tit">
-          <p>(총 007건)</p>
+          <p>(총 {{ cmmnPagerRef.getTotcnt() }}건)</p>
         </div>
+
         <div class="table_content">
           <form method="post">
             <table>
@@ -78,96 +86,28 @@
                 <th class="th5">첨부파일</th>
                 <th class="th6">조회수</th>
               </tr>
-              <tr>
-                <td>7</td>
-                <td><a href="business15_br.html">4/8 결제 서비스 점검</a></td>
-                <td>2021.04.08</td>
-                <td>관리자</td>
+              <tr *ngFor="let x of bbses; index as i">
+                <td>{{ itemNo(i) }}</td>
                 <td>
-                  <a href="#none"><img src="./assets/images/disk.png" alt="디스크이미지" /></a>
+                  <a href="javascript:;" (click)="onDetailClick(x.bbsId)">{{ x.bbsSjNm }}</a>
                 </td>
-                <td>2</td>
+                <td>{{ x.registDt | date: "yyyy-MM-dd" }}</td>
+                <td>{{ x.registerNm }}</td>
+                <td>
+                  <a href="javascript:;" *ngIf="null !== x.atchmnflGroupId"><img src="./assets/images/disk.png" alt="디스크이미지" /></a>
+                </td>
+                <td>{{ x.inqireCo }}</td>
               </tr>
-              <tr>
-                <td>6</td>
-                <td><a href="#none">4/2 SC_ROBOT 공지사항</a></td>
-                <td>2021.04.02</td>
-                <td>관리자</td>
-                <td>
-                  <a href="#none"><img src="./assets/images/disk.png" alt="디스크이미지" /></a>
-                </td>
-                <td>3</td>
-              </tr>
-              <tr>
-                <td>5</td>
-                <td><a href="#none">3/26 SC_ROBOT 공지사항</a></td>
-                <td>2021.03.26</td>
-                <td>관리자</td>
-                <td>
-                  <a href="#none"><img src="./assets/images/disk.png" alt="디스크이미지" /></a>
-                </td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td><a href="#none">3/21 SC_ROBOT 공지사항</a></td>
-                <td>2021.03.21</td>
-                <td>관리자</td>
-                <td>
-                  <a href="#none"><img src="./assets/images/disk.png" alt="디스크이미지" /></a>
-                </td>
-                <td>3</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td><a href="#none">3/18 SC_ROBOT 공지사항</a></td>
-                <td>2021.03.18</td>
-                <td>관리자</td>
-                <td>
-                  <a href="#none"><img src="./assets/images/disk.png" alt="디스크이미지" /></a>
-                </td>
-                <td>3</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td><a href="#none">3/12 SC_ROBOT 공지사항</a></td>
-                <td>2021.03.12</td>
-                <td>관리자</td>
-                <td>
-                  <a href="#none"><img src="./assets/images/disk.png" alt="디스크이미지" /></a>
-                </td>
-                <td>3</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td><a href="#none">3/9 SC_ROBOT 공지사항</a></td>
-                <td>2021.03.09</td>
-                <td>관리자</td>
-                <td>
-                  <a href="#none"><img src="./assets/images/disk.png" alt="디스크이미지" /></a>
-                </td>
-                <td>2</td>
+
+              <tr *ngIf="0 === bbses.length">
+                <td colspan="6" class="text-center">데이터가 없습니다.</td>
               </tr>
             </table>
           </form>
         </div>
 
-        <div class="btn2">
-          <a href="#none">≪</a>
-          <a href="#none">＜</a>
-          <a href="#none">1</a>
-          <a href="#none">2</a>
-          <a href="#none">3</a>
-          <a href="#none">4</a>
-          <a href="#none">5</a>
-          <a href="#none">6</a>
-          <a href="#none">7</a>
-          <a href="#none">8</a>
-          <a href="#none">9</a>
-          <a href="#none">10</a>
-          <a href="#none">＞</a>
-          <a href="#none">≫</a>
-        </div>
+        <app-cmmn-pager #cmmnPagerRef (initedEvent)="cmmnPagerInited($event)"></app-cmmn-pager>
+
         <!--
               <div class="btn">
                   <a href="business_br.html">문의하기 →</a>

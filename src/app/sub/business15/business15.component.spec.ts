@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BbsListComponent } from './bbs-list.component';
+import { Business15Component } from './business15.component';
 
-describe('BbsListComponent', () => {
-  let component: BbsListComponent;
-  let fixture: ComponentFixture<BbsListComponent>;
+describe('Business15Component', () => {
+  let component: Business15Component;
+  let fixture: ComponentFixture<Business15Component>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BbsListComponent ]
+      declarations: [ Business15Component ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BbsListComponent);
+    fixture = TestBed.createComponent(Business15Component);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

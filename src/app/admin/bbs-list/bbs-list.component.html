@@ -26,6 +26,10 @@
       <td><button (click)="onDetailClick(x.bbsId)">조회</button></td>
       <td></td>
     </tr>
+
+    <tr *ngIf="0 === bbses.length">
+      <td colspan="5">데이터가 없습니다</td>
+    </tr>
   </tbody>
 </table>
 

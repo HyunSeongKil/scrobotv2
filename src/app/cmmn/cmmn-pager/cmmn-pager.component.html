@@ -1,4 +1,14 @@
-<div class="pager">
+<div class="btn2">
+  <a href="javascript:;" (click)="pageClicked(paged!.startPage)">≪</a>
+  <!-- <a href="javascript:;">＜</a> -->
+
+  <a href="javascript:;" (click)="pageClicked(x)" *ngFor="let x of paged?.pages">{{ x }}</a>
+
+  <!-- <a href="javascript:;">＞</a> -->
+  <a href="javascript:;" (click)="pageClicked(paged!.endPage)">≫</a>
+</div>
+
+<!-- <div class="pager">
   <ul class="">
     <li>
       <button type="button" class="btn start-page" (click)="pageClicked(paged!.startPage)">◁</button>
@@ -13,4 +23,4 @@
       <button type="button" class="btn end-page" (click)="pageClicked(paged!.endPage)">▷</button>
     </li>
   </ul>
-</div>
+</div> -->

@@ -46,6 +46,8 @@ import { SelfCrtfc3Component } from './sub/self-crtfc3/self-crtfc3.component';
 import { SourceEditDialogComponent } from './editor/source-edit-dialog/source-edit-dialog.component';
 import { ServiceModule } from './service/service.module';
 import { AdminModule } from './admin/admin.module';
+import { CmmnModule } from './cmmn/cmmn.module';
+import { Business15Component } from './sub/business15/business15.component';
 
 const JWT_Module_Options: JwtModuleOptions = {
   config: { tokenGetter },
@@ -92,9 +94,10 @@ export function tokenGetter() {
     SelfCrtfc1Component,
     SelfCrtfc3Component,
     SourceEditDialogComponent,
+    Business15Component,
   ],
   exports: [HeaderComponent],
-  imports: [AdminModule, BrowserModule, AppRoutingModule, HttpClientModule, BizModule, ServiceModule, PrjctModule, FormsModule, NgbModule, ReactiveFormsModule, JwtModule.forRoot(JWT_Module_Options)],
+  imports: [CmmnModule, AdminModule, BrowserModule, AppRoutingModule, HttpClientModule, BizModule, ServiceModule, PrjctModule, FormsModule, NgbModule, ReactiveFormsModule, JwtModule.forRoot(JWT_Module_Options)],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],
 })
