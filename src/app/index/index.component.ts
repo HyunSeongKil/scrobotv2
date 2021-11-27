@@ -85,4 +85,17 @@ export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
     location.href = 'edit2?prjctId=' + prjctId;
     // this.router.navigate(['/edit2'], { queryParams: { prjctId } });
   }
+
+  onNewPrjctClick(): void {
+    const dto: any = {
+      prjctNm: '프로젝트 ' + new Date(),
+      userId: this.authService.getUserId(),
+    };
+
+    this.prjctService.regist(dto).then(() => {
+      this.prjctService.listByUserId(this.authService.getUserId()).then((res: any) => {
+        this.prjcts = res.data;
+      });
+    });
+  }
 }

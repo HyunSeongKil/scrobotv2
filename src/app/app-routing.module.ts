@@ -20,6 +20,8 @@ import { Business15Component } from './sub/business15/business15.component';
 import { Business16Component } from './sub/business16/business16.component';
 import { Business2Component } from './sub/business2/business2.component';
 import { Business20Component } from './sub/business20/business20.component';
+import { Business21Component } from './sub/business21/business21.component';
+import { Business22Component } from './sub/business22/business22.component';
 import { Business28Component } from './sub/business28/business28.component';
 import { Business3Component } from './sub/business3/business3.component';
 import { Business4Component } from './sub/business4/business4.component';
@@ -44,6 +46,8 @@ const routes: Routes = [
   { path: 'sub/business3', component: Business3Component },
   { path: 'sub/business4', component: Business4Component },
   { path: 'sub/business20', component: Business20Component },
+  { path: 'sub/business21', component: Business21Component },
+  { path: 'sub/business22', component: Business22Component },
   { path: 'sub/business28', component: Business28Component },
 
   { path: 'sub/self-crtfc1', component: SelfCrtfc1Component },

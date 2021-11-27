@@ -56,7 +56,7 @@ export class AdminLnbComponent implements OnInit {
       return;
     }
 
-    this.authService.removeToken();
+    this.authService.removeTokens();
     location.href = 'index';
   }
 }

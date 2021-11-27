@@ -1,40 +1,149 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { environment } from 'src/environments/environment';
 
+/**
+ * 권한 관리
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  TOKEN_KEY = 'jwt';
+  ACCESS_TOKEN_KEY = 'jwt';
+  REFRESH_TOKEN_KEY = 'refreshToken';
 
-  constructor(private jwtHelper: JwtHelperService) {}
+  constructor(private jwtHelper: JwtHelperService, private http: HttpClient) {}
 
-  getToken(): string {
-    const jwt: string = localStorage.getItem(this.TOKEN_KEY) ?? '';
-    console.log(jwt);
+  /**
+   * access token 존재여부
+   * @returns 존재하면 true
+   */
+  existsAccessToken(): boolean {
+    return 0 < this.getAccessToken().length;
+  }
+
+  /**
+   * refresh token 존재여부
+   * @returns 존재하면 true
+   */
+  existsRefreshToken(): boolean {
+    return 0 < this.getRefreshToken().length;
+  }
+
+  /**
+   * get access token
+   * @returns 문자열
+   */
+  getAccessToken(): string {
+    const jwt: string = localStorage.getItem(this.ACCESS_TOKEN_KEY) ?? '';
+    // console.log(jwt);
     return jwt;
   }
 
-  setToken(token: string): void {
-    localStorage.setItem(this.TOKEN_KEY, token);
-    localStorage.setItem('lastestTime', new Date().getTime() + '');
+  /**
+   * get refresh token
+   * @returns 문자열
+   */
+  getRefreshToken(): string {
+    const jwt: string = localStorage.getItem(this.REFRESH_TOKEN_KEY) ?? '';
+    // console.log(jwt);
+    return jwt;
+  }
+
+  /**
+   * set access token
+   * @param token access token
+   */
+  setAccessToken(token: string): void {
+    localStorage.setItem(this.ACCESS_TOKEN_KEY, token);
+    localStorage.setItem('lastestTime', new Date().getTime() + ''); // 현재시간
 
     console.log(this.jwtHelper.decodeToken(token));
   }
 
-  removeToken(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
+  /**
+   * set refresh token
+   * @param token refresh token
+   */
+  setRefreshToken(token: string): void {
+    localStorage.setItem(this.REFRESH_TOKEN_KEY, token);
+    console.log(this.jwtHelper.decodeToken(token));
   }
 
+  /**
+   * access token 삭제
+   */
+  removeAccessToken(): void {
+    localStorage.removeItem(this.ACCESS_TOKEN_KEY);
+  }
+
+  /**
+   * refresh token 삭제
+   */
+  removeRefreshToken(): void {
+    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
+  }
+
+  /**
+   * token 2개 삭제
+   */
+  removeTokens(): void {
+    this.removeAccessToken();
+    this.removeRefreshToken();
+  }
+
+  /**
+   * 권한이 있는지 검사
+   * @returns 권한이 있으면 true
+   */
   isAuthenticated(): boolean {
-    //
-    const token = this.getToken();
-    if (null === token || undefined === token || 0 == token.length) {
-      console.log('token null or empty');
-      return false;
+    if (this.existsAccessToken() && !this.isAccessTokenExpired()) {
+      return true;
     }
 
-    return !this.isTokenExpired(token);
+    // 토큰 존재
+    if (this.existsAccessToken()) {
+      // 만료
+      if (this.isAccessTokenExpired()) {
+        // refresh토큰 존재 & 만료 전
+        if (this.existsRefreshToken() && !this.isRefreshTokenExpired()) {
+          //  토큰 재발급
+          this.reIssueToken();
+          return true;
+        }
+      }
+    }
+
+    // 토큰 미존재
+    if (!this.existsAccessToken()) {
+      // refresh토큰 존재 & 만료 전
+      if (this.existsRefreshToken() && !this.isRefreshTokenExpired()) {
+        //  토큰 재발급
+        this.reIssueToken();
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * 토큰 재발급
+   */
+  async reIssueToken(): Promise<void> {
+    const p = await this.http.put(`${environment.url}/users/reissue`, { refreshToken: this.getRefreshToken() }).toPromise<any>();
+    this.setAccessToken(p.data);
+  }
+
+  /**
+   * refresh token 만료여부
+   * @returns 만료되었으면 true
+   */
+  isRefreshTokenExpired(): boolean {
+    const token: string = this.getRefreshToken();
+
+    return this.jwtHelper.isTokenExpired(token);
   }
 
   /**
@@ -42,7 +151,7 @@ export class AuthService {
    * @param token 토큰
    * @returns 만료이면 true
    */
-  isTokenExpired(token: string) {
+  isAccessTokenExpired() {
     const lastestTime: string | null = localStorage.getItem('lastestTime');
     if (null === lastestTime) {
       return false;
@@ -63,6 +172,7 @@ export class AuthService {
       // console.log(dt.valueOf(), new Date().valueOf(), dt.valueOf() - new Date().valueOf(), dt.valueOf() > new Date().valueOf());
     }
 
+    const token: string = this.getAccessToken();
     const b = this.jwtHelper.isTokenExpired(token);
 
     console.log('<<isTokenExpired', b);
@@ -74,7 +184,7 @@ export class AuthService {
    * @returns 회원아이디
    */
   getUserId(): string {
-    return this.jwtHelper.decodeToken(this.getToken()).userId;
+    return this.jwtHelper.decodeToken(this.getAccessToken()).userId;
   }
 
   /**
@@ -83,7 +193,7 @@ export class AuthService {
    */
   getUserNm(): string {
     if (this.isAuthenticated()) {
-      return this.jwtHelper.decodeToken(this.getToken()).userNm;
+      return this.jwtHelper.decodeToken(this.getAccessToken()).userNm;
     }
 
     return '';

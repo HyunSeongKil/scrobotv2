@@ -51,6 +51,8 @@ import { Business15Component } from './sub/business15/business15.component';
 import { Business16Component } from './sub/business16/business16.component';
 import { Business3Component } from './sub/business3/business3.component';
 import { BusinessComponent } from './sub/business/business.component';
+import { Business21Component } from './sub/business21/business21.component';
+import { Business22Component } from './sub/business22/business22.component';
 
 const JWT_Module_Options: JwtModuleOptions = {
   config: { tokenGetter },
@@ -101,6 +103,8 @@ export function tokenGetter() {
     Business16Component,
     Business3Component,
     BusinessComponent,
+    Business21Component,
+    Business22Component,
   ],
   exports: [HeaderComponent, FooterComponent],
   imports: [CmmnModule, AdminModule, BrowserModule, AppRoutingModule, HttpClientModule, BizModule, ServiceModule, PrjctModule, FormsModule, NgbModule, ReactiveFormsModule, JwtModule.forRoot(JWT_Module_Options)],

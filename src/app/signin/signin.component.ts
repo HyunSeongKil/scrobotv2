@@ -38,7 +38,7 @@ export class SigninComponent implements OnInit {
       }
 
       //
-      this.authService.setToken(res.data);
+      this.authService.setAccessToken(res.data);
       this.headerService.signinedEvent.emit('');
 
       //

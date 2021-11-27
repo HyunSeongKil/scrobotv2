@@ -104,13 +104,17 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
     //
     this.userService.signin(this.form.value as Scrobot.User).then((res: any) => {
-      if (-1 !== res.data.indexOf('E-')) {
+      console.log(res);
+
+      //
+      if (undefined !== res.data.e) {
         alert('로그인 정보가 올바르지 않습니다.');
         return;
       }
 
       //
-      this.authService.setToken(res.data);
+      this.authService.setAccessToken(res.data.accessToken);
+      this.authService.setRefreshToken(res.data.refreshToken);
       this.headerService.signinedEvent.emit('');
 
       this.ngAfterViewInit();
@@ -127,7 +131,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
 
-    this.authService.removeToken();
+    this.authService.removeTokens();
     this.headerService.signoutedEvent.emit('');
 
     this.ngAfterViewInit();
