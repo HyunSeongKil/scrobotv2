@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AuthService } from 'src/app/service/auth.service';
+import { Menu } from '../admin-lnb/admin-lnb.component';
 
 @Component({
   selector: 'app-admin-header',
@@ -9,7 +11,9 @@ import { AuthService } from 'src/app/service/auth.service';
 export class AdminHeaderComponent implements OnInit {
   @Output() initedEvent = new EventEmitter<AdminHeaderComponent>();
 
-  constructor(authService: AuthService) {
+  menus: Menu[] = [];
+
+  constructor(authService: AuthService, private http: HttpClient) {
     if (!authService.isAuthenticated()) {
       location.href = 'index';
       return;
@@ -17,6 +21,10 @@ export class AdminHeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.http.get(`./assets/data/adminMenus.json`).subscribe((res: any) => {
+      this.menus = res;
+    });
+
     this.initedEvent.emit(this);
   }
 }

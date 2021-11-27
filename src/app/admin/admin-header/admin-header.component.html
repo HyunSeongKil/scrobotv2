@@ -8,54 +8,12 @@
       </div>
       <nav>
         <ul id="gnb" class="clearfix">
-          <li>
-            <a href="javascript:;">게시판관리</a>
+          <li *ngFor="let x of menus">
+            <a href="{{ x.link }}">{{ x.nm }}</a>
             <ul class="depth2">
-              <li><a href="boardmanage_main.html">공지사항 관리</a></li>
-              <li><a href="javascript:;">FAQ 관리</a></li>
-              <li><a href="business27_br.html">1:1 문의 관리</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href="javascript:;">회원관리</a>
-            <ul class="depth2">
-              <li><a href="javascript:;">회원 목록 관리</a></li>
-              <li><a href="javascript:;">회원 탈퇴 관리</a></li>
-              <li><a href="javascript:;">회원 권한 관리</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href="javascript:;">권한관리</a>
-            <ul class="depth2">
-              <li><a href="javascript:;">권한 관리</a></li>
-              <li><a href="javascript:;">화면 관리</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href="javascript:;">시스템모니터링</a>
-            <ul class="depth2">
-              <li><a href="javascript:;">버전정보 관리</a></li>
-              <li><a href="javascript:;">시스템 모니터링</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href="javascript:;">시스템관리</a>
-            <ul class="depth2">
-              <li><a href="business5_br.html">메뉴관리</a></li>
-              <li><a href="javascript:;">약관 관리</a></li>
-              <li><a href="business13_br.html">상품 관리</a></li>
-              <li><a href="javascript:;">기능 관리</a></li>
-              <li><a href="javascript:;">메시지 관리</a></li>
-              <!--<li><a href="javascript:;">공통 구분 코드 관리</a></li>-->
-              <li><a href="javascript:;">공통 코드 관리</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href="javascript:;">데이터표준관리</a>
-            <ul class="depth2">
-              <li><a href="javascript:;">단어 관리</a></li>
-              <li><a href="javascript:;">도메인 관리</a></li>
-              <li><a href="javascript:;">용어사전 관리</a></li>
+              <li *ngFor="let x2 of x.sub">
+                <a href="{{ x2.link }}">{{ x2.nm }}</a>
+              </li>
             </ul>
           </li>
         </ul>
