@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CmmnCodeService {
-  BIZ_URI = 'http://localhost:38080/scrobot/cmmn-codes';
+  BIZ_URI = `${environment.url}/cmmn-codes`;
 
   constructor(private http: HttpClient) {}
 

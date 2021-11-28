@@ -48,17 +48,17 @@ export class PrjctListComponent implements OnInit {
   }
 
   listByUserId(): void {
-    this.service.listByUserId(this.authService.getUserId()).then((res: any) => {
+    this.service.findAllByUserId(this.authService.getUserId()).then((res: any) => {
       this.prjcts = res.data;
 
       this.prjcts.forEach((x) => {
         // 메뉴 목록
-        this.menuService.listByPrjctId(x.prjctId).then((res: any) => {
+        this.menuService.findAllByPrjctId(x.prjctId).then((res: any) => {
           this.menuCo[x.prjctId] = res.data.length;
         });
 
         // 화면 목록
-        this.scrinService.listByPrjctId(x.prjctId).then((res: any) => {
+        this.scrinService.findAllByPrjctId(x.prjctId).then((res: any) => {
           this.scrinCo[x.prjctId] = res.data.length;
         });
       });

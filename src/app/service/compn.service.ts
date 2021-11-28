@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { Scrobot } from '../@types/scrobot';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CompnService {
-  BIZ_URI = 'http://localhost:38080/scrobot/compns';
+  BIZ_URI = `${environment.url}/compns`;
 
   constructor(private http: HttpClient) {}
 

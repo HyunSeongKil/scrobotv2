@@ -28,9 +28,12 @@ export class ScrinRegistDialogComponent implements OnInit {
 
   constructor(private modalService: NgbModal, private service: ScrinService, private cmmnCodeService: CmmnCodeService) {
     this.form = new FormGroup({
-      scrinGroupId: new FormControl('', [Validators.required]),
+      scrinGroupId: new FormControl('', []),
       scrinNm: new FormControl('', [Validators.required]),
+      prjctId: new FormControl('', [Validators.required]),
       scrinSeCode: new FormControl('', [Validators.required]),
+      menuId: new FormControl('', [Validators.required]),
+      menuNm: new FormControl('', []),
     });
   }
   ngOnInit(): void {
@@ -38,17 +41,19 @@ export class ScrinRegistDialogComponent implements OnInit {
   }
 
   /**
-   *
-   * @param scrinGroupId 화면 그룹 아이디
+   * open
+   * @param prjctId 프로젝트아이디
+   * @param menuId (기준 데이터용)메뉴아이디
+   * @param menuNm (기준 데이터용)메뉴 명
    */
-  open(scrinGroupId: string) {
+  open(prjctId: string, menuId: string, menuNm: string): void {
     // 화면 구분 코드 목록 조회
     this.cmmnCodeService.listByPrntsCmmnCode('scrin_se').then((res: any) => {
       this.scrinSeCodes = res.data;
     });
 
     //
-    this.form.patchValue({ scrinGroupId });
+    this.form.patchValue({ prjctId, menuId, menuNm });
 
     this.modalService.open(this.content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
       (result: any) => {
@@ -61,7 +66,7 @@ export class ScrinRegistDialogComponent implements OnInit {
         if (!this.form.valid) {
           console.log(this.form.value);
           alert('입력값을 확인하시기 바랍니다.');
-          this.open(scrinGroupId);
+          this.open(prjctId, menuId, menuNm);
           return;
         }
 

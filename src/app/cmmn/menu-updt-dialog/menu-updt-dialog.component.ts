@@ -31,7 +31,7 @@ export class MenuUpdtDialogComponent implements OnInit {
   /**
    * 화면 목록
    */
-  scrins: Scrobot.Scrin[] = [];
+  // scrins: Scrobot.Scrin[] = [];
 
   form!: FormGroup;
 
@@ -66,14 +66,14 @@ export class MenuUpdtDialogComponent implements OnInit {
     this.form.patchValue({ prjctId, menuId, prntsMenuId });
 
     // 메뉴 조회
-    this.service.get(menuId).then((res: any) => {
+    this.service.findById(menuId).then((res: any) => {
       this.form.patchValue(res.data);
     });
 
     //  화면 목록 조회
-    this.scrinService.listByPrjctId(prjctId).then((res: any) => {
-      this.scrins = res.data;
-    });
+    // this.scrinService.listByPrjctId(prjctId).then((res: any) => {
+    //   this.scrins = res.data;
+    // });
 
     this.modalService.open(this.content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
       (result: any) => {

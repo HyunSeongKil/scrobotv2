@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 import { Scrobot } from '../@types/scrobot';
 
 /**
@@ -10,7 +11,7 @@ import { Scrobot } from '../@types/scrobot';
   providedIn: 'root',
 })
 export class DeployService {
-  BIZ_URI = `http://localhost:38080/scrobot/deploys`;
+  BIZ_URI = `${environment.url}/deploys`;
 
   constructor(private http: HttpClient) {}
 

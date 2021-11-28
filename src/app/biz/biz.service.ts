@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { TrgetSys } from '../@types/trgetSys';
 
 @Injectable({
@@ -13,7 +14,7 @@ export class BizService {
   static SE_L = 'L';
   static SE_CANCEL = 'CANCEL';
 
-  BIZ_URI = 'http://localhost:38080/scrobot/biz';
+  BIZ_URI = `${environment.url}/biz`;
 
   constructor(private http: HttpClient) {}
 

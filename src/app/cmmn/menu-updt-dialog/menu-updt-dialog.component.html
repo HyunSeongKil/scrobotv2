@@ -10,14 +10,14 @@
       <label for="menuNm">메뉴 명<span class="req">*</span></label>
       <input type="text" class="form-control" id="menuNm" formControlName="menuNm" />
 
-      <label for="scrinId">이동할 화면</label>
+      <!-- <label for="scrinId">이동할 화면</label>
       <select id="scrinId" class="form-select" formControlName="scrinId">
         <option value="">-없음-</option>
         <ng-container *ngFor="let x of scrins">
-          <!-- 등록,목록만 표시 -->
+          등록,목록만 표시
           <option value="{{ x.scrinId }}" *ngIf="'C' === x.scrinSeCode || 'L' === x.scrinSeCode">{{ x.scrinNm }}</option>
         </ng-container>
-      </select>
+      </select> -->
     </form>
 
     <div class="mt-1 font-italic"><span class="req">*</span> 필수입력 항목입니다.</div>

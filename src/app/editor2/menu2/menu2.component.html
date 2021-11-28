@@ -1,9 +1,10 @@
 <div class="notice">
   <nav class="nav1">
     <ul class="gnb" style="padding-left: 0">
-      <div class="add_btn"><a href="javascript:;" (click)="openMenuRegistDialog('-')">등록</a></div>
-      <li class="main_list" *ngFor="let x of menus">
-        <ng-container *ngIf="'-' === x.prntsMenuId">
+      <div class="add_btn"><a href="javascript:;" title="최상위 메뉴 등록" (click)="openMenuRegistDialog('-')">등록</a></div>
+
+      <ng-container *ngFor="let x of menus">
+        <li class="main_list" [attr.data-menu-id]="x.menuId" [attr.data-prnts-menu-id]="x.prntsMenuId" *ngIf="'-' === x.prntsMenuId">
           <div class="row">
             <div class="col-6">
               <i class="fas fa-angle-down"></i>
@@ -12,29 +13,51 @@
               {{ x.menuNm }}
             </div>
             <div class="col-6 text-end">
-              <img src="./assets/images/editor/plus3.png" alt="플러스" class="pl" style="width: 20px" (click)="openMenuRegistDialog(x.menuId)" />
-              <img src="./assets/images/editor/pencil.png" alt="연필" class="mx-1" style="width: 20px" (click)="openMenuUpdateDialog(x.menuId)" />
-              <img src="./assets/images/editor/waste.png" alt="휴지통" style="width: 20px" (click)="deleteMenu(x.menuId)" />
+              <img src="./assets/images/editor/plus3.png" alt="플러스" class="pl" style="width: 20px" title="화면 매핑" (click)="openMenuScrinMapngDialog(x.menuId)" />
+              <img src="./assets/images/editor/plus3.png" alt="플러스" class="pl" style="width: 20px" title="하위메뉴 등록" (click)="openMenuRegistDialog(x.menuId)" />
+              <img src="./assets/images/editor/pencil.png" alt="연필" class="mx-1" style="width: 20px" title="메뉴 수정" (click)="openMenuUpdateDialog(x.menuId)" />
+              <img src="./assets/images/editor/waste.png" alt="휴지통" style="width: 20px" title="메뉴 삭제" (click)="deleteMenu(x.menuId)" />
             </div>
           </div>
-        </ng-container>
 
-        <!--하위메뉴-->
-        <ul class="sub" *ngFor="let x2 of menus">
-          <li *ngIf="x.menuId === x2.prntsMenuId">
-            <div class="row">
-              <div class="col-6">{{ x2.menuNm }}</div>
-              <div class="col-6 text-end">
-                <img src="./assets/images/editor/penc.png" alt="이미지3" style="width: 20px" (click)="openMenuUpdateDialog(x2.menuId, x2.prntsMenuId)" />
-                <img src="./assets/images/editor/garbage.png" alt="이미지4" style="width: 20px" (click)="deleteMenu(x2.menuId)" />
-              </div>
-            </div>
-          </li>
-        </ul>
-      </li>
+          <!--하위메뉴-->
+          <ng-container *ngFor="let x2 of menus">
+            <ul class="sub sub2" [attr.data-menu-id]="x2.menuId" [attr.data-prnts-menu-id]="x2.prntsMenuId" *ngIf="x2.prntsMenuId === x.menuId">
+              <li>
+                <div class="row">
+                  <div class="col-6">{{ x2.menuNm }}</div>
+                  <div class="col-6 text-end">
+                    <img src="./assets/images/editor/plus3.png" alt="플러스" class="pl" style="width: 20px" title="화면 매핑" (click)="openMenuScrinMapngDialog(x2.menuId)" />
+                    <img src="./assets/images/editor/plus3.png" alt="플러스" class="pl" style="width: 20px" title="하위메뉴 등록" (click)="openMenuRegistDialog(x2.menuId)" />
+                    <img src="./assets/images/editor/penc.png" alt="이미지3" class="mx-1" style="width: 20px" title="메뉴 수정" (click)="openMenuUpdateDialog(x2.menuId, x2.prntsMenuId)" />
+                    <img src="./assets/images/editor/garbage.png" alt="이미지4" style="width: 20px" title="메뉴 삭제" (click)="deleteMenu(x2.menuId)" />
+                  </div>
+                </div>
+
+                <!-- 3depth 메뉴 -->
+                <ng-container *ngFor="let x3 of menus">
+                  <ul class="sub sub3" [attr.data-menu-id]="x3.menuId" [attr.data-prnts-menu-id]="x3.prntsMenuId" *ngIf="x3.prntsMenuId === x2.menuId">
+                    <div class="row">
+                      <div class="col-6">{{ x3.menuNm }}</div>
+                      <div class="col-6 text-end">
+                        <img src="./assets/images/editor/plus3.png" alt="플러스" class="pl" style="width: 20px" title="화면 매핑" (click)="openMenuScrinMapngDialog(x3.menuId)" />
+                        <img src="./assets/images/editor/penc.png" alt="이미지3" class="mx-1" style="width: 20px" title="메뉴 수정" (click)="openMenuUpdateDialog(x3.menuId, x3.prntsMenuId)" />
+                        <img src="./assets/images/editor/garbage.png" alt="이미지4" style="width: 20px" title="메뉴 삭제" (click)="deleteMenu(x3.menuId)" />
+                      </div>
+                    </div>
+                  </ul>
+                </ng-container>
+              </li>
+            </ul>
+          </ng-container>
+        </li>
+      </ng-container>
+
+      <li *ngIf="0 === menus.length">데이터가 없습니다.</li>
     </ul>
   </nav>
 </div>
 
 <app-menu-regist-dialog #menuRegistDialogRef (initedEvent)="menuRegistInitedEvent($event)"></app-menu-regist-dialog>
 <app-menu-updt-dialog #menuUpdtDialogRef (initedEvent)="menuUpdtInitedEvent($event)"></app-menu-updt-dialog>
+<app-menu-scrin-mapng-dialog (initedEvent)="menuScrinMapngInited($event)"></app-menu-scrin-mapng-dialog>

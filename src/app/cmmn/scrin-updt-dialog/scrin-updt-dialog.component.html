@@ -17,6 +17,9 @@
           <option value="{{ x.cmmnCode }}" selected *ngIf="x.cmmnCode === form.controls.scrinSeCode.value">{{ x.cmmnCodeNm }}</option>
         </ng-container>
       </select>
+
+      <label for="menuNm">기준 데이터</label>
+      <input type="text" id="menuNm" class="form-control" formControlName="menuNm" readonly />
     </form>
 
     <div class="mt-1 font-italic"><span class="req">*</span> 필수입력 항목입니다.</div>

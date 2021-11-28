@@ -1,7 +1,53 @@
 <div class="notice">
   <nav class="nav1">
     <ul class="gnb" style="padding-left: 0">
-      <div class="add_btn"><a href="javascript:;" (click)="openScrinGroupRegistDialog()">등록</a></div>
+      <!-- <div class="add_btn"><a href="javascript:;" (click)="openScrinGroupRegistDialog()">등록</a></div> -->
+
+      <ng-container *ngFor="let x of menus">
+        <li class="main_list" [attr.data-menu-id]="x.menuId" [attr.data-prnts-menu-id]="x.prntsMenuId" *ngIf="'-' === x.prntsMenuId">
+          <div class="row">
+            <div class="col-6">
+              <i class="fas fa-angle-down"></i>
+              <img src="./assets/images/editor/tree.png" alt="검정화살표" style="width: 20px" />
+              <img src="./assets/images/editor/open_folder.png" alt="파란색폴더" style="width: 20px" />
+              {{ x.menuNm }}
+            </div>
+            <div class="col-6 text-end"></div>
+          </div>
+
+          <!--하위메뉴 2depth까지만 표시-->
+          <ng-container *ngFor="let x2 of menus">
+            <ul class="sub sub2" [attr.data-menu-id]="x2.menuId" [attr.data-prnts-menu-id]="x2.prntsMenuId" *ngIf="x2.prntsMenuId === x.menuId">
+              <li>
+                <div class="row">
+                  <div class="col-6">{{ x2.menuNm }}</div>
+                  <div class="col-6 text-end">
+                    <img src="./assets/images/editor/plus3.png" alt="플러스" class="pl" style="width: 20px" title="화면 등록" (click)="onRegistScrinClick(x2.menuId)" />
+                  </div>
+                </div>
+
+                <!--  화면목록 -->
+                <ng-container *ngFor="let s of scrins">
+                  <ul class="sub" *ngIf="s.menuId === x2.menuId">
+                    <li>
+                      <div class="row">
+                        <div class="col-6">{{ s.scrinNm }}({{ s.scrinSeCode }})</div>
+                        <div class="col-6 text-end">
+                          <!-- todo 화면편집 -->
+
+                          <img src="./assets/images/editor/penc.png" alt="이미지3" class="" style="width: 20px" title="화면 복사" (click)="onCopyScrinClick(s.scrinId)" />
+                          <img src="./assets/images/editor/penc.png" alt="이미지3" class="mx-1" style="width: 20px" title="화면 수정" (click)="onUpdateScrinClick(s.scrinId)" />
+                          <img src="./assets/images/editor/garbage.png" alt="이미지4" style="width: 20px" title="화면 삭제" (click)="onDeleteScrinClick(s.scrinId)" />
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </ng-container>
+              </li>
+            </ul>
+          </ng-container>
+        </li>
+      </ng-container>
 
       <!-- 화면 그룹 -->
       <li class="main_list mb-2" *ngFor="let x of scrinGroups">

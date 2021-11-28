@@ -42,7 +42,7 @@ export class EditorService {
    * @returns promise
    */
   listMenuByPrjctId(prjctId: string): Promise<any> {
-    return this.menuService.listByPrjctId(prjctId);
+    return this.menuService.findAllByPrjctId(prjctId);
   }
 
   /**
@@ -58,7 +58,7 @@ export class EditorService {
     prjct = prms1.data as Scrobot.Prjct;
 
     // 메뉴
-    this.menuService.listByPrjctId(prjctId).then((res: any) => {
+    this.menuService.findAllByPrjctId(prjctId).then((res: any) => {
       prjct.menus = res.data as Scrobot.Menu[];
     });
 

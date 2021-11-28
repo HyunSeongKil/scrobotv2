@@ -25,7 +25,7 @@ export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
 
     //
     this.loadPrjctsEventSub = headerService.loadPrjctsEvent.subscribe(() => {
-      prjctService.listByUserId(authService.getUserId()).then((res: any) => {
+      prjctService.findAllByUserId(authService.getUserId()).then((res: any) => {
         this.prjcts = res.data;
       });
     });
@@ -93,7 +93,7 @@ export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
     };
 
     this.prjctService.regist(dto).then(() => {
-      this.prjctService.listByUserId(this.authService.getUserId()).then((res: any) => {
+      this.prjctService.findAllByUserId(this.authService.getUserId()).then((res: any) => {
         this.prjcts = res.data;
       });
     });

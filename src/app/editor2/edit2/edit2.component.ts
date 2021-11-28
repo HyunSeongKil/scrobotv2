@@ -87,13 +87,13 @@ export class Edit2Component implements OnInit {
    *
    * @param ses
    */
-  showTab(ses: string[]): void {
+  enableTab(ses: string[]): void {
     [TabSe.Scrin, TabSe.Menu, TabSe.Compn, TabSe.Property].forEach((x) => {
-      $('ul > li.' + x).addClass('d-none');
+      $('ul > li.' + x + ' > a').addClass('disabled');
     });
 
     ses.forEach((x) => {
-      $('ul > li.' + x).removeClass('d-none');
+      $('ul > li.' + x + ' > a').removeClass('disabled');
     });
   }
 
@@ -102,7 +102,7 @@ export class Edit2Component implements OnInit {
    * @param se
    */
   initedEvent(se: TabSe): void {
-    if (TabSe.Scrin === se) {
+    if (TabSe.Menu === se) {
       setTimeout(() => {
         this.onTabClick(se);
       }, 500);
@@ -124,7 +124,7 @@ export class Edit2Component implements OnInit {
       //
       this.editingEvent.emit(scrinId);
 
-      this.showTab([TabSe.Compn, TabSe.Property]);
+      this.enableTab([TabSe.Compn, TabSe.Property]);
       this.onTabClick(TabSe.Compn);
 
       //
@@ -185,7 +185,7 @@ export class Edit2Component implements OnInit {
     this.editingScrinId = '';
     this.closeEditingEvent.emit('');
 
-    this.showTab([TabSe.Scrin, TabSe.Menu]);
+    this.enableTab([TabSe.Scrin, TabSe.Menu]);
     this.onTabClick(TabSe.Scrin);
 
     //

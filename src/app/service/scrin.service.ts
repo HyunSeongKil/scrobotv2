@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { Scrobot } from '../@types/scrobot';
 
 /**
@@ -9,7 +10,7 @@ import { Scrobot } from '../@types/scrobot';
   providedIn: 'root',
 })
 export class ScrinService {
-  BIZ_URI = 'http://localhost:38080/scrobot/scrins';
+  BIZ_URI = `${environment.url}/scrins`;
 
   constructor(private http: HttpClient) {}
 
@@ -61,7 +62,7 @@ export class ScrinService {
     return this.http.get(`${this.BIZ_URI}/by-scrin-group?scrinGroupId=${scrinGroupId}`).toPromise();
   }
 
-  listByPrjctId(prjctId: string): Promise<any> {
+  findAllByPrjctId(prjctId: string): Promise<any> {
     return this.http.get(`${this.BIZ_URI}/by-prjct?prjctId=${prjctId}`).toPromise();
   }
 }

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 import { Scrobot } from '../@types/scrobot';
 
 /**
@@ -10,7 +11,7 @@ import { Scrobot } from '../@types/scrobot';
   providedIn: 'root',
 })
 export class PrjctService {
-  BIZ_URI = 'http://localhost:38080/scrobot/prjcts';
+  BIZ_URI = `${environment.url}/prjcts`;
 
   constructor(private http: HttpClient) {}
 
@@ -19,7 +20,7 @@ export class PrjctService {
    * @param userId 사용자 아이디
    * @returns promise
    */
-  listByUserId(userId: string): Promise<any> {
+  findAllByUserId(userId: string): Promise<any> {
     return this.http.get(`${this.BIZ_URI}/by-user?userId=${userId}`).toPromise();
   }
 

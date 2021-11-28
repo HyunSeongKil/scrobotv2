@@ -1,4 +1,12 @@
 export namespace Scrobot {
+  /**
+   * 메뉴-화면 매핑
+   */
+  export interface MenuScrinMapng {
+    menuScrinMapngId: number;
+    menuId: string;
+    scrinId: string;
+  }
   export interface Atchmnfl {
     atchmnflId: number;
     atchmnflGroupId: number;
@@ -44,9 +52,14 @@ export namespace Scrobot {
   }
 
   export interface Scrin {
+    /**
+     * @deprecated 1128
+     */
     scrinGroupId: string;
     scrinId: string;
     scrinNm: string;
+    prjctId: string;
+    menuId: string;
     scrinSeCode: string;
     compns: Compn[];
   }

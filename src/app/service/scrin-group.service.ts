@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { Scrobot } from '../@types/scrobot';
 
 /**
@@ -9,7 +10,7 @@ import { Scrobot } from '../@types/scrobot';
   providedIn: 'root',
 })
 export class ScrinGroupService {
-  BIZ_URI = 'http://localhost:38080/scrobot/scrin-groups';
+  BIZ_URI = `${environment.url}/scrin-groups`;
 
   constructor(private http: HttpClient) {}
 

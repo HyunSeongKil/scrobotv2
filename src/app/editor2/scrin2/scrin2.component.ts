@@ -6,6 +6,7 @@ import { ScrinGroupRegistDialogComponent } from 'src/app/cmmn/scrin-group-regist
 import { ScrinGroupUpdtDialogComponent } from 'src/app/cmmn/scrin-group-updt-dialog/scrin-group-updt-dialog.component';
 import { ScrinRegistDialogComponent } from 'src/app/cmmn/scrin-regist-dialog/scrin-regist-dialog.component';
 import { ScrinUpdtDialogComponent } from 'src/app/cmmn/scrin-updt-dialog/scrin-updt-dialog.component';
+import { MenuService } from 'src/app/service/menu.service';
 import { ScrinGroupService } from 'src/app/service/scrin-group.service';
 import { ScrinService } from 'src/app/service/scrin.service';
 import { Edit2Component, TabSe } from '../edit2/edit2.component';
@@ -51,11 +52,11 @@ export class Scrin2Component implements OnInit, OnDestroy {
   scrinCopyingEventSub: Subscription | undefined = new Subscription();
   scrinCopiedEventSub: Subscription | undefined = new Subscription();
 
-  prjctId: string = '';
+  menus: Scrobot.Menu[] = [];
   scrinGroups: Scrobot.ScrinGroup[] = [];
   scrins: Scrobot.Scrin[] = [];
 
-  constructor(@Host() hostCompnent: Edit2Component, private scrinGroupService: ScrinGroupService, private scrinService: ScrinService) {
+  constructor(@Host() hostCompnent: Edit2Component, private scrinGroupService: ScrinGroupService, private scrinService: ScrinService, private menuService: MenuService) {
     this.hostComponent = hostCompnent;
   }
   ngOnDestroy(): void {
@@ -124,6 +125,54 @@ export class Scrin2Component implements OnInit, OnDestroy {
     this.editingEventSub = this.hostComponent?.editingEvent.subscribe((scrinId: string) => {});
 
     this.closeEditingEventSub = this.hostComponent?.closeEditingEvent.subscribe((scrinId: string) => {});
+  }
+
+  /**
+   * 등록 클릭
+   * @param menuId 메뉴아이디
+   */
+  onRegistScrinClick(menuId: string): void {
+    this.scrinRegistDialogRef.open(this.hostComponent?.prjctId ?? '', menuId, this.getMenuNm(menuId));
+  }
+
+  /**
+   * 화면 수정 클릭
+   * @param scrinId 화면아이디
+   */
+  onUpdateScrinClick(scrinId: string): void {
+    this.scrinUpdtDialogRef.open(scrinId);
+  }
+
+  /**
+   * 화면 삭제 클릭
+   * @param scrinId 화면아이디
+   * @returns void
+   */
+  onDeleteScrinClick(scrinId: string): void {
+    if (!confirm('화면을 삭제하시겠습니까?')) {
+      return;
+    }
+
+    this.scrinService.delete(scrinId).then(() => {
+      this.getData();
+    });
+  }
+
+  /**
+   * 화면 복사 클릭
+   * @param scrinId 화면아이디
+   */
+  onCopyScrinClick(scrinId: string): void {
+    this.scrinCopyDialogRef.open(scrinId);
+  }
+
+  getMenuNm(menuId: string): string {
+    const menu: Scrobot.Menu | undefined = this.menus.find((x) => x.menuId === menuId);
+    if (undefined !== menu) {
+      return menu.menuNm;
+    }
+
+    return '';
   }
 
   /**
@@ -200,12 +249,16 @@ export class Scrin2Component implements OnInit, OnDestroy {
    *
    */
   async getData(): Promise<void> {
-    //
-    const prms = await this.scrinGroupService.listByPrjctId(this.hostComponent?.prjctId ?? '');
-    this.scrinGroups = prms.data;
+    // 메뉴 목록
+    const p = await this.menuService.findAllByPrjctId(this.hostComponent?.prjctId ?? '');
+    this.menus = p.data;
 
-    //
-    this.scrinService.listByPrjctId(this.hostComponent?.prjctId ?? '').then((res: any) => {
+    // 화면그룹 목록
+    // const prms = await this.scrinGroupService.listByPrjctId(this.hostComponent?.prjctId ?? '');
+    // this.scrinGroups = prms.data;
+
+    // 화면 목록
+    this.scrinService.findAllByPrjctId(this.hostComponent?.prjctId ?? '').then((res: any) => {
       this.scrins = res.data;
     });
   }
@@ -221,7 +274,7 @@ export class Scrin2Component implements OnInit, OnDestroy {
    *화면 등록 창 실행
    */
   openScrinRegistDialog(scrinGroupId: string): void {
-    this.scrinRegistDialogRef.open(scrinGroupId);
+    // this.scrinRegistDialogRef.open(scrinGroupId);
   }
 
   /**

@@ -42,7 +42,7 @@ export class MenuRegistDialogComponent implements OnInit {
     this.scrins = [];
 
     //  화면 목록 조회
-    this.scrinService.listByPrjctId(prjctId).then((res: any) => {
+    this.scrinService.findAllByPrjctId(prjctId).then((res: any) => {
       this.scrins = res.data;
     });
 

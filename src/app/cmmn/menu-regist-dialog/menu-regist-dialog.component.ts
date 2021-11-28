@@ -20,7 +20,7 @@ export class MenuRegistDialogComponent implements OnInit {
 
   private closeResult = '';
 
-  scrins: Scrobot.Scrin[] = [];
+  // scrins: Scrobot.Scrin[] = [];
 
   form!: FormGroup;
 
@@ -42,12 +42,12 @@ export class MenuRegistDialogComponent implements OnInit {
    */
   open(prjctId: string, prntsMenuId: string = '-') {
     this.form.patchValue({ prjctId, prntsMenuId, menuNm: '' });
-    this.scrins = [];
+    // this.scrins = [];
 
     //  화면 목록 조회
-    this.scrinService.listByPrjctId(prjctId).then((res: any) => {
-      this.scrins = res.data;
-    });
+    // this.scrinService.listByPrjctId(prjctId).then((res: any) => {
+    //   this.scrins = res.data;
+    // });
 
     this.modalService.open(this.content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
       (result: any) => {

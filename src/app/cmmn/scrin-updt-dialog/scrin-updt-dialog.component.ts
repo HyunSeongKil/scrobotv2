@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Scrobot } from 'src/app/@types/scrobot';
 import { CmmnCodeService } from 'src/app/service/cmmn-code.service';
+import { MenuService } from 'src/app/service/menu.service';
 import { ScrinService } from 'src/app/service/scrin.service';
 
 @Component({
@@ -26,10 +27,13 @@ export class ScrinUpdtDialogComponent implements OnInit {
 
   closeResult = '';
 
-  constructor(private modalService: NgbModal, private service: ScrinService, private cmmnCodeService: CmmnCodeService) {
+  constructor(private modalService: NgbModal, private service: ScrinService, private cmmnCodeService: CmmnCodeService, private menuService: MenuService) {
     this.form = new FormGroup({
       scrinId: new FormControl('', [Validators.required]),
       scrinNm: new FormControl('', [Validators.required]),
+      prjctId: new FormControl('', [Validators.required]),
+      menuId: new FormControl('', [Validators.required]),
+      menuNm: new FormControl('', []),
       scrinSeCode: new FormControl('', [Validators.required]),
     });
   }
@@ -41,16 +45,24 @@ export class ScrinUpdtDialogComponent implements OnInit {
    *
    * @param scrinId 원본 화면 아이디
    */
-  open(scrinId: string) {
+  async open(scrinId: string): Promise<void> {
     // 화면 구분 코드 목록 조회
-    this.cmmnCodeService.listByPrntsCmmnCode('scrin_se').then((res: any) => {
-      this.scrinSeCodes = res.data;
-    });
+    const p: any = await this.cmmnCodeService.listByPrntsCmmnCode('scrin_se');
+    this.scrinSeCodes = p.data;
+    // .then((res: any) => {
+    //   this.scrinSeCodes = res.data;
+    // });
 
     //
-    this.service.get(scrinId).then((res: any) => {
-      this.form.patchValue(res.data);
-    });
+    const p2: any = await this.service.get(scrinId);
+    this.form.patchValue(p2.data);
+    // .then((res: any) => {
+    //   this.form.patchValue(res.data);
+    // });
+
+    //
+    const p3: any = await this.menuService.findById(this.form.controls.menuId.value);
+    this.form.controls.menuNm.setValue(p3.data.menuNm);
 
     this.modalService.open(this.content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
       (result: any) => {

@@ -1,0 +1,5 @@
+ul > li > a.disabled {
+  pointer-events: none;
+  cursor: default;
+  color: #6c757d;
+}
