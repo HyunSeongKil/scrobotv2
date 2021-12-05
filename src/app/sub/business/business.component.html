@@ -40,8 +40,8 @@
               <tr>
                 <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;문의 유형</th>
                 <td colspan="3">
-                  <select formControlName="qaaSeCd">
-                    <option *ngFor="let x of qaaSes" value="{{ x.cmmnCode }}">{{ x.cmmnCodeNm }}</option>
+                  <select formControlName="inqryTyCd">
+                    <option *ngFor="let x of inqryTyCds" value="{{ x.cmmnCode }}">{{ x.cmmnCodeNm }}</option>
                   </select>
                 </td>
               </tr>
@@ -58,7 +58,7 @@
               <tr class="file_tr">
                 <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;첨부파일 목록</th>
                 <td class="file_box" colspan="2">
-                  <input type="file" id="f" class="form-control" />
+                  <input type="file" id="f" class="form-control" multiple />
                 </td>
               </tr>
             </table>

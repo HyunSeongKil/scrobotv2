@@ -1,0 +1,8 @@
+<div class="file_input">
+  <ul>
+    <li *ngFor="let x of atchmnfls">
+      <img src="./assets/images/disk.png" alt="첨부파일이미지" />
+      <a href="javascript:;" (click)="onDwldFileClick(x.atchmnflGroupId, x.atchmnflId)"> {{ x.originalFileNm }} ({{ x.atchmnflFileszValue | number }}바이트)</a>
+    </li>
+  </ul>
+</div>

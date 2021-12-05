@@ -6,8 +6,8 @@
     "on": false,
     "sub": [
       { "id": "a", "nm": "공지사항 관리", "link": "admin/boardmanage", "on": false },
-      { "id": "b", "nm": "FAQ 관리", "link": "", "on": false },
-      { "id": "c", "nm": "1:1문의 관리", "link": "admin/businiess27", "on": false }
+      { "id": "b", "nm": "FAQ 관리", "link": "admin/business33", "on": false },
+      { "id": "c", "nm": "1:1문의 관리", "link": "admin/business27", "on": false }
     ]
   },
   {

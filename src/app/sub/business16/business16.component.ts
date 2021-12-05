@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Scrobot } from 'src/app/@types/scrobot';
 import { AtchmnflService } from 'src/app/service/atchmnfl.service';
 import { BbsService } from 'src/app/service/bbs.service';
+import { CommentService } from 'src/app/service/comment.service';
 import { ScUtil } from 'src/app/service/util';
 import { environment } from 'src/environments/environment';
 
@@ -14,25 +15,14 @@ import { environment } from 'src/environments/environment';
 })
 export class Business16Component implements OnInit {
   /**
-   * 게시판 구분 코드
-   */
-  bbsSeCd: string = '';
-  /**
-   * 게시글 아이디
-   */
-  bbsId: number = -1;
-  /**
    * 첨부파일 목록
    */
   atchmnfls: Scrobot.Atchmnfl[] = [];
   form: FormGroup;
+  comment?: Scrobot.Comment;
 
-  constructor(route: ActivatedRoute, private router: Router, private service: BbsService, private atchmnflService: AtchmnflService) {
+  constructor(route: ActivatedRoute, private router: Router, private service: BbsService, private commentService: CommentService, private atchmnflService: AtchmnflService) {
     ScUtil.loadStyle('../assets/css/business16.css');
-
-    //
-    this.bbsSeCd = route.snapshot.queryParamMap.get('bbsSeCd') ?? '';
-    this.bbsId = Number(route.snapshot.queryParamMap.get('bbsId'));
 
     //
     this.form = new FormGroup({
@@ -46,10 +36,11 @@ export class Business16Component implements OnInit {
       registerNm: new FormControl(''),
       registDt: new FormControl(''),
     });
-  }
 
-  ngOnInit(): void {
-    this.service.findById(this.bbsId).then((res) => {
+    this.form.controls.bbsId.setValue(route.snapshot.queryParamMap.get('bbsId'));
+
+    // 조회
+    this.service.findById(this.form.controls.bbsId.value).then((res) => {
       this.form.patchValue(res.data);
 
       if (null !== this.form.controls.atchmnflGroupId.value) {
@@ -58,13 +49,22 @@ export class Business16Component implements OnInit {
         });
       }
     });
+
+    // 코멘트
+    commentService.findAllByBbsId(this.form.controls.bbsId.value).subscribe((comments) => {
+      if (0 < comments.length) {
+        this.comment = comments[0];
+      }
+    });
   }
+
+  ngOnInit(): void {}
 
   /**
    * 목록 클릭
    */
   onListClick(): void {
-    location.href = 'sub/business14?bbsSeCd=' + this.bbsSeCd;
+    location.href = 'sub/business14?bbsSeCd=' + this.form.controls.bbsSeCd.value;
     // this.router.navigate(['sub/business14'], { queryParams: { bbsSeCd: this.bbsSeCd } });
   }
 

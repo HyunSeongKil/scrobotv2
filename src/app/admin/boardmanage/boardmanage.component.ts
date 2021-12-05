@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Scrobot } from 'src/app/@types/scrobot';
 import { CmmnPagerComponent } from 'src/app/cmmn/cmmn-pager/cmmn-pager.component';
 import { AuthService } from 'src/app/service/auth.service';
@@ -27,7 +28,7 @@ export class BoardmanageComponent implements OnInit, AfterViewInit {
    */
   searchForm: FormGroup;
 
-  constructor(private authService: AuthService, private bbsService: BbsService, private cmmnCodeService: CmmnCodeService) {
+  constructor(private router: Router, private authService: AuthService, private bbsService: BbsService, private cmmnCodeService: CmmnCodeService) {
     ScUtil.loadStyle('../assets/css/boardmanage_main.css');
     ScUtil.loadStyle('../assets/css/common_1.css');
     ScUtil.loadStyle('../assets/css/login_1.css');
@@ -57,7 +58,9 @@ export class BoardmanageComponent implements OnInit, AfterViewInit {
 
   cmmnPagerInited(a: CmmnPagerComponent): void {
     this.cmmnPagerRef = a;
-    this.cmmnPagerRef.pageClickEvent.subscribe((pageNo: number) => {});
+    this.cmmnPagerRef.pageClickEvent.subscribe((pageNo: number) => {
+      this.onSearchClick(pageNo - 1);
+    });
   }
 
   /**
@@ -83,13 +86,13 @@ export class BoardmanageComponent implements OnInit, AfterViewInit {
 
       //
       this.bbses.forEach(async (x) => {
-        if (null === x.qaaSeCd) {
+        if (null === x.inqryTyCd) {
           return;
         }
 
         //
-        const p = await this.cmmnCodeService.findByPrntsCmmnCodeAndCmmnCode('qaa_se', x.qaaSeCd);
-        x.qaaSeCdNm = p.data.cmmnCodeNm;
+        const p = await this.cmmnCodeService.findByPrntsCmmnCodeAndCmmnCode('inqry_ty', x.inqryTyCd);
+        x.inqryTyCdNm = p.data.cmmnCodeNm;
       });
 
       this.cmmnPagerRef.render(res.totalElements, res.number + 1, res.size);
@@ -115,6 +118,18 @@ export class BoardmanageComponent implements OnInit, AfterViewInit {
 
     this.adminLnbRef.menuClickedEvent.subscribe((message) => {
       console.log(message);
+    });
+  }
+
+  onDetailClick(bbsSeCd: string, bbsId: number): void {
+    this.router.navigate(['admin/business31', bbsId], { queryParams: { bbsSeCd } });
+  }
+
+  onRegistClick(): void {
+    this.router.navigate(['admin/business30'], {
+      queryParams: {
+        bbsSeCd: this.bbsSeCd,
+      },
     });
   }
 }

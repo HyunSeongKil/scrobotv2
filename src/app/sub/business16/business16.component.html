@@ -39,18 +39,23 @@
               <tr>
                 <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;작성 내용</th>
                 <td valign="top" class="tool_img" colspan="3">
-                  <div class="txt1">[문의]<br />{{ nl2br(form.controls.bbsCn.value) }}</div>
-                  <!-- <span class="bold_font_point">[답변]<br />안녕하세요 SC_ROBOT 입니다.<br />에디터는 상단에 SC_ROBOT 실행 버튼을 누르시면 새창에서 사용 가능하십니다.</span> -->
+                  <div class="txt1" style="white-space: pre-wrap">[문의]<br />{{ form.controls.bbsCn.value }}</div>
+                  <span class="bold_font_point mt-5" style="white-space: pre-wrap">
+                    [답변]<br />
+                    <ng-container *ngIf="undefined !== comment"> {{ comment.commentCn }} </ng-container>
+                    <ng-container *ngIf="undefined === comment">없음</ng-container>
+                  </span>
                 </td>
               </tr>
               <tr class="file_tr">
                 <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;첨부파일 목록</th>
                 <td class="file_box" colspan="2">
-                  <div class="file_input">
-                    <ul * ngIf="0 < atchmnfls.length">
+                  <app-cmmn-atchmnfl-list [atchmnflGroupId]="form.controls.atchmnflGroupId.value"></app-cmmn-atchmnfl-list>
+                  <!-- <div class="file_input">
+                    <ul *ngIf="0 < atchmnfls.length">
                       <li *ngFor="let x of atchmnfls"><img src="./assets/images/disk.png" alt="첨부파일이미지" />&nbsp;{{ x.originalFileNm }}</li>
                     </ul>
-                  </div>
+                  </div> -->
                 </td>
               </tr>
             </table>

@@ -12,10 +12,11 @@ import { MenuUpdtDialogComponent } from './menu-updt-dialog/menu-updt-dialog.com
 import { TableItemEditDialogComponent } from './table-item-edit-dialog/table-item-edit-dialog.component';
 import { CmmnPagerComponent } from './cmmn-pager/cmmn-pager.component';
 import { MenuScrinMapngDialogComponent } from './menu-scrin-mapng-dialog/menu-scrin-mapng-dialog.component';
+import { CmmnAtchmnflListComponent } from './cmmn-atchmnfl-list/cmmn-atchmnfl-list.component';
 
 @NgModule({
-  declarations: [ScrinGroupRegistDialogComponent, WordDicarySelectDialogComponent, ScrinRegistDialogComponent, ScrinGroupUpdtDialogComponent, ScrinUpdtDialogComponent, ScrinCopyDialogComponent, MenuRegistDialogComponent, MenuUpdtDialogComponent, TableItemEditDialogComponent, CmmnPagerComponent, MenuScrinMapngDialogComponent],
+  declarations: [ScrinGroupRegistDialogComponent, WordDicarySelectDialogComponent, ScrinRegistDialogComponent, ScrinGroupUpdtDialogComponent, ScrinUpdtDialogComponent, ScrinCopyDialogComponent, MenuRegistDialogComponent, MenuUpdtDialogComponent, TableItemEditDialogComponent, CmmnPagerComponent, MenuScrinMapngDialogComponent, CmmnAtchmnflListComponent],
   imports: [CommonModule, ReactiveFormsModule, FormsModule],
-  exports: [CmmnPagerComponent, TableItemEditDialogComponent, ScrinGroupRegistDialogComponent, ScrinGroupUpdtDialogComponent, ScrinRegistDialogComponent, ScrinUpdtDialogComponent, ScrinCopyDialogComponent, MenuRegistDialogComponent, MenuUpdtDialogComponent, WordDicarySelectDialogComponent, MenuScrinMapngDialogComponent],
+  exports: [CmmnAtchmnflListComponent, CmmnPagerComponent, TableItemEditDialogComponent, ScrinGroupRegistDialogComponent, ScrinGroupUpdtDialogComponent, ScrinRegistDialogComponent, ScrinUpdtDialogComponent, ScrinCopyDialogComponent, MenuRegistDialogComponent, MenuUpdtDialogComponent, WordDicarySelectDialogComponent, MenuScrinMapngDialogComponent],
 })
 export class CmmnModule {}

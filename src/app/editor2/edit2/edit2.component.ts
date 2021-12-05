@@ -43,6 +43,7 @@ export class Edit2Component implements OnInit {
    * @param route
    */
   constructor(route: ActivatedRoute, private compnService: CompnService, private atchmnflService: AtchmnflService, private elService: ElService, private selectedElService: SelectedElService) {
+    ScUtil.loadStyle('../assets/js/index2.js');
     ScUtil.loadStyle('../assets/css/editmain.css');
     ScUtil.loadStyle('../assets/css/editmain_t.css');
 

@@ -1,0 +1,92 @@
+<div id="wrap">
+  <app-admin-header></app-admin-header>
+
+  <div id="contents" class="clearfix">
+    <app-admin-lnb (initedEvent)="adminLnbInited($event)"></app-admin-lnb>
+
+    <div class="content clearfix">
+      <div class="home">&nbsp;Home > SC-ROBOT관리 > 게시판관리 ><span class="bold_f"> FAQ 관리</span></div>
+      <h3 class="sub-tit"><img src="./assets/images/brownbar.png" alt="갈색바" />&nbsp;FAQ 관리</h3>
+      <div class="sub-content">
+        <div class="select-box">
+          <div class="table_content1">
+            <form method="post" [formGroup]="searchForm">
+              <table>
+                <tr>
+                  <th>검색어&nbsp;&nbsp;&nbsp;</th>
+                  <td>
+                    <select formControlName="searchCondition">
+                      <option value="SJ" selected>제목</option>
+                      <option value="CN">내용</option>
+                      <option>작성일자</option>
+                    </select>
+                    &nbsp;
+                    <input type="text" formControlName="searchValue" />
+                    <a href="javascript:;" (click)="onSearchClick()"><img src="./assets/images/ico_search.png" alt="돋보기" />&nbsp;&nbsp;조회</a>
+                  </td>
+                </tr>
+                <!-- TODO 나중에 구현 <tr>
+                  <th><label for="start">날짜&nbsp;&nbsp;</label></th>
+                  <td class="search_hover">
+                    <input type="date" id="start" name="trip-start" value="2021-08-13" min="2021-08-01" max="2050-08-31" />&nbsp;~ &nbsp;&nbsp;&nbsp;&nbsp;<input type="date" id="start" name="trip-start" value="2021-08-13" min="2021-08-01" max="2050-08-31" />&nbsp;&nbsp;<a href="javascript:;" (click)="onSearchClick()"><img src="./assets/images/ico_search.png" alt="돋보기" />&nbsp;&nbsp;조회</a>
+                  </td>
+                </tr> -->
+              </table>
+            </form>
+          </div>
+        </div>
+
+        <div class="table_content">
+          <div>
+            <h3><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;FAQ 목록</h3>
+          </div>
+          <div class="top_tit">
+            <p>(총 {{ cmmnPagerRef.getTotcnt() }}건)</p>
+          </div>
+        </div>
+        <div class="table-warp scroll">
+          <table class="table_content3">
+            <thead>
+              <tr>
+                <th>순번</th>
+                <th>문의유형</th>
+                <th>제목</th>
+                <th>작성일자</th>
+                <th>작성자</th>
+                <th>첨부파일</th>
+                <th>조회수</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of bbses; index as i">
+                <td>{{ rowNo(i) }}</td>
+                <td>{{ x.inqryTyCdNm }}</td>
+                <td>
+                  <a href="javascript:;" (click)="onDetailClick(x.bbsId)">{{ x.bbsSjNm }}</a>
+                </td>
+                <td>{{ x.registDt | date: "yyyy-MM-dd" }}</td>
+                <td>{{ x.registerNm }}</td>
+                <td>
+                  <a href="javascript:;" *ngIf="null !== x.atchmnflGroupId"><img src="./assets/images/disk.png" alt="디스크이미지" /></a>
+                </td>
+                <td>{{ x.inqireCo }}</td>
+              </tr>
+
+              <tr *ngIf="0 === bbses.length">
+                <td colspan="7" class="text-center">데이터가 없습니다.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <app-cmmn-pager #cmmnPagerRef (initedEvent)="cmmnPagerInited($event)"></app-cmmn-pager>
+        </div>
+        <!--                    <div class="btn-box mgt20 clearfix">-->
+        <div class="btn-box mgt20 clearfix">
+          <a href="javascript:;" class="btn purple float-right" (click)="onRegistClick()">등록</a>
+        </div>
+      </div>
+    </div>
+
+    <app-admin-footer></app-admin-footer>
+  </div>
+</div>

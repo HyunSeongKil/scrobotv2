@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Scrobot } from 'src/app/@types/scrobot';
 import { AuthService } from 'src/app/service/auth.service';
@@ -15,7 +15,8 @@ import { servicesVersion } from 'typescript';
 })
 export class BusinessComponent implements OnInit {
   bbsSeCd: string = '';
-  qaaSes: Scrobot.CmmnCode[] = [];
+  inqryTyCds: Scrobot.CmmnCode[] = [];
+
   form: FormGroup;
 
   constructor(route: ActivatedRoute, private service: BbsService, private cmmnCodeService: CmmnCodeService, private authService: AuthService) {
@@ -32,20 +33,25 @@ export class BusinessComponent implements OnInit {
     this.form = new FormGroup({
       bbsId: new FormControl(''),
       bbsSeCd: new FormControl(this.bbsSeCd),
-      bbsSjNm: new FormControl(''),
+      bbsSjNm: new FormControl('', [Validators.required]),
       bbsCn: new FormControl(''),
       atchmnflGroupId: new FormControl(''),
       inqireCo: new FormControl(0),
-      qaaSeCd: new FormControl(''),
+      inqryTyCd: new FormControl('', [Validators.required]),
       registerId: new FormControl(authService.getUserId()),
       registerNm: new FormControl(authService.getUserNm()),
       registDt: new FormControl(new Date()),
     });
+
+    // 질의 유형 목록
+    cmmnCodeService.listByPrntsCmmnCode('inqry_ty').then((res: any) => {
+      this.inqryTyCds = res.data;
+    });
   }
 
   ngOnInit(): void {
-    this.cmmnCodeService.listByPrntsCmmnCode('qaa_se').then((res: any) => {
-      this.qaaSes = res.data;
+    this.cmmnCodeService.listByPrntsCmmnCode('inqry_ty').then((res: any) => {
+      this.inqryTyCds = res.data;
     });
   }
 

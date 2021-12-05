@@ -40,7 +40,7 @@
               </tr>
               <tr>
                 <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;문의 유형</th>
-                <td colspan="3"><input type="text" readonly="readonly" formControlName="qaaSeCdNm" /></td>
+                <td colspan="3"><input type="text" readonly="readonly" formControlName="inqryTyCdNm" /></td>
               </tr>
               <tr class="disabled_box">
                 <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;작성자</th>
@@ -50,9 +50,7 @@
               </tr>
               <tr>
                 <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;문의 내용</th>
-                <td valign="top" class="tool_img" colspan="3">
-                  {{ nl2br(form.controls.bbsCn.value) }}
-                </td>
+                <td valign="top" class="tool_img" colspan="3" style="white-space: pre-wrap">{{ form.controls.bbsCn.value }}</td>
               </tr>
               <tr class="file_tr">
                 <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;첨부파일 목록</th>

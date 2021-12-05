@@ -77,6 +77,11 @@ export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
     $('.rolling').append($('.rolling li').first().clone());
   }
 
+  /**
+   * 에디터 화면으로 이동
+   * @param prjctId 프로젝트아이디
+   * @returns void
+   */
   gotoEditor(prjctId: string): void {
     if (!confirm('편집화면으로 이동하시겠습니까?')) {
       return;
@@ -86,13 +91,18 @@ export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.router.navigate(['/edit2'], { queryParams: { prjctId } });
   }
 
+  /**
+   * 새 프로젝크 클릭
+   */
   onNewPrjctClick(): void {
     const dto: any = {
       prjctNm: '프로젝트 ' + new Date(),
       userId: this.authService.getUserId(),
     };
 
+    // 등록
     this.prjctService.regist(dto).then(() => {
+      // 목록 조회
       this.prjctService.findAllByUserId(this.authService.getUserId()).then((res: any) => {
         this.prjcts = res.data;
       });

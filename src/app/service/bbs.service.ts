@@ -26,8 +26,24 @@ export class BbsService {
     return this.http.delete(`${this.BIZ_URI}/` + bbsId).toPromise();
   }
 
-  updt(dto: Scrobot.Bbs): Promise<any> {
-    return this.http.put(`${this.BIZ_URI}`, dto).toPromise();
+  updt(dto: Scrobot.Bbs, files: FileList | null | undefined): Promise<any> {
+    const fd: FormData = new FormData();
+
+    const json: any = JSON.parse(JSON.stringify(dto));
+    Object.keys(json).forEach((k) => {
+      if ('registDt' === k) {
+        return;
+      }
+      fd.append(k, json[k] ?? '');
+    });
+
+    if (null !== files && undefined !== files) {
+      for (let i = 0; i < files?.length; i++) {
+        fd.append('files', files[i]);
+      }
+    }
+
+    return this.http.put(`${this.BIZ_URI}`, fd).toPromise();
   }
 
   findAllByBbsSeCd(bbsSeCd: string): Promise<any> {
@@ -39,16 +55,23 @@ export class BbsService {
   }
 
   findAllBySearchDto(searchDto: Scrobot.Bbs, page: number = 0, size: number = 10): Promise<any> {
-    let p = '?bbsSeCd=' + searchDto.bbsSeCd;
-    p += `&bbsSjNm=` + searchDto.bbsSjNm;
-    p += `&bbsCn=` + searchDto.bbsCn;
-    p += `&page=` + page;
-    p += `&size=` + size;
+    const json: any = JSON.parse(JSON.stringify(searchDto));
+
+    let p: string = `?page=${page}&size=${size}`;
+    Object.keys(json).forEach((k) => {
+      p += `&${k}=${json[k]}`;
+    });
+
+    // let p = '?bbsSeCd=' + searchDto.bbsSeCd;
+    // p += `&bbsSjNm=` + searchDto.bbsSjNm;
+    // p += `&bbsCn=` + searchDto.bbsCn;
+    // p += `&page=` + page;
+    // p += `&size=` + size;
 
     return this.http.get(`${this.BIZ_URI}` + p).toPromise();
   }
 
-  findById(bbsId: number): Promise<any> {
+  findById(bbsId: number | string): Promise<any> {
     return this.http.get(`${this.BIZ_URI}/` + bbsId).toPromise();
   }
 }

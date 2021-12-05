@@ -375,7 +375,7 @@ header .center {
 
 #sec1 {
     width: 70%;
-    height: 43vw;
+    height: 33.5vw;
     margin: 0 auto;
     position: relative;
 }
@@ -636,11 +636,14 @@ header .center {
 .sec1_4_right {
     width: 40%;
     float: right;
-    transform: translateY(18%);
+    transform: translateY(22%);
 }
 
+
+
 .sec1_4_right table th {
-    padding: 30px 20px;
+    width: 25%;
+    padding: 20px 20px;
     color: #8e4920;
     font-size: 0.9vw;
     text-align: left;
@@ -656,8 +659,8 @@ header .center {
 }
 
 .sec1_4_right table tr:nth-of-type(1) th img {
-    width: 100%;
-
+    width: 250%;
+    margin-left: 48%;
 
 
 }
@@ -793,6 +796,12 @@ footer {
     display: none;
 }
 
+@media screen and (max-width : 1800px) {
+    #sec1{
+        height: 43vw;
+    }
+    
+}
 @media screen and (max-width : 1500px) {
     .footer_content {
         font-size: 9px;
@@ -805,6 +814,8 @@ footer {
         left: 55vw;
         width: 45%;
     }
+
+
 }
 
 
@@ -839,6 +850,37 @@ footer {
     .footer_content {
         font-size: 9px;
     }
+
+
+
+    .sec1_4_right table th {
+        width: 30%;
+        padding: 20px 20px;
+        color: #8e4920;
+        font-size: 0.9vw;
+        text-align: left;
+    }
+
+    .sec1_4_right table td {
+        font-size: 0.8vw;
+    }
+
+    .sec1_4_right table tr:nth-of-type(1) th {
+        padding: 0;
+
+    }
+
+    .sec1_4_right table tr:nth-of-type(1) th img {
+        width: 200%;
+        margin-left: 48%;
+
+
+
+    }
+
+    .sec1_4_right {
+        transform: translateY(35%);
+    }
 }
 
 @media screen and (max-width : 1200px) {
@@ -852,6 +894,9 @@ footer {
         left: 47vw;
         width: 36%;
     }
+
+
+
 }
 
 @media screen and (max-width : 1024px) {
@@ -971,6 +1016,7 @@ footer {
         height: 130vw;
     }
 
+    /*
     .sec1_4_right {
         width: 50%;
         transform: translateY(28%);
@@ -982,6 +1028,46 @@ footer {
 
 
     }
+*/
+
+
+
+
+
+
+
+
+    .sec1_4_right table th {
+        width: 60%;
+        /*        padding: 20px 20px;*/
+        color: #8e4920;
+        font-size: 2vw;
+        text-align: left;
+    }
+
+    .sec1_4_right table td {
+        font-size: 0.8vw;
+
+    }
+
+    .sec1_4_right table tr:nth-of-type(1) th {
+        padding: 0;
+
+    }
+
+    .sec1_4_right table tr:nth-of-type(1) th img {
+        width: 150%;
+        margin-left: 10%;
+
+
+
+    }
+
+    .sec1_4_right {
+        transform: translateY(35%);
+    }
+
+
 
     #banner ul > li .banner_info {
         position: absolute;
@@ -1001,4 +1087,9 @@ footer {
         left: 20vw;
         width: 18%;
     }
+
+    .sec1_4_right {
+        transform: translateY(25%);
+    }
+
 }

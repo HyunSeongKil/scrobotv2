@@ -1,5 +1,32 @@
 export namespace Scrobot {
   /**
+   * 상품
+   */
+  export interface Goods {
+    goodsId: number;
+    goodsKeyNm: string;
+    goodsNm: string;
+    goodsCn: string;
+    goodsPriceValue: number;
+    registerId: string;
+    registerNm: string;
+    registDt: string;
+  }
+
+  /**
+   * 코멘트
+   */
+
+  export interface Comment {
+    commentId: number;
+    commentSjNm: string;
+    commentCn: string;
+    registerId: string;
+    registerNm: string;
+    registDt: string;
+  }
+
+  /**
    * 메뉴-화면 매핑
    */
   export interface MenuScrinMapng {
@@ -20,8 +47,16 @@ export namespace Scrobot {
     bbsCn: string;
     atchmnflGroupId: number;
     inqireCo: number;
-    qaaSeCd: string;
-    qaaSeCdNm?: string;
+
+    /**
+     * 고정 여부
+     */
+    fixingAt: string;
+    /**
+     * 질의 유형 코드
+     */
+    inqryTyCd: string;
+    inqryTyCdNm: string;
     registerId: string;
     registerNm: string;
     registDt: string;

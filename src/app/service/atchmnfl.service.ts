@@ -43,6 +43,15 @@ export class AtchmnflService {
   }
 
   /**
+   * 파일 다운로드
+   * @param atchmnflGroupId 첨부파일그룹아이디
+   * @param atchmnflId 첨부파일아이디
+   */
+  dwldFile(atchmnflGroupId: number, atchmnflId: number): void {
+    location.href = `${environment.url}/atchmnfls/dwld-file?atchmnflId=` + atchmnflId;
+  }
+
+  /**
    * 파일 다운로드 url 구하기
    * @param atchmnflId 첩부파일 아이디
    * @returns 다운로드 url

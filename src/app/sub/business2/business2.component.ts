@@ -101,13 +101,13 @@ export class Business2Component implements OnInit {
 
       //
       this.bbses.forEach(async (x) => {
-        if (null === x.qaaSeCd) {
+        if (null === x.inqryTyCd) {
           return;
         }
 
         //
-        const p = await this.cmmnCodeService.findByPrntsCmmnCodeAndCmmnCode('qaa_se', x.qaaSeCd);
-        x.qaaSeCdNm = p.data.cmmnCodeNm;
+        const p = await this.cmmnCodeService.findByPrntsCmmnCodeAndCmmnCode('inqry_ty', x.inqryTyCd);
+        x.inqryTyCdNm = p.data.cmmnCodeNm;
       });
 
       this.cmmnPagerRef.render(res.totalElements, res.number + 1, res.size);

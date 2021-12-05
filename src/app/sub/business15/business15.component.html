@@ -38,20 +38,14 @@
               </tr>
               <tr>
                 <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;작성 내용</th>
-                <td valign="top" class="tool_img" colspan="3">
-                  {{ nl2br(form.controls.bbsCn.value) }}
+                <td valign="top" class="tool_img" colspan="3" style="white-space: pre-wrap">
+                  {{ form.controls.bbsCn.value }}
                 </td>
               </tr>
               <tr class="file_tr">
                 <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;첨부파일 목록</th>
                 <td class="file_box" colspan="2">
-                  <div class="file_input">
-                    <ng-container *ngIf="0 < atchmnfls.length">
-                      <ul>
-                        <li *ngFor="let x of atchmnfls" (click)="onDwldFileClick(x.atchmnflGroupId, x.atchmnflId)"><img src="./assets/images/disk.png" alt="첨부파일이미지" />&nbsp;{{ x.originalFileNm }}</li>
-                      </ul>
-                    </ng-container>
-                  </div>
+                  <app-cmmn-atchmnfl-list [atchmnflGroupId]="form.controls.atchmnflGroupId.value"></app-cmmn-atchmnfl-list>
                 </td>
               </tr>
             </table>

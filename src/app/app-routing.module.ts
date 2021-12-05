@@ -5,6 +5,16 @@ import { BbsListComponent } from './admin/bbs-list/bbs-list.component';
 import { BbsRegistComponent } from './admin/bbs-regist/bbs-regist.component';
 import { BbsUpdtComponent } from './admin/bbs-updt/bbs-updt.component';
 import { BoardmanageComponent } from './admin/boardmanage/boardmanage.component';
+import { Business13Component } from './admin/business13/business13.component';
+import { Business27Component } from './admin/business27/business27.component';
+import { Business30Component } from './admin/business30/business30.component';
+import { Business31Component } from './admin/business31/business31.component';
+import { Business32Component } from './admin/business32/business32.component';
+import { Business33Component } from './admin/business33/business33.component';
+import { Business34Component } from './admin/business34/business34.component';
+import { Business35Component } from './admin/business35/business35.component';
+import { Business36Component } from './admin/business36/business36.component';
+import { Business37Component } from './admin/business37/business37.component';
 import { CrudComponent } from './biz/crud/crud.component';
 import { EditorComponent } from './editor/editor.component';
 import { Edit2Component } from './editor2/edit2/edit2.component';
@@ -53,7 +63,20 @@ const routes: Routes = [
   { path: 'sub/self-crtfc1', component: SelfCrtfc1Component },
   { path: 'sub/self-crtfc3', component: SelfCrtfc3Component },
 
+  { path: 'admin/business13', component: Business13Component },
+
   { path: 'admin/boardmanage', component: BoardmanageComponent },
+  { path: 'admin/business30', component: Business30Component },
+  { path: 'admin/business31/:bbsId', component: Business31Component },
+  { path: 'admin/business32/:bbsId', component: Business32Component },
+
+  { path: 'admin/business27', component: Business27Component },
+  { path: 'admin/business37/:bbsId', component: Business37Component },
+
+  { path: 'admin/business33', component: Business33Component },
+  { path: 'admin/business34', component: Business34Component },
+  { path: 'admin/business35/:bbsId', component: Business35Component },
+  { path: 'admin/business36/:bbsId', component: Business36Component },
 
   { path: 'signin', component: SigninComponent },
   {

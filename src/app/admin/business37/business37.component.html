@@ -1,0 +1,67 @@
+<div id="wrap">
+  <app-admin-header></app-admin-header>
+
+  <div id="contents" class="clearfix">
+    <app-admin-lnb (initedEvent)="adminLnbInited($event)"></app-admin-lnb>
+
+    <div class="content clearfix">
+      <div class="home">&nbsp;Home > SC-ROBOT관리 > 게시판관리 ><span class="bold_f"> 1:1 문의 관리</span></div>
+      <h3 class="sub-tit"><img src="./assets/images/brownbar.png" alt="갈색바" />&nbsp;1:1 문의</h3>
+      <div class="sub-content">
+        <div class="table_content">
+          <form method="post" [formGroup]="form">
+            <table>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;제목</th>
+                <td colspan="3"><input type="text" formControlName="bbsSjNm" readonly="readonly" /></td>
+              </tr>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;문의 유형</th>
+                <td colspan="3"><input type="text" formControlName="inqryTyCdNm" readonly="readonly" /></td>
+              </tr>
+              <tr class="disabled_box">
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;작성자</th>
+                <td colspan="1"><input type="text" formControlName="registerNm" readonly="readonly" /></td>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;작성일자</th>
+                <td colspan="1"><input type="text" [value]="this.form.controls.registDt.value | date: 'yyyy-MM-dd'" readonly="readonly" /></td>
+              </tr>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;문의 내용</th>
+                <td valign="top" class="tool_img" colspan="3">
+                  <div class="txt1" style="white-space: pre-wrap">{{ this.form.controls.bbsCn.value }}</div>
+                </td>
+              </tr>
+              <tr class="file_tr">
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;첨부파일 목록</th>
+                <td class="file_box" colspan="2">
+                  <app-cmmn-atchmnfl-list [atchmnflGroupId]="this.form.controls.atchmnflGroupId.value"></app-cmmn-atchmnfl-list>
+                </td>
+              </tr>
+            </table>
+          </form>
+          <div class="btn-box mgt20 clearfix">
+            <a href="javascript:;" class="btn purple float-right" (click)="onListClick()">목록</a>
+            <a href="#none" class="btn purple float-right">답글</a>
+          </div>
+
+          <form [formGroup]="commentForm">
+            <div class="row">
+              <div class="col">
+                <input type="text" formControlName="commentId" />
+                <textarea class="form-control" formControlName="commentCn"></textarea>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <a href="javascript:;" class="" (click)="onSaveCommentClick()">저장</a>
+                <a href="javascript:;" class="" (click)="onDeleteCommentClick()">삭제</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <app-admin-footer></app-admin-footer>
+  </div>
+</div>

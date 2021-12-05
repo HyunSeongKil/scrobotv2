@@ -22,14 +22,22 @@ $(function () {
   $(".close").click(function () {
     $(".pop_bg2").hide();
   });
-
-  //팝업_회원탈퇴
-  $(".out a").click(function () {
-    $(".pop_bg3").show();
-  });
-  $(".close").click(function () {
-    $(".pop_bg3").hide();
-  });
+    
+    //팝업_새프로젝트
+    $(".leftz").click(function () {
+        $(".pop_bg3").show();
+    });
+    $(".close").click(function () {
+        $(".pop_bg3").hide();
+    });
+    //팝업_회원탈퇴
+    $(".out a").click(function () {
+        $(".pop_bg4").show();
+    });
+    $(".close").click(function () {
+        $(".pop_bg4").hide();
+    });
+    
 
   //팝업_첨부파일
 

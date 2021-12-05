@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -14,6 +14,8 @@ import { UserService } from '../service/user.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
+  @Output() initedEvent = new EventEmitter<HeaderComponent>();
+
   userNm: string = '';
 
   form: FormGroup;
@@ -89,6 +91,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.initedEvent.emit(this);
+
     console.log('<<ngOnInit');
   }
 

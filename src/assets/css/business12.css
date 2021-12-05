@@ -372,16 +372,85 @@ header .center {
 
 
 
+/*banner */
+
+#banner {
+    background: url(../images/banner01_22.png)no-repeat center center;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    z-index: -1;
+    position: relative;
+
+}
+
+#banner ul > li {
+    position: absolute;
+    top: 55px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#banner ul {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#banner ul > li .banner_info {
+    position: absolute;
+    top: -57px;
+    left: 60vw;
+    width: 50%;
+}
+
+
+
+#banner ul li img.ban {
+    margin-left: -2%;
+}
+
+#banner ul > li .banner_info p {
+    font-size: 35px;
+    font-weight: 600;
+    color: #000;
+    text-align: left;
+    margin-top: -145px;
+    margin-left: -89.5%;
+}
+
+
+#banner ul > li .banner_info::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+
+
 
 
 
 /*contents-회원가입완료*/
+.sec1_inner_inner {
+    color: #333;
+    text-align: right;
+    line-height: 30px;
+    padding: 10px 10px 70px 0;
+    margin: 0 auto;
+    max-width: 1300px;
+    margin: 0 auto;
+}
 
+.bold_f {
+    font-weight: bold;
+}
 #LblockPageHeader {
     width: 100%;
     /*    height: 97vh;*/
-    height: 1035px;
-    background: #faf4eb;
+    height: 774px;
+/*    background: #faf4eb;*/
     float: left;
 }
 
@@ -401,7 +470,8 @@ header .center {
     height: 550px;
     background: #fff;
     margin: 0 auto;
-    border-radius: 50px;
+        /*border-radius: 50px;*/
+    border: 1px solid #333;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
@@ -460,7 +530,7 @@ header .center {
 #Lblockbutton {
     width: 100%;
     text-align: center;
-    margin: 55px 0 130px 0;
+    margin: 40px 0 130px 0;
 }
 
 #Lblockbutton button:hover {

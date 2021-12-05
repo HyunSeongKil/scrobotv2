@@ -1,0 +1,186 @@
+<div id="wrap">
+  <app-admin-header></app-admin-header>
+
+  <div id="contents" class="clearfix">
+    <app-admin-lnb (initedEvent)="adminLnbInited($event)"></app-admin-lnb>
+
+    <div class="content clearfix">
+      <div class="home">&nbsp;Home > SC-ROBOT관리 > 시스템관리 ><span class="bold_f"> 상품관리</span></div>
+      <h3 class="sub-tit"><img src="./assets/images/brownbar.png" alt="갈색바" />&nbsp;상품관리</h3>
+      <div class="sub-content">
+        <div class="select-box">
+          <div class="table_content1">
+            <form method="post">
+              <table>
+                <tr>
+                  <th>검색어&nbsp;&nbsp;&nbsp;</th>
+                  <td>
+                    <select>
+                      <option>상품ID</option>
+                      <option>상품명</option></select
+                    >&nbsp;<input type="text" />
+                  </td>
+                </tr>
+                <tr>
+                  <td class="search_hover">
+                    <a href="#none"><img src="./assets/images/ico_search.png" alt="돋보기" />&nbsp;&nbsp;조회</a>
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+
+        <div class="table_content">
+          <!--                        <div>
+                            <h3><img src="./assets/images/dot.png" alt="목록아이콘">&nbsp;공지사항 목록</h3>
+                        </div>-->
+          <div class="top_tit">
+            <p>(총 {{ cmmnPagerRef?.getTotcnt() }}건)</p>
+          </div>
+        </div>
+        <div class="table-warp scroll">
+          <table class="table_content3">
+            <thead>
+              <tr>
+                <th class="th0">순번</th>
+                <th class="th1">상품ID</th>
+                <th class="th2">상품명</th>
+                <th class="th3">상품가격</th>
+                <th class="th4">설명</th>
+                <th class="th5">관리</th>
+                <th class="th6">작성자</th>
+                <th class="th7">작성일자</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of goods; index as i">
+                <td>{{ rowNo(i) }}</td>
+                <td>{{ x.goodsKeyNm }}</td>
+                <td><a href="#none">DEMO</a></td>
+                <td>{{ x.goodsPriceValue | number }}</td>
+                <td>무료 회원</td>
+                <td class="add_btn"><a href="#none">기능관리</a></td>
+                <td>{{ x.registerNm }}</td>
+                <td>{{ x.registDt | date: "yyyy-MM-dd" }}</td>
+              </tr>
+
+              <tr>
+                <td colspan="8" class="text-center">데이터가 없습니다.</td>
+              </tr>
+            </tbody>
+          </table>
+          <app-cmmn-pager (initedEvent)="cmmnPagerInited($event)"></app-cmmn-pager>
+        </div>
+        <!--                    <div class="btn-box mgt20 clearfix">-->
+        <div class="btn-box mgt20 clearfix">
+          <a href="#none" class="btn purple float-right">등록</a>
+        </div>
+      </div>
+    </div>
+
+    <app-admin-footer></app-admin-footer>
+  </div>
+</div>
+
+<!--팝업-->
+<div class="pop_bg2">
+  <div class="popup2">
+    <div class="top_header_pop">
+      <h2>기능값 관리<button class="close">X</button></h2>
+    </div>
+    <div id="div_pop">
+      <!-- 타이틀 -->
+
+      <div class="main_dot_">
+        <h3><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;상품 별 기능 관리</h3>
+      </div>
+
+      <div class="table_content6">
+        <table>
+          <form method="post">
+            <tr>
+              <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;상품ID</th>
+              <td>&nbsp;&nbsp;G01</td>
+            </tr>
+            <tr>
+              <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;상품명</th>
+              <td>&nbsp;&nbsp;DEMO</td>
+            </tr>
+          </form>
+        </table>
+      </div>
+
+      <div class="table_content4_5_box">
+        <div class="table_content4">
+          <div class="btn4">
+            <a href="#none">기능추가&nbsp;→</a>
+          </div>
+          <table>
+            <form method="post">
+              <tr>
+                <th class="th2">기능ID</th>
+                <th class="th3">기능명</th>
+                <th class="th4">기능값</th>
+                <th class="th5">값단위</th>
+              </tr>
+              <tr class="tr_gray">
+                <td>FF01</td>
+                <td>화면 생성 최대 수</td>
+                <td>5</td>
+                <td></td>
+              </tr>
+              <tr class="tr_gray">
+                <td>FF02</td>
+                <td>스토리지 용량</td>
+                <td>5</td>
+                <td>GB</td>
+              </tr>
+              <tr class="tr_gray">
+                <td>FF03</td>
+                <td>프로젝트 생성 최대 수</td>
+                <td>5</td>
+                <td></td>
+              </tr>
+              <!--                            <tr>
+                                <td></td>
+                            </tr>-->
+            </form>
+          </table>
+        </div>
+
+        <div class="table_content5">
+          <table>
+            <form method="post">
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;기능ID</th>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;1</td>
+              </tr>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;기능명</th>
+                <td><input type="text" /></td>
+              </tr>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;기능값</th>
+                <td><input type="text" /></td>
+              </tr>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;값 단위</th>
+                <td><input type="text" /></td>
+              </tr>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;설명</th>
+                <td><textarea></textarea></td>
+              </tr>
+            </form>
+          </table>
+        </div>
+      </div>
+      <div class="btn5">
+        <a href="#none">저장</a>
+        <a href="#none">삭제</a>
+        <a href="#none">수정</a>
+      </div>
+    </div>
+  </div>
+</div>

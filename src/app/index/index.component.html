@@ -247,17 +247,127 @@
 </section>
 
 <!--팝업-->
-
-<!--팝업-->
 <div class="pop_bg2">
   <div class="popup2">
     <div class="top_header_pop">
-      <h2>프로젝트 불러오기<button class="close">X</button></h2>
+      <h2>프로젝트 열기<button class="close">X</button></h2>
     </div>
     <div id="div_pop">
       <!-- 타이틀 -->
 
       <div class="main_dot_">
+        <h3>환영합니다 sootechsys님.</h3>
+        <span>프로젝트</span>
+      </div>
+      <div class="center">
+        <ul class="fir_ul">
+          <li class="leftz">
+            <a href="javascript:;" (click)="onNewPrjctClick()">
+              <img src="./assets/images/add_new_icon.png" alt="플러스" />
+              <div class="txt">
+                <h2>새 프로젝트 (3/5)</h2>
+              </div>
+            </a>
+          </li>
+          <li class="" *ngFor="let x of prjcts">
+            <a href="javascript:;" (click)="gotoEditor(x.prjctId)">
+              <div class="txt">
+                <h2>{{ x.prjctNm }}</h2>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--팝업-->
+<div class="pop_bg3">
+  <div class="popup3">
+    <div class="top_header_pop3">
+      <h2>프로젝트 생성<button class="close">X</button></h2>
+    </div>
+    <div id="div_pop3">
+      <!-- 타이틀 -->
+
+      <div class="main_dot_3">
+        <h3><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;프로젝트 정보</h3>
+      </div>
+
+      <div class="table_content7">
+        <form method="post">
+          <table>
+            <tr>
+              <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;프로젝트 명 *</th>
+              <td colspan="3">&nbsp;&nbsp;&nbsp;<input type="text" /></td>
+            </tr>
+            <tr>
+              <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;서비스 모드 선택 *</th>
+              <td>
+                &nbsp;&nbsp;<input type="radio" name="check" checked="checked" /> 기본모드 &nbsp;<input type="radio" name="check" /> 고급모드1 &nbsp;<input type="radio" name="check" /> 고급모드2<br />
+                &nbsp;&nbsp;SC-ROBOT 기본 제공 DB, 어플리케이션 배포 옵션을 사용합니다.
+              </td>
+            </tr>
+          </table>
+        </form>
+        <div class="main_dot_3">
+          <h3><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;DB 설정</h3>
+        </div>
+        <form method="post">
+          <table>
+            <tr>
+              <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;데이터베이스 종류</th>
+              <td>
+                &nbsp;&nbsp;&nbsp;<select>
+                  <option>ORACLE</option>
+                </select>
+              </td>
+            </tr>
+            <tr class="two_input">
+              <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;호스트</th>
+              <td colspan="3">&nbsp;&nbsp;&nbsp;<input type="text" /></td>
+            </tr>
+            <tr>
+              <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;포트</th>
+              <td colspan="3">&nbsp;&nbsp;&nbsp;<input type="text" /></td>
+            </tr>
+            <tr>
+              <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;데이터베이스</th>
+              <td colspan="3">&nbsp;&nbsp;&nbsp;<input type="text" /></td>
+            </tr>
+            <tr>
+              <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;사용자 이름</th>
+              <td colspan="3">&nbsp;&nbsp;&nbsp;<input type="text" /></td>
+            </tr>
+            <tr>
+              <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;비밀번호</th>
+              <td colspan="3">&nbsp;&nbsp;&nbsp;<input type="password" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      <br />
+
+      <div class="btn3">
+        <a href="./new_sc_robot_edit/editmain.html" target="_blank">생성하기</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--팝업-->
+
+<!--팝업-->
+<!-- <div class="pop_bg2">
+  <div class="popup2">
+    <div class="top_header_pop">
+      <h2>프로젝트 불러오기<button class="close">X</button></h2>
+    </div>
+    <div id="div_pop"> -->
+<!-- 타이틀 -->
+
+<!-- <div class="main_dot_">
         <h3>환영합니다 sootechsys님.</h3>
         <span>프로젝트</span>
       </div>
@@ -287,6 +397,6 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 <app-footer></app-footer>

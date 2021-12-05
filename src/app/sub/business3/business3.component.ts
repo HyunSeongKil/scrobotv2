@@ -47,8 +47,8 @@ export class Business3Component implements OnInit {
       bbsCn: new FormControl(''),
       atchmnflGroupId: new FormControl(''),
       inqireCo: new FormControl(''),
-      qaaSeCd: new FormControl(''),
-      qaaSeCdNm: new FormControl(''),
+      inqryTyCd: new FormControl(''),
+      inqryTyCdNm: new FormControl(''),
       registerId: new FormControl(''),
       registerNm: new FormControl(''),
       registDt: new FormControl(''),
@@ -60,8 +60,8 @@ export class Business3Component implements OnInit {
       this.form.patchValue(res.data);
 
       //
-      this.cmmnCodeService.findByPrntsCmmnCodeAndCmmnCode('qaa_se', this.form.controls.qaaSeCd.value).then((res2: any) => {
-        this.form.controls.qaaSeCdNm.setValue(res2.data.cmmnCodeNm);
+      this.cmmnCodeService.findByPrntsCmmnCodeAndCmmnCode('inqry_ty', this.form.controls.inqryTyCd.value).then((res2: any) => {
+        this.form.controls.inqryTyCdNm.setValue(res2.data.cmmnCodeNm);
       });
 
       //

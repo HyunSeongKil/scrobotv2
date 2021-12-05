@@ -35,7 +35,7 @@ export class BbsUpdtComponent implements OnInit {
       return;
     }
 
-    this.service.updt(this.form.value as Scrobot.Bbs).then(() => {
+    this.service.updt(this.form.value as Scrobot.Bbs, undefined).then(() => {
       this.onCancelClick();
     });
   }
