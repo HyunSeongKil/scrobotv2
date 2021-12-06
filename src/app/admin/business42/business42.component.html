@@ -1,0 +1,53 @@
+<div id="wrap">
+  <app-admin-header></app-admin-header>
+
+  <div id="contents" class="clearfix">
+    <app-admin-lnb (initedEvent)="adminLnbInited($event)"></app-admin-lnb>
+
+    <div class="content clearfix">
+      <div class="home">&nbsp;Home > SC-ROBOT관리 > 게시판관리 ><span class="bold_f"> 회원 탈퇴 관리</span></div>
+      <h3 class="sub-tit"><img src="./assets/images/brownbar.png" alt="갈색바" />&nbsp;회원 탈퇴 관리 상세</h3>
+      <div class="sub-content">
+        <div class="table_content">
+          <form method="post" [formGroup]="form">
+            <table>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;이름</th>
+                <td colspan="3"><input type="text" formControlName="userNm" readonly="readonly" /></td>
+              </tr>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;회원 ID</th>
+                <td colspan="1"><input type="text" formControlName="userId" readonly="readonly" /></td>
+              </tr>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;전화번호</th>
+                <td colspan="1"><input type="text" formControlName="telno" readonly="readonly" /></td>
+              </tr>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;가입일자</th>
+                <td colspan="1"><input type="text" [value]="form.controls.joinDt.value | date: 'yyyy-MM-dd'" readonly="readonly" /></td>
+              </tr>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;탈퇴일자</th>
+                <td colspan="1"><input type="text" [value]="form.controls.secsnDt.value | date: 'yyyy-MM-dd'" readonly="readonly" /></td>
+              </tr>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;탈퇴사유</th>
+                <td colspan="1"><input type="text" formControlName="secsnReasonCn" readonly="readonly" /></td>
+              </tr>
+              <tr class="disabled_box">
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;개선사항</th>
+                <td valign="top" class="tool_img" colspan="3" style="white-space: pre-wrap">{{ form.controls.imprvmCn.value }}</td>
+              </tr>
+            </table>
+          </form>
+          <div class="btn-box mgt20 clearfix">
+            <a href="javascript:;" class="btn purple float-right" (click)="onListClick()">목록</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <app-admin-footer></app-admin-footer>
+  </div>
+</div>

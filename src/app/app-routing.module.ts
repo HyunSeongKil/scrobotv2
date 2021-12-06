@@ -15,6 +15,10 @@ import { Business34Component } from './admin/business34/business34.component';
 import { Business35Component } from './admin/business35/business35.component';
 import { Business36Component } from './admin/business36/business36.component';
 import { Business37Component } from './admin/business37/business37.component';
+import { Business39Component } from './admin/business39/business39.component';
+import { Business40Component } from './admin/business40/business40.component';
+import { Business41Component } from './admin/business41/business41.component';
+import { Business42Component } from './admin/business42/business42.component';
 import { CrudComponent } from './biz/crud/crud.component';
 import { EditorComponent } from './editor/editor.component';
 import { Edit2Component } from './editor2/edit2/edit2.component';
@@ -77,6 +81,12 @@ const routes: Routes = [
   { path: 'admin/business34', component: Business34Component },
   { path: 'admin/business35/:bbsId', component: Business35Component },
   { path: 'admin/business36/:bbsId', component: Business36Component },
+
+  { path: 'admin/business39', component: Business39Component },
+  { path: 'admin/business40/:userId', component: Business40Component },
+
+  { path: 'admin/business41', component: Business41Component },
+  { path: 'admin/business42/:secsnId', component: Business42Component },
 
   { path: 'signin', component: SigninComponent },
   {

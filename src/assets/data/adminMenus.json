@@ -16,8 +16,8 @@
     "link": "",
     "on": false,
     "sub": [
-      { "id": "a", "nm": "회원목록 관리", "link": "", "on": false },
-      { "id": "b", "nm": "회원탈퇴 관리", "link": "", "on": false },
+      { "id": "a", "nm": "회원목록 관리", "link": "admin/business39", "on": false },
+      { "id": "b", "nm": "회원탈퇴 관리", "link": "admin/business41", "on": false },
       { "id": "c", "nm": "회원권한 관리", "link": "", "on": false }
     ]
   },

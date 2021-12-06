@@ -1,0 +1,170 @@
+<div id="wrap">
+  <app-admin-header></app-admin-header>
+
+  <div id="contents" class="clearfix">
+    <app-admin-lnb></app-admin-lnb>
+
+    <div class="content clearfix">
+      <div class="home">&nbsp;Home > SC-ROBOT관리 > 회원관리 ><span class="bold_f"> 회원 목록 관리</span></div>
+      <h3 class="sub-tit"><img src="./assets/images/brownbar.png" alt="갈색바" />&nbsp;회원 관리 상세</h3>
+      <div class="sub-content">
+        <div class="table_content">
+          <div class="table-warp scroll">
+            <form [formGroup]="form">
+              <table class="table_content3_1">
+                <tr class="disabled_box">
+                  <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;이름</th>
+                  <td colspan="1"><input type="text" formControlName="userNm" readonly="readonly" /></td>
+                  <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;가입일자</th>
+                  <td colspan="1"><input type="text" [value]="form.controls.registDt.value | date: 'yyyy-MM-dd'" readonly="readonly" /></td>
+                </tr>
+                <tr class="disabled_box">
+                  <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;이메일</th>
+                  <td colspan="1"><input type="text" formControlName="userId" readonly="readonly" /></td>
+                  <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;전화번호</th>
+                  <td colspan="1"><input type="text" formControlName="telno" readonly="readonly" /></td>
+                </tr>
+                <tr class="disabled_box">
+                  <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;구매서비스</th>
+                  <td colspan="1"><input type="text" readonly="readonly" /></td>
+                  <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;권한명</th>
+                  <td colspan="1"><input type="text" readonly="readonly" /></td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+
+        <div class="table_content">
+          <div>
+            <h3><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;구매 목록</h3>
+          </div>
+          <div class="top_tit">
+            <p>(총 003건)</p>
+          </div>
+        </div>
+        <div class="table-warp scroll">
+          <table class="table_content3_2">
+            <thead>
+              <tr>
+                <th class="th1">순번</th>
+                <th class="th2">프로젝트ID</th>
+                <th class="th3">프로젝트명</th>
+                <th class="th4">프로젝트생성날짜</th>
+                <th class="th5">프로젝트권한명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>3</td>
+                <td>V0101</td>
+                <td>Test</td>
+                <td>2021.05.12</td>
+                <td>프로젝트관리자</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>V0202</td>
+                <td>toyPrj</td>
+                <td>2021.05.11</td>
+                <td>프로젝트사용자</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>V0303</td>
+                <td>myPrj</td>
+                <td>2021.05.10</td>
+                <td>프로젝트관리자</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table_content">
+          <div>
+            <h3><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;프로젝트 목록</h3>
+          </div>
+          <div class="top_tit">
+            <p>(총 {{ prjcts.length }}건)</p>
+          </div>
+        </div>
+        <div class="table-warp scroll">
+          <table class="table_content4">
+            <thead>
+              <tr>
+                <th class="th1">순번</th>
+                <th class="th2">프로젝트ID</th>
+                <th class="th3">프로젝트명</th>
+                <th class="th4">프로젝트생성날짜</th>
+                <th class="th5">프로젝트권한명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of prjcts; index as i">
+                <td>{{ i + 1 }}</td>
+                <td>{{ x.prjctId }}</td>
+                <td>{{ x.prjctNm }}</td>
+                <td>{{ x.registDt | date: "yyyy-MM-dd" }}</td>
+                <td></td>
+              </tr>
+
+              <tr *ngIf="0 === prjcts.length">
+                <td colspan="5" class="text-center">데이터가 없습니다.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table_content">
+          <div>
+            <h3><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;1:1문의 목록</h3>
+          </div>
+          <div class="top_tit">
+            <p>(총 {{ bbses.length }}건)</p>
+          </div>
+        </div>
+        <div class="table-warp scroll">
+          <table class="table_content5">
+            <thead>
+              <tr>
+                <th class="th1">순번</th>
+                <th class="th2">문의유형</th>
+                <th class="th3">제목</th>
+                <th class="th4">작성일자</th>
+                <th class="th5">답변여부</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of bbses; index as i">
+                <td>
+                  {{ i + 1 }}
+                </td>
+                <td>
+                  {{ x.inqryTyCdNm }}
+                </td>
+                <td>
+                  <a href="javascript:;" (click)="onBbsDetailClick(x.bbsId, x.bbsSeCd)">{{ x.bbsSjNm }}</a>
+                </td>
+                <td>
+                  {{ x.registDt | date: "yyyy-MM-dd" }}
+                </td>
+                <td class="yellow">
+                  {{ 0 < x.comments ? "완료" : "대기" }}
+                </td>
+              </tr>
+
+              <tr *ngIf="0 === bbses.length">
+                <td colspan="5" class="text-center">데이터가 없습니다.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="btn-box mgt20 clearfix">
+          <a href="javascript:;" class="btn purple float-right" (click)="onListClick()">목록</a>
+        </div>
+      </div>
+    </div>
+
+    <app-admin-footer></app-admin-footer>
+  </div>
+</div>

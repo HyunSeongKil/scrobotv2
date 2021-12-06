@@ -1,5 +1,19 @@
 export namespace Scrobot {
   /**
+   * 탈퇴
+   */
+  export interface Secsn {
+    secsnId: number;
+    userId: string;
+    userNm: string;
+    telno: string;
+    secsnReasonCn: string;
+    imprvmCn: string;
+    joinDt: string;
+    secsnDt: string;
+  }
+
+  /**
    * 상품
    */
   export interface Goods {
@@ -60,6 +74,8 @@ export namespace Scrobot {
     registerId: string;
     registerNm: string;
     registDt: string;
+
+    comments: number;
   }
   export interface User {
     userId: string;

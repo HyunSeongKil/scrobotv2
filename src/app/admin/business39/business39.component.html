@@ -1,0 +1,84 @@
+<div id="wrap">
+  <app-admin-header></app-admin-header>
+
+  <div id="contents" class="clearfix">
+    <app-admin-lnb (initedEvent)="adminLnbInited($event)"></app-admin-lnb>
+
+    <div class="content clearfix">
+      <div class="home">&nbsp;Home > SC-ROBOT관리 > 회원관리 ><span class="bold_f"> 회원 목록 관리</span></div>
+      <h3 class="sub-tit"><img src="./assets/images/brownbar.png" alt="갈색바" />&nbsp;회원관리</h3>
+      <div class="sub-content">
+        <div class="select-box">
+          <div class="table_content1">
+            <form method="post" [formGroup]="searchForm">
+              <table>
+                <tr>
+                  <th>검색어&nbsp;&nbsp;&nbsp;</th>
+                  <td>
+                    <select formControlName="searchCondition">
+                      <option value="NM">이름</option>
+                      <option value="ID">이메일</option>
+                      <option>구매서비스</option>
+                      <option>권한명</option></select
+                    >&nbsp;<input type="text" formControlName="searchValue" />
+                  </td>
+                </tr>
+                <tr>
+                  <td class="search_hover">
+                    &nbsp;&nbsp;<a href="javascript:;" (click)="onSearchClick()"><img src="./assets/images/ico_search.png" alt="돋보기" />&nbsp;&nbsp;조회</a>
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+
+        <div class="table_content">
+          <div>
+            <h3><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;회원 관리 목록</h3>
+          </div>
+          <div class="top_tit">
+            <p>(총 {{ cmmnPagerRef.getTotcnt() }}건)</p>
+          </div>
+        </div>
+        <div class="table-warp scroll">
+          <table class="table_content3">
+            <thead>
+              <tr>
+                <th class="th1">순번</th>
+                <th class="th2">이름</th>
+                <th class="th3">이메일 ( 회원ID )</th>
+                <th class="th4">전화번호</th>
+                <th class="th5">구매서비스</th>
+                <th class="th6">권한명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of users; index as i">
+                <td>
+                  {{ rowNo(i) }}
+                </td>
+                <td>
+                  <a href="javascript:;" (click)="onDetailClick(x.userId)">{{ x.userNm }}</a>
+                </td>
+                <td>
+                  {{ x.userId }}
+                </td>
+                <td>{{ x.telno }}</td>
+                <td></td>
+                <td></td>
+              </tr>
+
+              <tr *ngIf="0 === users.length">
+                <td colspan="6" class="text-center">데이터가 없습니다.</td>
+              </tr>
+            </tbody>
+          </table>
+          <app-cmmn-pager #cmmnPagerRef (initedEvent)="cmmnPagerInited($event)"></app-cmmn-pager>
+        </div>
+      </div>
+    </div>
+
+    <app-admin-footer></app-admin-footer>
+  </div>
+</div>

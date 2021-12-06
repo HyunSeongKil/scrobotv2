@@ -21,9 +21,13 @@ import { Business34Component } from './business34/business34.component';
 import { Business27Component } from './business27/business27.component';
 import { Business37Component } from './business37/business37.component';
 import { Business13Component } from './business13/business13.component';
+import { Business39Component } from './business39/business39.component';
+import { Business40Component } from './business40/business40.component';
+import { Business41Component } from './business41/business41.component';
+import { Business42Component } from './business42/business42.component';
 
 @NgModule({
-  declarations: [BbsListComponent, BbsRegistComponent, BbsDetailComponent, BbsUpdtComponent, BoardmanageComponent, AdminFooterComponent, AdminHeaderComponent, AdminLnbComponent, Business31Component, Business32Component, Business30Component, Business33Component, Business36Component, Business35Component, Business34Component, Business27Component, Business37Component, Business13Component],
+  declarations: [BbsListComponent, BbsRegistComponent, BbsDetailComponent, BbsUpdtComponent, BoardmanageComponent, AdminFooterComponent, AdminHeaderComponent, AdminLnbComponent, Business31Component, Business32Component, Business30Component, Business33Component, Business36Component, Business35Component, Business34Component, Business27Component, Business37Component, Business13Component, Business39Component, Business40Component, Business41Component, Business42Component],
   imports: [CommonModule, ReactiveFormsModule, FormsModule, CmmnModule],
 })
 export class AdminModule {}
