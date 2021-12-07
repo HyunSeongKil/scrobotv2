@@ -19,6 +19,9 @@ import { Business39Component } from './admin/business39/business39.component';
 import { Business40Component } from './admin/business40/business40.component';
 import { Business41Component } from './admin/business41/business41.component';
 import { Business42Component } from './admin/business42/business42.component';
+import { Business43Component } from './admin/business43/business43.component';
+import { Business44Component } from './admin/business44/business44.component';
+import { Business45Component } from './admin/business45/business45.component';
 import { CrudComponent } from './biz/crud/crud.component';
 import { EditorComponent } from './editor/editor.component';
 import { Edit2Component } from './editor2/edit2/edit2.component';
@@ -87,6 +90,10 @@ const routes: Routes = [
 
   { path: 'admin/business41', component: Business41Component },
   { path: 'admin/business42/:secsnId', component: Business42Component },
+
+  { path: 'admin/business43', component: Business43Component },
+  { path: 'admin/business44', component: Business44Component },
+  { path: 'admin/business45/:domainId', component: Business45Component },
 
   { path: 'signin', component: SigninComponent },
   {

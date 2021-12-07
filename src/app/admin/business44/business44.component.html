@@ -1,0 +1,55 @@
+<div id="wrap">
+  <app-admin-header></app-admin-header>
+
+  <div id="contents" class="clearfix">
+    <app-admin-lnb (initedEvent)="adminLnbInited($event)"></app-admin-lnb>
+    <div class="content clearfix">
+      <div class="home">&nbsp;Home > SC-ROBOT관리 > 데이터표준관리 ><span class="bold_f"> 도메인 관리</span></div>
+      <h3 class="sub-tit"><img src="./assets/images/brownbar.png" alt="갈색바" />&nbsp;도메인 등록</h3>
+      <div class="sub-content">
+        <div class="table_content">
+          <form method="post" [formGroup]="form">
+            <table>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;도메인명</th>
+                <td colspan="3"><input type="text" formControlName="domainNm" /></td>
+              </tr>
+              <tr class="disabled_box">
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;도메인그룹명</th>
+                <td colspan="1"><input type="text" formControlName="domainGroupNm" /></td>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;도메인분류명</th>
+                <td colspan="1"><input type="text" formControlName="domainClNm" /></td>
+              </tr>
+              <tr class="disabled_box">
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;데이터타입</th>
+                <td colspan="1">
+                  <select formControlName="dataTyCd">
+                    <option value="{{ x.cmmnCode }}" *ngFor="let x of dataTyCds">{{ x.cmmnCodeNm }}</option>
+                  </select>
+                </td>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;데이터길이</th>
+                <td colspan="1"><input type="number" formControlName="dataLtValue" /></td>
+              </tr>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;표준여부</th>
+                <td colspan="3">&nbsp;&nbsp;<input type="checkbox" name="표준체크" value="Y" formControlName="stdAt" /><span class="chk_name">（표준:체크 / 표준아님:해제）</span></td>
+              </tr>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;설명</th>
+                <td valign="top" class="tool_img" colspan="3">
+                  <textarea class="txtarea_1" formControlName="domainCn"></textarea>
+                </td>
+              </tr>
+            </table>
+          </form>
+          <div class="btn-box mgt20 clearfix">
+            <a href="javascript:;" class="btn purple float-right" (click)="onCancelClick()">취소</a>
+            <a href="javascript:;" class="btn purple float-right" (click)="onSaveClick()">저장</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <app-admin-footer></app-admin-footer>
+  </div>
+</div>

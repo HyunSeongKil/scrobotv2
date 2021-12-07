@@ -1,5 +1,20 @@
 export namespace Scrobot {
   /**
+   * 도메인
+   */
+  export interface Domain {
+    domainId: number;
+    domainNm: string;
+    domainCn: string;
+    domainGroupNm: string;
+    domainClNm: string;
+    dataTyCd: string;
+    dataLtValue: number;
+    stdAt: string;
+    registDt: string;
+  }
+
+  /**
    * 탈퇴
    */
   export interface Secsn {

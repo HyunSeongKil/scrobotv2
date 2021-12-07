@@ -1,0 +1,213 @@
+<div id="wrap">
+  <app-admin-header></app-admin-header>
+
+  <div id="contents" class="clearfix">
+    <app-admin-lnb (initedEvent)="adminLnbInited($event)"></app-admin-lnb>
+
+    <div class="content clearfix">
+      <div class="home">&nbsp;Home > SC-ROBOT관리 > 데이터표준관리 ><span class="bold_f"> 도메인 관리</span></div>
+      <h3 class="sub-tit"><img src="./assets/images/brownbar.png" alt="갈색바" />&nbsp;도메인 관리</h3>
+      <div class="sub-content">
+        <div class="select-box">
+          <div class="table_content1">
+            <form method="post" [formGroup]="searchForm">
+              <table>
+                <tr>
+                  <th>검색어&nbsp;&nbsp;&nbsp;</th>
+                  <td>
+                    <select formControlName="searchCondition">
+                      <option value="NM">도메인명</option>
+                      <option value="GROUP">도메인그룹명</option>
+                      <option value="DATA">데이터타입</option></select
+                    >&nbsp;<input type="text" formControlName="searchValue" />
+                  </td>
+                </tr>
+                <tr>
+                  <td class="search_hover">
+                    &nbsp;&nbsp;<a href="javascript:;" (click)="onSearchClick()"><img src="./assets/images/ico_search.png" alt="돋보기" />&nbsp;&nbsp;조회</a>
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+
+        <div class="table_content">
+          <div>
+            <h3><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;도메인 목록</h3>
+          </div>
+          <div class="top_tit">
+            <p>(총 {{ cmmnPagerRef.getTotcnt() }}건)</p>
+          </div>
+        </div>
+        <div class="table-warp scroll">
+          <table class="table_content3">
+            <thead>
+              <tr>
+                <th class="th1">순번</th>
+                <th class="th2">도메인명</th>
+                <th class="th3">도메인그룹명</th>
+                <th class="th4">도메인분류명</th>
+                <th class="th5">설명</th>
+                <th class="th6">데이터타입</th>
+                <th class="th7">데이터길이</th>
+                <th class="th8">표준여부</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of domains; index as i">
+                <td>
+                  {{ rowNo(i) }}
+                </td>
+                <td>
+                  <a href="javascript:;" (click)="onDetailClick(x.domainId)">{{ x.domainNm }}</a>
+                </td>
+                <td>{{ x.domainGroupNm }}</td>
+                <td>{{ x.domainClNm }}</td>
+                <td>{{ x.domainCn }}</td>
+                <td>{{ x.dataTyCd }}</td>
+                <td>{{ x.dataLtValue }}</td>
+                <td>
+                  {{ x.stdAt }}
+                </td>
+              </tr>
+
+              <tr *ngIf="0 === domains.length">
+                <td colspan="8" class="text-center">데이터가 없습니다.</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="btn-box mgt20 clearfix">
+            <a href="javascript:;" class="btn purple float-right" (click)="onRegistClick()">등록</a>
+          </div>
+          <div class="out2"><a href="#none">엑셀등록</a></div>
+          <app-cmmn-pager #cmmnPagerRef (initedEvent)="cmmnPagerInitedEvent($event)"></app-cmmn-pager>
+        </div>
+      </div>
+    </div>
+
+    <app-admin-footer></app-admin-footer>
+  </div>
+</div>
+
+<!--팝업-->
+<div class="pop_bg5">
+  <div class="popup5">
+    <div class="top_header_pop5">
+      <h2>도메인 엑셀등록<button class="close">X</button></h2>
+    </div>
+    <div id="div_pop5">
+      <!-- 타이틀 -->
+
+      <div class="main_dot_5">
+        <h3><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;도메인 엑셀등록</h3>
+      </div>
+
+      <div class="table_content6">
+        <form method="post">
+          <table>
+            <tr>
+              <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;표준여부</th>
+              <td colspan="3">&nbsp;&nbsp;<input type="checkbox" name="표준체크" checked /><span class="chk_name">（표준:체크 / 표준아님:해제）</span></td>
+            </tr>
+            <!--
+                            <tr>
+                                <th><img src="./assets/images/dot.png" alt="목록아이콘">&nbsp;개선 사항</th>
+                                <td valign="top" class="tool_img" colspan="3">
+                                    <textarea class="txtarea_1">사용하시면서 불편하셨던 내용들을 기입해 주세요
+SC_ROBOT의 발전에 큰 도움이 됩니다.</textarea>
+                                </td>
+                            </tr>
+-->
+          </table>
+        </form>
+      </div>
+
+      <div class="table_content">
+        <div class="top_tit">
+          <p>(총 004건)</p>
+        </div>
+      </div>
+      <div class="table-warp scroll">
+        <table class="table_content6_1">
+          <thead>
+            <tr>
+              <th class="th1"><input type="checkbox" name="표준체크" /></th>
+              <th class="th2">도메인명</th>
+              <th class="th3">도메인그룹명</th>
+              <th class="th4">도메인분류명</th>
+              <th class="th5">설명</th>
+              <th class="th6">데이터타입</th>
+              <th class="th7">데이터길이</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+            </tr>
+            <tr>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+            </tr>
+            <tr>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+            </tr>
+            <tr>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="btn-box mgt20 clearfix">
+          <a href="business43_br.html" class="btn purple float-right">등록</a>
+        </div>
+        <div class="out2"><a href="#none">닫기</a></div>
+        <div class="btn2">
+          <a href="#none">≪</a>
+          <a href="#none">＜</a>
+          <a href="#none">1</a>
+          <a href="#none">2</a>
+          <a href="#none">3</a>
+          <a href="#none">4</a>
+          <a href="#none">5</a>
+          <a href="#none">6</a>
+          <a href="#none">7</a>
+          <a href="#none">8</a>
+          <a href="#none">9</a>
+          <a href="#none">10</a>
+          <a href="#none">＞</a>
+          <a href="#none">≫</a>
+        </div>
+      </div>
+
+      <br />
+
+      <div class="btn3">
+        <a href="business43_br.html">등록</a>&nbsp;
+        <a href="business43_br.html">닫기</a>
+      </div>
+    </div>
+  </div>
+</div>
