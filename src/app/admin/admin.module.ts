@@ -29,9 +29,11 @@ import { Business43Component } from './business43/business43.component';
 import { Business44Component } from './business44/business44.component';
 import { Business45Component } from './business45/business45.component';
 import { Business46Component } from './business46/business46.component';
+import { StplatListComponent } from './stplat-list/stplat-list.component';
+import { StplatRegistComponent } from './stplat-regist/stplat-regist.component';
 
 @NgModule({
-  declarations: [BbsListComponent, BbsRegistComponent, BbsDetailComponent, BbsUpdtComponent, BoardmanageComponent, AdminFooterComponent, AdminHeaderComponent, AdminLnbComponent, Business31Component, Business32Component, Business30Component, Business33Component, Business36Component, Business35Component, Business34Component, Business27Component, Business37Component, Business13Component, Business39Component, Business40Component, Business41Component, Business42Component, Business43Component, Business44Component, Business45Component, Business46Component],
+  declarations: [BbsListComponent, BbsRegistComponent, BbsDetailComponent, BbsUpdtComponent, BoardmanageComponent, AdminFooterComponent, AdminHeaderComponent, AdminLnbComponent, Business31Component, Business32Component, Business30Component, Business33Component, Business36Component, Business35Component, Business34Component, Business27Component, Business37Component, Business13Component, Business39Component, Business40Component, Business41Component, Business42Component, Business43Component, Business44Component, Business45Component, Business46Component, StplatListComponent, StplatRegistComponent],
   imports: [CommonModule, ReactiveFormsModule, FormsModule, CmmnModule],
 })
 export class AdminModule {}

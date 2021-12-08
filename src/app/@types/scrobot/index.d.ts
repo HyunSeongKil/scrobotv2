@@ -1,5 +1,17 @@
 export namespace Scrobot {
   /**
+   * 약관
+   */
+  export interface Stplat {
+    stplatId: number;
+    stplatNm: string;
+    stplatCn: string;
+    registerId: string;
+    registerNm: string;
+    registDt: string;
+  }
+
+  /**
    * 도메인
    */
   export interface Domain {

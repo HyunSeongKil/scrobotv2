@@ -23,6 +23,8 @@ import { Business43Component } from './admin/business43/business43.component';
 import { Business44Component } from './admin/business44/business44.component';
 import { Business45Component } from './admin/business45/business45.component';
 import { Business46Component } from './admin/business46/business46.component';
+import { StplatListComponent } from './admin/stplat-list/stplat-list.component';
+import { StplatRegistComponent } from './admin/stplat-regist/stplat-regist.component';
 import { CrudComponent } from './biz/crud/crud.component';
 import { EditorComponent } from './editor/editor.component';
 import { Edit2Component } from './editor2/edit2/edit2.component';
@@ -96,6 +98,9 @@ const routes: Routes = [
   { path: 'admin/business44', component: Business44Component },
   { path: 'admin/business45/:domainId', component: Business45Component },
   { path: 'admin/business46/:domainId', component: Business46Component },
+
+  { path: 'admin/stplat-list', component: StplatListComponent },
+  { path: 'admin/stplat-regist', component: StplatRegistComponent },
 
   { path: 'signin', component: SigninComponent },
   {

@@ -48,7 +48,7 @@
     "on": false,
     "sub": [
       { "id": "a", "nm": "메뉴 관리", "link": "admin/business5", "on": false },
-      { "id": "b", "nm": "약관 관리", "link": "javascript:;", "on": false },
+      { "id": "b", "nm": "약관 관리", "link": "admin/stplat-list", "on": false },
       { "id": "c", "nm": "상품 관리", "link": "admin/business13", "on": false },
       { "id": "d", "nm": "기능 관리", "link": "javascript:;", "on": false },
       { "id": "e", "nm": "메시지 관리", "link": "javascript:;", "on": false },
