@@ -26,11 +26,6 @@ export class Business44Component implements OnInit {
     ScUtil.loadStyle('../assets/css/sub2_1.css');
     ScUtil.loadStyle('../assets/css/jquery-ui.min.css');
 
-    ScUtil.loadScript('../assets/js/jquery-1.11.3.min.js');
-    ScUtil.loadScript('../assets/js/jquery-ui.min.js');
-    ScUtil.loadScript('../assets/js/common_1.js');
-    ScUtil.loadScript('../assets/js/index.js');
-
     this.form = new FormGroup({
       domainId: new FormControl(''),
       domainNm: new FormControl('', [Validators.required]),
@@ -48,7 +43,12 @@ export class Business44Component implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    ScUtil.loadScript('../assets/js/jquery-1.11.3.min.js');
+    ScUtil.loadScript('../assets/js/jquery-ui.min.js');
+    ScUtil.loadScript('../assets/js/common_1.js');
+    ScUtil.loadScript('../assets/js/index.js');
+  }
 
   /**
    * lnb 초기화 완료

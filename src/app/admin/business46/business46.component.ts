@@ -1,22 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Scrobot } from 'src/app/@types/scrobot';
+import { CmmnCodeService } from 'src/app/service/cmmn-code.service';
 import { DomainService } from 'src/app/service/domain.service';
 import { ScUtil } from 'src/app/service/util';
 import { AdminLnbComponent } from '../admin-lnb/admin-lnb.component';
 
+/**
+ * 도메인 수정
+ */
 @Component({
-  selector: 'app-business45',
-  templateUrl: './business45.component.html',
-  styleUrls: ['./business45.component.css'],
+  selector: 'app-business46',
+  templateUrl: './business46.component.html',
+  styleUrls: ['./business46.component.css'],
 })
-export class Business45Component implements OnInit {
+export class Business46Component implements OnInit {
   adminLnbRef?: AdminLnbComponent;
 
   form: FormGroup;
+  dataTyCds: Scrobot.CmmnCode[] = [];
 
-  constructor(route: ActivatedRoute, private router: Router, private service: DomainService) {
-    ScUtil.loadStyle('../assets/css/business45.css');
+  constructor(route: ActivatedRoute, private router: Router, private service: DomainService, private cmmnCodeService: CmmnCodeService) {
+    ScUtil.loadStyle('../assets/css/business46.css');
     ScUtil.loadStyle('../assets/css/common_1.css');
     ScUtil.loadStyle('../assets/css/login_1.css');
     ScUtil.loadStyle('../assets/css/sub_1.css');
@@ -41,8 +47,11 @@ export class Business45Component implements OnInit {
     service.findById(this.form.controls.domainId.value).subscribe((domain) => {
       this.form.patchValue(domain);
     });
-  }
 
+    cmmnCodeService.listByPrntsCmmnCode('DATA_TY').then((res: any) => {
+      this.dataTyCds = res.data;
+    });
+  }
   ngOnInit(): void {
     ScUtil.loadScript('../assets/js/jquery-1.11.3.min.js');
     ScUtil.loadScript('../assets/js/jquery-ui.min.js');
@@ -56,28 +65,24 @@ export class Business45Component implements OnInit {
    */
   adminLnbInited(a: AdminLnbComponent): void {
     this.adminLnbRef = a;
-    this.adminLnbRef.onMenu('board', 'a');
+    this.adminLnbRef.onMenu('standard', 'a');
 
     this.adminLnbRef.menuClickedEvent.subscribe((message) => {
       console.log(message);
     });
   }
 
-  onListClick(): void {
-    this.router.navigate(['admin/business43']);
+  onCancelClick(): void {
+    this.router.navigate(['admin/business45', this.form.controls.domainId.value]);
   }
 
-  onUpdateClick(): void {
-    this.router.navigate(['admin/business46', this.form.controls.domainId.value]);
-  }
-
-  onDeleteClick(): void {
-    if (!confirm('삭제하시겠습니까?')) {
+  onSaveClick(): void {
+    if (!confirm('저장하시겠습니까?')) {
       return;
     }
 
-    this.service.deleteById(this.form.controls.domainId.value).subscribe(() => {
-      this.onListClick();
+    this.service.update(this.form.value).subscribe(() => {
+      this.onCancelClick();
     });
   }
 }

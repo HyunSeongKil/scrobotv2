@@ -37,7 +37,7 @@
             <h3><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;도메인 목록</h3>
           </div>
           <div class="top_tit">
-            <p>(총 {{ cmmnPagerRef.getTotcnt() }}건)</p>
+            <p>(총 {{ cmmnPagerRef?.getTotcnt() }}건)</p>
           </div>
         </div>
         <div class="table-warp scroll">
@@ -56,9 +56,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let x of domains; index as i">
-                <td>
-                  {{ rowNo(i) }}
-                </td>
+                <td>{{ rowNo(i) }}</td>
                 <td>
                   <a href="javascript:;" (click)="onDetailClick(x.domainId)">{{ x.domainNm }}</a>
                 </td>
@@ -67,9 +65,7 @@
                 <td>{{ x.domainCn }}</td>
                 <td>{{ x.dataTyCd }}</td>
                 <td>{{ x.dataLtValue }}</td>
-                <td>
-                  {{ x.stdAt }}
-                </td>
+                <td>{{ x.stdAt }}</td>
               </tr>
 
               <tr *ngIf="0 === domains.length">
@@ -80,8 +76,8 @@
           <div class="btn-box mgt20 clearfix">
             <a href="javascript:;" class="btn purple float-right" (click)="onRegistClick()">등록</a>
           </div>
-          <div class="out2"><a href="#none">엑셀등록</a></div>
-          <app-cmmn-pager #cmmnPagerRef (initedEvent)="cmmnPagerInitedEvent($event)"></app-cmmn-pager>
+          <div class="out2"><a href="javascript:;">엑셀등록</a></div>
+          <app-cmmn-pager (initedEvent)="cmmnPagerInited($event)"></app-cmmn-pager>
         </div>
       </div>
     </div>
@@ -110,22 +106,27 @@
               <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;표준여부</th>
               <td colspan="3">&nbsp;&nbsp;<input type="checkbox" name="표준체크" checked /><span class="chk_name">（표준:체크 / 표준아님:해제）</span></td>
             </tr>
-            <!--
-                            <tr>
-                                <th><img src="./assets/images/dot.png" alt="목록아이콘">&nbsp;개선 사항</th>
-                                <td valign="top" class="tool_img" colspan="3">
-                                    <textarea class="txtarea_1">사용하시면서 불편하셨던 내용들을 기입해 주세요
-SC_ROBOT의 발전에 큰 도움이 됩니다.</textarea>
-                                </td>
-                            </tr>
--->
+            <tr class="file_tr">
+              <td class="file_box" colspan="2">
+                <!--input box-->
+                <input type="text" class="upload_text" readonly="readonly" />
+                <!--button-->
+                <div class="upload-btn_wrap">
+                  <button type="button" title="파일찾기">
+                    <span class="font_wh">파일찾기</span>
+                  </button>
+                  <input type="file" class="input_file" title="파일찾기" />
+                </div>
+                <div class="add_btn3"><a href="#none">불러오기</a></div>
+              </td>
+            </tr>
           </table>
         </form>
       </div>
 
       <div class="table_content">
-        <div class="top_tit">
-          <p>(총 004건)</p>
+        <div class="top_tit2">
+          <p>(총 000건)</p>
         </div>
       </div>
       <div class="table-warp scroll">
@@ -133,6 +134,7 @@ SC_ROBOT의 발전에 큰 도움이 됩니다.</textarea>
           <thead>
             <tr>
               <th class="th1"><input type="checkbox" name="표준체크" /></th>
+              <th class="th1_2">순번</th>
               <th class="th2">도메인명</th>
               <th class="th3">도메인그룹명</th>
               <th class="th4">도메인분류명</th>
@@ -150,14 +152,6 @@ SC_ROBOT의 발전에 큰 도움이 됩니다.</textarea>
               <td><a href="#none"></a></td>
               <td><a href="#none"></a></td>
               <td><a href="#none"></a></td>
-            </tr>
-            <tr>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
               <td><a href="#none"></a></td>
             </tr>
             <tr>
@@ -168,8 +162,30 @@ SC_ROBOT의 발전에 큰 도움이 됩니다.</textarea>
               <td><a href="#none"></a></td>
               <td><a href="#none"></a></td>
               <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
             </tr>
             <tr>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+            </tr>
+            <tr>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+              <td><a href="#none"></a></td>
+            </tr>
+            <tr>
+              <td><a href="#none"></a></td>
               <td><a href="#none"></a></td>
               <td><a href="#none"></a></td>
               <td><a href="#none"></a></td>
@@ -180,30 +196,8 @@ SC_ROBOT의 발전에 큰 도움이 됩니다.</textarea>
             </tr>
           </tbody>
         </table>
-        <div class="btn-box mgt20 clearfix">
-          <a href="business43_br.html" class="btn purple float-right">등록</a>
-        </div>
-        <div class="out2"><a href="#none">닫기</a></div>
-        <div class="btn2">
-          <a href="#none">≪</a>
-          <a href="#none">＜</a>
-          <a href="#none">1</a>
-          <a href="#none">2</a>
-          <a href="#none">3</a>
-          <a href="#none">4</a>
-          <a href="#none">5</a>
-          <a href="#none">6</a>
-          <a href="#none">7</a>
-          <a href="#none">8</a>
-          <a href="#none">9</a>
-          <a href="#none">10</a>
-          <a href="#none">＞</a>
-          <a href="#none">≫</a>
-        </div>
       </div>
-
       <br />
-
       <div class="btn3">
         <a href="business43_br.html">등록</a>&nbsp;
         <a href="business43_br.html">닫기</a>
