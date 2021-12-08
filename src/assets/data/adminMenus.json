@@ -18,7 +18,7 @@
     "sub": [
       { "id": "a", "nm": "회원목록 관리", "link": "admin/business39", "on": false },
       { "id": "b", "nm": "회원탈퇴 관리", "link": "admin/business41", "on": false },
-      { "id": "c", "nm": "회원권한 관리", "link": "", "on": false }
+      { "id": "c", "nm": "회원권한 관리", "link": "javascript:;", "on": false }
     ]
   },
   {
@@ -27,8 +27,8 @@
     "link": "",
     "on": false,
     "sub": [
-      { "id": "a", "nm": "권한 관리", "link": "", "on": false },
-      { "id": "b", "nm": "화면 관리", "link": "", "on": false }
+      { "id": "a", "nm": "권한 관리", "link": "javascript:;", "on": false },
+      { "id": "b", "nm": "화면 관리", "link": "javascript:;", "on": false }
     ]
   },
   {
@@ -37,8 +37,8 @@
     "link": "",
     "on": false,
     "sub": [
-      { "id": "a", "nm": "버전정보 관리", "link": "", "on": false },
-      { "id": "b", "nm": "시스템 모니터링", "link": "", "on": false }
+      { "id": "a", "nm": "버전정보 관리", "link": "javascript:;", "on": false },
+      { "id": "b", "nm": "시스템 모니터링", "link": "javascript:;", "on": false }
     ]
   },
   {
@@ -48,11 +48,11 @@
     "on": false,
     "sub": [
       { "id": "a", "nm": "메뉴 관리", "link": "admin/business5", "on": false },
-      { "id": "b", "nm": "약관 관리", "link": "", "on": false },
+      { "id": "b", "nm": "약관 관리", "link": "javascript:;", "on": false },
       { "id": "c", "nm": "상품 관리", "link": "admin/business13", "on": false },
-      { "id": "d", "nm": "기능 관리", "link": "", "on": false },
-      { "id": "e", "nm": "메시지 관리", "link": "", "on": false },
-      { "id": "f", "nm": "공통코드 관리", "link": "", "on": false }
+      { "id": "d", "nm": "기능 관리", "link": "javascript:;", "on": false },
+      { "id": "e", "nm": "메시지 관리", "link": "javascript:;", "on": false },
+      { "id": "f", "nm": "공통코드 관리", "link": "javascript:;", "on": false }
     ]
   },
   {
@@ -61,9 +61,9 @@
     "link": "",
     "on": false,
     "sub": [
-      { "id": "a", "nm": "단어 관리", "link": "", "on": false },
-      { "id": "b", "nm": "도메인 관리", "link": "", "on": false },
-      { "id": "c", "nm": "용어사전 관리", "link": "", "on": false }
+      { "id": "a", "nm": "단어 관리", "link": "javascript:;", "on": false },
+      { "id": "b", "nm": "도메인 관리", "link": "admin/business43", "on": false },
+      { "id": "c", "nm": "용어사전 관리", "link": "javascript:;", "on": false }
     ]
   }
 ]

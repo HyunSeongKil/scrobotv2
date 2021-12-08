@@ -36,11 +36,6 @@ export class BoardmanageComponent implements OnInit, AfterViewInit {
     ScUtil.loadStyle('../assets/css/sub2_1.css');
     ScUtil.loadStyle('../assets/css/jquery-ui.min.css');
 
-    ScUtil.loadScript('../assets/js/jquery-1.11.3.min.js');
-    ScUtil.loadScript('../assets/js/jquery-ui.min.js');
-    ScUtil.loadScript('../assets/js/common_1.js');
-    ScUtil.loadScript('../assets/js/index.js');
-
     //
     this.searchForm = new FormGroup({
       bbsSeCd: new FormControl(this.bbsSeCd, [Validators.required]),

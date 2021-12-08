@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AuthService } from 'src/app/service/auth.service';
+import { ScUtil } from 'src/app/service/util';
 
 @Component({
   selector: 'app-admin-lnb',
@@ -16,6 +17,12 @@ export class AdminLnbComponent implements OnInit {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   ngOnInit(): void {
+    ScUtil.loadScript('../assets/js/jquery-1.11.3.min.js');
+    ScUtil.loadScript('../assets/js/jquery-ui.min.js');
+    ScUtil.loadScript('../assets/js/common_1.js');
+    ScUtil.loadScript('../assets/js/jquery.bxslider.min.js');
+    ScUtil.loadScript('../assets/js/index.js');
+
     this.http.get(`./assets/data/adminMenus.json`).subscribe((res: any) => {
       this.menus = res;
 

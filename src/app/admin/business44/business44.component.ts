@@ -44,10 +44,10 @@ export class Business44Component implements OnInit {
   }
 
   ngOnInit(): void {
-    ScUtil.loadScript('../assets/js/jquery-1.11.3.min.js');
-    ScUtil.loadScript('../assets/js/jquery-ui.min.js');
-    ScUtil.loadScript('../assets/js/common_1.js');
-    ScUtil.loadScript('../assets/js/index.js');
+    // ScUtil.loadScript('../assets/js/jquery-1.11.3.min.js');
+    // ScUtil.loadScript('../assets/js/jquery-ui.min.js');
+    // ScUtil.loadScript('../assets/js/common_1.js');
+    // ScUtil.loadScript('../assets/js/index.js');
   }
 
   /**

@@ -29,10 +29,10 @@ export class Business37Component implements OnInit {
     ScUtil.loadStyle('../assets/css/sub2_1.css');
     ScUtil.loadStyle('../assets/css/jquery-ui.min.css');
 
-    ScUtil.loadScript('../assets/js/jquery-1.11.3.min.js');
-    ScUtil.loadScript('../assets/js/jquery-ui.min.js');
-    ScUtil.loadScript('../assets/js/common_1.js');
-    ScUtil.loadScript('../assets/js/index.js');
+    // ScUtil.loadScript('../assets/js/jquery-1.11.3.min.js');
+    // ScUtil.loadScript('../assets/js/jquery-ui.min.js');
+    // ScUtil.loadScript('../assets/js/common_1.js');
+    // ScUtil.loadScript('../assets/js/index.js');
 
     this.form = new FormGroup({
       bbsId: new FormControl('', [Validators.required]),
