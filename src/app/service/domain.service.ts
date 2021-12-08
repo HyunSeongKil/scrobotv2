@@ -17,12 +17,23 @@ export class DomainService {
     return this.http.post(`${this.BIZ_URI}`, dto);
   }
 
+  registBulk(dtos: Scrobot.Domain[]): Observable<any> {
+    return this.http.post(`${this.BIZ_URI}/bulk`, dtos);
+  }
+
   update(dto: Scrobot.Domain): Observable<any> {
     return this.http.put(`${this.BIZ_URI}`, dto);
   }
 
   deleteById(domainId: number): Observable<any> {
     return this.http.delete(`${this.BIZ_URI}/` + domainId);
+  }
+
+  parseExcel(files: FileList): Observable<any> {
+    const fd: FormData = new FormData();
+    fd.append('files', files[0]);
+
+    return this.http.put(`${this.BIZ_URI}/parse-excel`, fd);
   }
 
   findAll(searchDto: Scrobot.Domain, page: number = 0, size: number = 0): Observable<any> {

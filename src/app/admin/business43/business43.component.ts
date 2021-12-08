@@ -22,6 +22,8 @@ export class Business43Component implements OnInit {
   searchForm: FormGroup;
   domains: Scrobot.Domain[] = [];
 
+  excelDomains: Scrobot.Domain[] = [];
+
   constructor(private router: Router, private service: DomainService) {
     ScUtil.loadStyle('../assets/css/business43.css');
     ScUtil.loadStyle('../assets/css/common_1.css');
@@ -60,8 +62,8 @@ export class Business43Component implements OnInit {
   }
 
   /**
-   *
-   * @param a
+   * 페이저 초기화 완료됨 이벤트 처리
+   * @param a 페이저 인스턴스
    */
   cmmnPagerInited(a: CmmnPagerComponent): void {
     this.cmmnPagerRef = a;
@@ -74,6 +76,10 @@ export class Business43Component implements OnInit {
     this.onSearchClick();
   }
 
+  /**
+   * 검색
+   * @param page 페이지번호, 기본:0
+   */
   onSearchClick(page: number = 0): void {
     if ('NM' === this.searchForm.controls.searchCondition.value) {
       this.searchForm.controls.domainNm.setValue(this.searchForm.controls.searchValue.value);
@@ -93,14 +99,72 @@ export class Business43Component implements OnInit {
     });
   }
 
+  /**
+   * 등록화면으로 이동
+   */
   onRegistClick(): void {
     this.router.navigate(['admin/business44']);
   }
 
+  /**
+   * 조회화면으로 이동
+   * @param domainId 도메인아이디
+   */
   onDetailClick(domainId: number): void {
     this.router.navigate(['admin/business45', domainId]);
   }
 
+  /**
+   * 엑셀 파일 파싱 후 화면에 목록 표시
+   * @param fileEl 파일 엘리먼트
+   * @returns void
+   */
+  onParseClick(fileEl: HTMLInputElement): void {
+    if (null === fileEl.files || 0 === fileEl.files.length) {
+      alert('엑셀파일을 선택하시기 바랍니다.');
+      return;
+    }
+
+    // TODO 엑셀파일인지 검사
+
+    //
+    this.service.parseExcel(fileEl.files).subscribe((res: any) => {
+      this.excelDomains = res.data;
+    });
+  }
+
+  /**
+   * 팝업창 닫기
+   */
+  onClosePopupClick(): void {
+    $('.pop_bg5').hide();
+  }
+
+  /**
+   * 엑셀 데이터 등록
+   * @returns void
+   */
+  onRegistExcelClick(): void {
+    if (0 === this.excelDomains.length) {
+      alert('등록할 데이터가 없습니다.');
+      return;
+    }
+
+    if (!confirm('등록하시겠습니까?')) {
+      return;
+    }
+
+    this.service.registBulk(this.excelDomains).subscribe(() => {
+      this.onClosePopupClick();
+      this.onSearchClick();
+    });
+  }
+
+  /**
+   * 행 번호 조회
+   * @param i 인덱스
+   * @returns 번호
+   */
   rowNo(i: number): number {
     if (undefined === this.cmmnPagerRef) {
       return -1;

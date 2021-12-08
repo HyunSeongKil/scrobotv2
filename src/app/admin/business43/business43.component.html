@@ -102,12 +102,12 @@
       <div class="table_content6">
         <form method="post">
           <table>
-            <tr>
+            <!-- <tr>
               <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;표준여부</th>
               <td colspan="3">&nbsp;&nbsp;<input type="checkbox" name="표준체크" checked /><span class="chk_name">（표준:체크 / 표준아님:해제）</span></td>
-            </tr>
+            </tr> -->
             <tr class="file_tr">
-              <td class="file_box" colspan="2">
+              <td class="file_box p-2" colspan="2">
                 <!--input box-->
                 <input type="text" class="upload_text" readonly="readonly" />
                 <!--button-->
@@ -115,9 +115,9 @@
                   <button type="button" title="파일찾기">
                     <span class="font_wh">파일찾기</span>
                   </button>
-                  <input type="file" class="input_file" title="파일찾기" />
+                  <input type="file" class="input_file" title="파일찾기" #fileEl />
                 </div>
-                <div class="add_btn3"><a href="#none">불러오기</a></div>
+                <div class="add_btn3"><a href="javascript:;" (click)="onParseClick(fileEl)">불러오기</a></div>
               </td>
             </tr>
           </table>
@@ -126,81 +126,44 @@
 
       <div class="table_content">
         <div class="top_tit2">
-          <p>(총 000건)</p>
+          <p>(총 {{ excelDomains.length }}건)</p>
         </div>
       </div>
       <div class="table-warp scroll">
         <table class="table_content6_1">
           <thead>
             <tr>
-              <th class="th1"><input type="checkbox" name="표준체크" /></th>
-              <th class="th1_2">순번</th>
+              <th class="th1">순번</th>
               <th class="th2">도메인명</th>
               <th class="th3">도메인그룹명</th>
               <th class="th4">도메인분류명</th>
               <th class="th5">설명</th>
               <th class="th6">데이터타입</th>
               <th class="th7">데이터길이</th>
+              <th class="th8">표준여부</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
+            <tr *ngFor="let x of excelDomains; index as i">
+              <td>{{ i + 1 }}</td>
+              <td>{{ x.domainNm }}</td>
+              <td>{{ x.domainGroupNm }}</td>
+              <td>{{ x.domainClNm }}</td>
+              <td>{{ x.domainCn }}</td>
+              <td>{{ x.dataTyCd }}</td>
+              <td>{{ x.dataLtValue }}</td>
+              <td>{{ x.stdAt }}</td>
             </tr>
-            <tr>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-            </tr>
-            <tr>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-            </tr>
-            <tr>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-            </tr>
-            <tr>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
-              <td><a href="#none"></a></td>
+            <tr *ngIf="0 === excelDomains.length">
+              <td colspan="8" class="text-center">데이터가 없습니다.</td>
             </tr>
           </tbody>
         </table>
       </div>
       <br />
       <div class="btn3">
-        <a href="business43_br.html">등록</a>&nbsp;
-        <a href="business43_br.html">닫기</a>
+        <a href="javascript:;" (click)="onRegistExcelClick()">등록</a>&nbsp;
+        <a href="javascript:;" (click)="onClosePopupClick()">닫기</a>
       </div>
     </div>
   </div>
