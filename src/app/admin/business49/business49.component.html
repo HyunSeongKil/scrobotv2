@@ -1,0 +1,50 @@
+<div id="wrap">
+  <app-admin-header></app-admin-header>
+
+  <div id="contents" class="clearfix">
+    <app-admin-lnb (initedEvent)="adminLnbInited($event)"></app-admin-lnb>
+    <div class="content clearfix">
+      <div class="home">&nbsp;Home > SC-ROBOT관리 > 시스템관리 ><span class="bold_f"> 공통 코드 관리</span></div>
+      <h3 class="sub-tit"><img src="./assets/images/brownbar.png" alt="갈색바" />&nbsp;공통 코드 그룹 상세</h3>
+      <div class="sub-content">
+        <div class="table_content">
+          <form method="post" [formGroup]="form">
+            <table>
+              <tr class="disabled_box">
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;부모 공통 코드</th>
+                <td colspan="1"><input type="text" formControlName="prntsCmmnCode" readonly="readonly" /></td>
+                <th></th>
+                <td></td>
+              </tr>
+              <tr class="disabled_box">
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;공통 코드</th>
+                <td colspan="1"><input type="text" formControlName="cmmnCode" readonly="readonly" /></td>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;공통 코드 명</th>
+                <td colspan="1"><input type="text" formControlName="cmmnCodeNm" readonly="readonly" /></td>
+              </tr>
+              <tr class="disabled_box">
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;작성자</th>
+                <td colspan="1"><input type="text" formControlName="registerNm" readonly="readonly" /></td>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;작성일자</th>
+                <td colspan="1"><input type="text" [value]="form.controls.registDt.value | date: 'yyyy-MM-dd'" readonly="readonly" /></td>
+              </tr>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;설명</th>
+                <td valign="top" class="tool_img" colspan="3">
+                  <div class="txt1" style="white-space: pre-wrap">{{ form.controls.cmmnCodeCn.value }}</div>
+                </td>
+              </tr>
+            </table>
+          </form>
+          <div class="btn-box mgt20 clearfix">
+            <a href="javascript:;" class="btn purple float-right" (click)="onListClick()">목록으로</a>
+            <a href="javascript:;" class="btn purple float-right" (click)="onDeleteClick()">삭제</a>
+            <a href="javascript:;" class="btn purple float-right" (click)="onUpdateClick()">수정</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <app-admin-footer></app-admin-footer>
+  </div>
+</div>

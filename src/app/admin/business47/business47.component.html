@@ -1,0 +1,248 @@
+<div id="wrap">
+  <app-admin-header></app-admin-header>
+
+  <div id="contents" class="clearfix">
+    <app-admin-lnb (initedEvent)="adminLnbInited($event)"></app-admin-lnb>
+    <div class="content clearfix">
+      <div class="home">&nbsp;Home > SC-ROBOT관리 > 시스템관리 ><span class="bold_f"> 공통 코드 관리</span></div>
+      <h3 class="sub-tit"><img src="./assets/images/brownbar.png" alt="갈색바" />&nbsp;공통 코드 그룹 관리</h3>
+      <div class="sub-content">
+        <div class="select-box">
+          <div class="table_content1">
+            <form method="post" [formGroup]="searchForm">
+              <table>
+                <tr>
+                  <th>검색어&nbsp;&nbsp;&nbsp;</th>
+                  <td>
+                    <select formControlName="searchCondition">
+                      <option value="ID">공통코드그룹ID</option>
+                      <option value="NM">공통코드그룹명</option>
+                    </select>
+                    &nbsp;<input type="text" formControlName="searchValue" />
+                  </td>
+                </tr>
+                <tr>
+                  <td class="search_hover">
+                    <a href="javascript:;" (click)="onSearchClick()"><img src="./assets/images/ico_search.png" alt="돋보기" />&nbsp;&nbsp;조회</a>
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+
+        <div class="table_content">
+          <div class="top_tit">
+            <p>(총 {{ cmmnPagerRef.getTotcnt() }}건)</p>
+          </div>
+        </div>
+        <div class="table-warp scroll">
+          <table class="table_content3">
+            <thead>
+              <tr>
+                <th class="th0">순번</th>
+                <th class="th1">공통 코드 그룹 ID</th>
+                <th class="th2">공통 코드</th>
+                <th class="th3">공통 코드 명</th>
+
+                <th class="th4">작성자</th>
+                <th class="th5">작성일자</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of cmmnCodes; index as i">
+                <td>{{ rowNo(i) }}</td>
+                <td>{{ x.prntsCmmnCode }}</td>
+                <td>
+                  <a href="javascript:;" (click)="onDetailClick(x.cmmnCodeId)">{{ x.cmmnCode }}</a>
+                </td>
+                <td>{{ x.cmmnCodeNm }}</td>
+
+                <td>{{ x.registerNm }}</td>
+                <td>{{ x.registDt | date: "yyyy-MM-dd" }}</td>
+              </tr>
+
+              <tr *ngIf="0 === cmmnCodes.length">
+                <td colspan="6" class="text-center">데이터가 없습니다.</td>
+              </tr>
+            </tbody>
+          </table>
+          <!--                    <div class="btn-box mgt20 clearfix">-->
+          <div class="btn-box mgt20 clearfix">
+            <a href="javascript:;" class="btn purple float-right" (click)="onRegistClick()">등록</a>
+          </div>
+          <div class="out2"><a href="javascript:;">엑셀등록</a></div>
+          <app-cmmn-pager #cmmnPagerRef (initedEvent)="cmmnPagerInited($event)"></app-cmmn-pager>
+        </div>
+      </div>
+    </div>
+    <app-admin-footer></app-admin-footer>
+  </div>
+</div>
+
+<!--팝업-->
+<div class="pop_bg2">
+  <div class="popup2">
+    <div class="top_header_pop">
+      <h2>공통 코드 관리<button class="close">X</button></h2>
+    </div>
+    <div id="div_pop">
+      <!-- 타이틀 -->
+
+      <div class="main_dot_">
+        <h3><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;공통 코드 관리</h3>
+      </div>
+
+      <div class="table_content6_0">
+        <table>
+          <form method="post">
+            <tr>
+              <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;공통 코드 그룹 ID</th>
+              <td>&nbsp;&nbsp;12341234</td>
+            </tr>
+            <tr>
+              <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;공통 코드 그룹명</th>
+              <td>&nbsp;&nbsp;권한</td>
+            </tr>
+          </form>
+        </table>
+      </div>
+
+      <div class="table_content4_5_box">
+        <div class="table_content4">
+          <table>
+            <form method="post">
+              <tr>
+                <th class="th2">순번</th>
+                <th class="th3">공통 코드 ID</th>
+                <th class="th4">공통 코드명</th>
+              </tr>
+              <tr class="tr_gray">
+                <td>3</td>
+                <td>AA</td>
+                <td>관리자1</td>
+              </tr>
+              <tr class="tr_gray">
+                <td>2</td>
+                <td>AB</td>
+                <td>관리자2</td>
+              </tr>
+              <tr class="tr_gray">
+                <td>1</td>
+                <td>AC</td>
+                <td>관리자3</td>
+              </tr>
+            </form>
+          </table>
+        </div>
+
+        <div class="table_content5">
+          <table>
+            <form method="post">
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;공통코드 ID</th>
+                <td><input type="text" value="AA" disabled="disabled" /></td>
+              </tr>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;공통코드명</th>
+                <td><input type="text" /></td>
+              </tr>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;정렬</th>
+                <td><input type="text" /></td>
+              </tr>
+              <tr>
+                <th><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;설명</th>
+                <td><textarea></textarea></td>
+              </tr>
+            </form>
+          </table>
+        </div>
+      </div>
+      <div class="btn5">
+        <a href="business47_br.html">저장</a>
+        <a href="#none">삭제</a>
+        <a href="#none">수정</a>
+        <a href="#none">초기화</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--팝업-->
+<div class="pop_bg5">
+  <div class="popup5">
+    <div class="top_header_pop5">
+      <h2>공통코드 엑셀등록<button class="close">X</button></h2>
+    </div>
+    <div id="div_pop5">
+      <!-- 타이틀 -->
+
+      <div class="main_dot_5">
+        <h3><img src="./assets/images/dot.png" alt="목록아이콘" />&nbsp;공통코드 엑셀등록</h3>
+      </div>
+
+      <div class="table_content6">
+        <form method="post">
+          <table>
+            <tr class="file_tr">
+              <td class="file_box" colspan="2">
+                <!--input box-->
+                <input type="file" class="upload_text" #fileEl />
+                <!--button-->
+                <!--
+                                     <div class="upload-btn_wrap">
+                                       <button type="button" title="파일찾기">
+                                        <span class="font_wh">파일찾기</span>  
+                                       </button>
+                                       <input type="file" class="input_file" title="파일찾기">
+                                     </div>
+-->
+                <div class="add_btn3"><a href="javascript:;" (click)="onParseClick(fileEl)">불러오기</a></div>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+
+      <div class="table_content">
+        <div class="top_tit2">
+          <p>(총 {{ cmmnPagerRef.getTotcnt() }}건)</p>
+        </div>
+      </div>
+      <div class="table-warp scroll">
+        <table class="table_content6_1">
+          <thead>
+            <tr>
+              <th class="th1">순번</th>
+              <th class="th2">공통 코드 그룹명</th>
+              <th class="th3">공통 코드 ID</th>
+              <th class="th4">공통 코드명</th>
+              <th class="th5">설명</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let x of excelCmmnCodes; index as i">
+              <td>
+                {{ i + 1 }}
+              </td>
+              <td>{{ x.prntsCmmnCode }}</td>
+              <td>{{ x.cmmnCodeId }}</td>
+              <td>{{ x.cmmnCodeNm }}</td>
+              <td>{{ x.cmmnCodeCn }}</td>
+            </tr>
+
+            <tr *ngIf="0 === excelCmmnCodes.length">
+              <td colspan="5" class="text-center">데이터가 없습니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br />
+      <div class="btn3">
+        <a href="javascript:;" (click)="onBulkRegistClick()">등록</a>&nbsp;
+        <a href="javascript:;" (click)="onCloseClick()">취소</a>
+      </div>
+    </div>
+  </div>
+</div>

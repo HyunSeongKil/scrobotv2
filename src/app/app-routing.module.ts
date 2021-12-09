@@ -23,6 +23,10 @@ import { Business43Component } from './admin/business43/business43.component';
 import { Business44Component } from './admin/business44/business44.component';
 import { Business45Component } from './admin/business45/business45.component';
 import { Business46Component } from './admin/business46/business46.component';
+import { Business47Component } from './admin/business47/business47.component';
+import { Business48Component } from './admin/business48/business48.component';
+import { Business49Component } from './admin/business49/business49.component';
+import { Business50Component } from './admin/business50/business50.component';
 import { StplatListComponent } from './admin/stplat-list/stplat-list.component';
 import { StplatRegistComponent } from './admin/stplat-regist/stplat-regist.component';
 import { CrudComponent } from './biz/crud/crud.component';
@@ -98,6 +102,11 @@ const routes: Routes = [
   { path: 'admin/business44', component: Business44Component },
   { path: 'admin/business45/:domainId', component: Business45Component },
   { path: 'admin/business46/:domainId', component: Business46Component },
+
+  { path: 'admin/business47', component: Business47Component },
+  { path: 'admin/business48', component: Business48Component },
+  { path: 'admin/business49/:cmmnCodeId', component: Business49Component },
+  { path: 'admin/business50/:cmmnCodeId', component: Business50Component },
 
   { path: 'admin/stplat-list', component: StplatListComponent },
   { path: 'admin/stplat-regist', component: StplatRegistComponent },

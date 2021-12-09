@@ -158,8 +158,12 @@ export namespace Scrobot {
     cmmnCodeId: number;
     cmmnCode: string;
     cmmnCodeNm: string;
+    cmmnCodeCn: string;
     prntsCmmnCode: string;
     useAt: string;
+    registDt: string;
+    registerId: string;
+    registerNm: string;
   }
 
   export interface TrgetSys {

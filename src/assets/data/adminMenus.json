@@ -52,7 +52,7 @@
       { "id": "c", "nm": "상품 관리", "link": "admin/business13", "on": false },
       { "id": "d", "nm": "기능 관리", "link": "javascript:;", "on": false },
       { "id": "e", "nm": "메시지 관리", "link": "javascript:;", "on": false },
-      { "id": "f", "nm": "공통코드 관리", "link": "javascript:;", "on": false }
+      { "id": "f", "nm": "공통코드 관리", "link": "admin/business47", "on": false }
     ]
   },
   {
