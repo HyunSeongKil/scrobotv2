@@ -37,7 +37,7 @@ export class PrjctUpdtDialogComponent implements OnInit {
     this.form.controls.userId.setValue(userId);
     this.form.controls.prjctId.setValue(prjctId);
 
-    this.prjctService.get(prjctId).then((res: any) => {
+    this.prjctService.findById(prjctId).then((res: any) => {
       this.form.patchValue(res.data);
       this.form.controls.userId.setValue(userId);
     });

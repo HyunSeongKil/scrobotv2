@@ -1,0 +1,124 @@
+<ul class="tab1" style="padding-left: 0">
+  <li class="on RIGHT COMPN" (click)="onTabClick('COMPN')">
+    <a href="javascript:;">콤포넌트</a>
+    <div class="notice text-center mt-2 w-100" *ngIf="undefined === selectedScrin">편집상태에서만 활성화됩니다.</div>
+    <div class="notice" *ngIf="undefined !== selectedScrin">
+      <nav class="nav1">
+        <div class="comp">
+          <ul style="padding-left: 0">
+            <li *ngFor="let x of list">
+              <a href="javascript:;" [attr.data-tag-name]="x.tagName" *ngIf="'Y' === x.useAt" (click)="selectCompn(x.tagName)"><img src="./assets/images/editor/{{ x.imgFileNm }}" alt="div아이콘" /> {{ x.name }}</a>
+            </li>
+
+            <!---->
+
+            <li>
+              <a href="javascript:alert('TODO')"><img src="./assets/images/editor/radio_icon.png" alt="radiobox아이콘" /> 라디오박스</a>
+            </li>
+            <li>
+              <a href="javascript:alert('TODO')"><img src="./assets/images/editor/input_icon.png" alt="input아이콘" /> 인풋박스</a>
+            </li>
+            <li>
+              <a href="javascript:alert('TODO')"><img src="./assets/images/editor/sel_icon.png" alt="select아이콘" /> 셀렉트박스</a>
+            </li>
+            <li>
+              <a href="javascript:alert('TODO')"><img src="./assets/images/editor/menu_grid_icon.png" alt="grid아이콘" /> 그리드</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </li>
+  <li class="sec4 RIGHT PROPERTY" (click)="onTabClick('PROPERTY')">
+    <a href="javascript:;">속성</a>
+    <div class="notice text-center mt-2 w-100" *ngIf="undefined === $selectedEl">선택된 콤포넌트가 없습니다.</div>
+    <!-- ※ ngif사용하면 dom에 접근할 수 없게 되기 때문에 ngClass를 대신 사용함 -->
+    <div class="notice" [ngClass]="undefined !== $selectedEl ? '' : 'd-none'">
+      <nav class="nav2">
+        <ul class="gnb" style="padding-left: 0">
+          <div class="add_btn2">
+            <a href="javascript:;" title="삭제" (click)="onDeleteElClick()"><img src="./assets/images/editor/garbage.png" alt="휴지통" /> 삭제</a>
+          </div>
+          <div class="add_btn_box_">
+            <!-- <div class="add_btn3"><a href="javascript:alert('TODO')">모두선택</a></div> -->
+            <!-- <div class="add_btn4"><a href="javascript:alert('TODO')">선택해제</a></div> -->
+            <div class="add_btn5">
+              <a href="javascript:;" (click)="onForwardClick()"><img src="./assets/images/editor/fr.png" alt="앞으로이미지" /> 앞으로</a>
+            </div>
+            <div class="add_btn6">
+              <a href="javascript:;" (click)="onBackwardClick()"><img src="./assets/images/editor/bk.png" alt="뒤로이미지" /> 뒤로</a>
+            </div>
+          </div>
+          <li class="main_list">
+            <table class="table property">
+              <thead>
+                <tr>
+                  <th>항목</th>
+                  <th>값</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- <a href="#"><i class="fas fa-angle-down"></i><img src="./assets/images/editor/tree.png" alt="검정화살표" /><img src="./assets/images/editor/open_folder.png" alt="파란색폴더" /> 속성</a>
+            <ul class="sub">
+              <li class="note__ a">
+                <a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;넓이 : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" /></a>
+              </li>
+              <li class="note__ a">
+                <a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;높이 : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" /></a>
+              </li>
+              <li class="note__ a">
+                <a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;글꼴 : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" /></a>
+              </li>
+              <li class="note__ a">
+                <a href="#"
+                  >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;색 : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" readonly="readonly" />
+                  <div class="colorbox"></div>
+                </a>
+              </li>
+              <li class="note__ a">
+                <a href="#"
+                  >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;배경 색 : &nbsp;&nbsp;<input type="text" readonly="readonly" />
+                  <div class="colorbox2"></div>
+                </a>
+              </li>
+              <li class="note__ a">
+                <a href="#"
+                  >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;글꼴 크기 :
+                  <select>
+                    <option value="맑은고딕(본문)">16px</option>
+                  </select></a
+                >
+              </li>
+              <li class="note__ a">
+                <a href="#"
+                  >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;버튼 구분 :
+                  <select>
+                    <option value="맑은고딕(본문)">취소</option>
+                  </select></a
+                >
+              </li>
+              <li class="note__ a">
+                <a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;텍스트 : &nbsp;&nbsp;&nbsp;<input type="text" /></a>
+              </li>
+            </ul> -->
+          </li>
+          <div class="add_btn3">
+            <a href="javascript:;" (click)="applyProperty()"><img src="./assets/images/editor/check.png" alt="체크" /> 적용</a>
+          </div>
+          <!-- <div class="add_btn4">
+            <a href="javascript:alert('TODO')"><img src="./assets/images/editor/x_icon.png" alt="엑스" /> 취소</a>
+          </div> -->
+        </ul>
+      </nav>
+    </div>
+  </li>
+</ul>
+
+<app-word-dicary-select-dialog #wordDicarySelectRef (initedEvent)="wordDicarySelectInitedEvent($event)"></app-word-dicary-select-dialog>
+<app-table-item-edit-dialog #tableItemEditDialogRef (initedEvent)="tableItemEditInitedEvent($event)"></app-table-item-edit-dialog>

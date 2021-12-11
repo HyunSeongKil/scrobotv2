@@ -54,7 +54,7 @@ export class EditorService {
     let prjct: Scrobot.Prjct;
 
     // 프로젝트
-    const prms1 = await this.prjctService.get(prjctId);
+    const prms1 = await this.prjctService.findById(prjctId);
     prjct = prms1.data as Scrobot.Prjct;
 
     // 메뉴

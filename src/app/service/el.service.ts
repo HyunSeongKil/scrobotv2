@@ -21,9 +21,13 @@ export class ElService {
   static TAG_NAME_TABLE = `table`;
   static TAG_NAME_SELECT = `select`;
   static TAG_NAME_IMG = `img`;
+  static TAG_NAME_CHECKBOX = 'checkbox';
+  static TAG_NAME_FILE = 'file';
+  static TAG_NAME_CALENDAR = 'calendar';
 
   @Output() elSelectedEvent = new EventEmitter<ElEventMessage>();
   @Output() endedEvent = new EventEmitter<ElEventMessage>();
+  @Output() elDeletedEvent = new EventEmitter<string>();
 
   /**
    * 화면에 추가된 전체 엘리먼트
@@ -41,7 +45,12 @@ export class ElService {
    * 콤포넌트 등록
    * @param scrinId 화면 아이디
    */
-  regist(scrinId: string): void {
+  regist(scrinId: string | undefined): void {
+    if (undefined === scrinId) {
+      throw new Error('scrinId is null');
+    }
+
+    //
     const dtos: Scrobot.Compn[] = [];
 
     //
@@ -192,6 +201,8 @@ export class ElService {
     // 화면에서
     $el.remove();
 
+    this.elDeletedEvent.emit(id);
+
     return true;
   }
 
@@ -224,7 +235,10 @@ export class ElService {
         break;
 
       case ElService.TAG_NAME_INPUT_TEXT:
+      case ElService.TAG_NAME_FILE:
       case ElService.TAG_NAME_TEXTAREA:
+      case ElService.TAG_NAME_CHECKBOX:
+      case ElService.TAG_NAME_CALENDAR:
         $el.draggable({
           containment: 'div.content',
           start: function (event, ui) {
@@ -265,6 +279,9 @@ export class ElService {
       case ElService.TAG_NAME_DIV:
       case ElService.TAG_NAME_SPAN:
       case ElService.TAG_NAME_INPUT_TEXT:
+      case ElService.TAG_NAME_FILE:
+      case ElService.TAG_NAME_CHECKBOX:
+      case ElService.TAG_NAME_CALENDAR:
       case ElService.TAG_NAME_TEXTAREA:
       case ElService.TAG_NAME_BUTTON:
       case ElService.TAG_NAME_H1:
@@ -296,7 +313,10 @@ export class ElService {
 
     switch (tagName) {
       case ElService.TAG_NAME_INPUT_TEXT:
+      case ElService.TAG_NAME_FILE:
+      case ElService.TAG_NAME_CHECKBOX:
       case ElService.TAG_NAME_TEXTAREA:
+      case ElService.TAG_NAME_CALENDAR:
       case ElService.TAG_NAME_IMG:
       case ElService.TAG_NAME_BUTTON:
         $el.on('click', (event, ui) => {
@@ -320,7 +340,7 @@ export class ElService {
         });
 
         //
-        const selector: string = `${ElService.TAG_NAME_BUTTON},${ElService.TAG_NAME_INPUT_TEXT},${ElService.TAG_NAME_TEXTAREA},${ElService.TAG_NAME_IMG}`;
+        const selector: string = `${ElService.TAG_NAME_BUTTON},${ElService.TAG_NAME_CALENDAR},${ElService.TAG_NAME_FILE},${ElService.TAG_NAME_INPUT_TEXT},${ElService.TAG_NAME_CHECKBOX},${ElService.TAG_NAME_TEXTAREA},${ElService.TAG_NAME_IMG}`;
 
         // 마우스 업이면 자식의 사이즈 변경
         $el.on('mouseup', (event) => {
@@ -421,34 +441,43 @@ export class ElService {
   createEl(tagName: string, cn: string = ''): JQuery<HTMLElement> {
     switch (tagName) {
       case ElService.TAG_NAME_DIV:
-        return this.createDiv(cn);
+        return this.createDivEl(cn);
 
       case ElService.TAG_NAME_SPAN:
-        return this.createSpan(cn);
+        return this.createSpanEl(cn);
 
       case ElService.TAG_NAME_INPUT_TEXT:
-        return this.createInput(cn);
+        return this.createInputEl(cn);
 
       case ElService.TAG_NAME_TEXTAREA:
-        return this.createTextarea(cn);
+        return this.createTextareaEl(cn);
 
       case ElService.TAG_NAME_H1:
-        return this.createH1(cn);
+        return this.createH1El(cn);
 
       case ElService.TAG_NAME_H2:
-        return this.createH2(cn);
+        return this.createH2El(cn);
 
       case ElService.TAG_NAME_H3:
-        return this.createH3(cn);
+        return this.createH3El(cn);
 
       case ElService.TAG_NAME_BUTTON:
-        return this.createButton(cn);
+        return this.createButtonEl(cn);
 
       case ElService.TAG_NAME_IMG:
-        return this.createImg(cn);
+        return this.createImgEl(cn);
 
       case ElService.TAG_NAME_TABLE:
-        return this.createTable(cn);
+        return this.createTableEl(cn);
+
+      case ElService.TAG_NAME_CHECKBOX:
+        return this.createCheckboxEl(cn);
+
+      case ElService.TAG_NAME_FILE:
+        return this.createFileEl(cn);
+
+      case ElService.TAG_NAME_CALENDAR:
+        return this.createCalendarEl(cn);
 
       default:
         throw new Error('not impl ' + tagName);
@@ -460,7 +489,7 @@ export class ElService {
    * @param cn 내용
    * @returns 생성된 엘리먼트
    */
-  private createSpan(cn = ''): JQuery<HTMLElement> {
+  private createSpanEl(cn = ''): JQuery<HTMLElement> {
     if (0 < cn.length) {
       return $(cn);
     }
@@ -474,7 +503,7 @@ export class ElService {
    * @param cn 내용
    * @returns 생성된 엘리먼트
    */
-  private createDiv(cn: string = ''): JQuery<HTMLElement> {
+  private createDivEl(cn: string = ''): JQuery<HTMLElement> {
     if (0 < cn.length) {
       return $(cn);
     }
@@ -482,7 +511,7 @@ export class ElService {
     const w = ScUtil.rand(100, 400);
     const h = ScUtil.rand(100, 300);
 
-    const $el = $(`<div id="${ScUtil.createId()}" style="width:${w}px; height:${h}px; background-color:${ScUtil.randColor()}; position:absolute;"></div>`);
+    const $el = $(`<div id="${ScUtil.createId()}" style="width:${w}px; height:${h}px; background-color:#ffffff; position:absolute;"></div>`);
     return $el.attr('data-tag-name', 'div').attr('data-eng-abrv-nm', '').attr('data-hngl-abrv-nm', '');
   }
 
@@ -491,7 +520,7 @@ export class ElService {
    * @param cn 내용
    * @returns 생성된 엘리먼트
    */
-  private createH1(cn = ''): JQuery<HTMLElement> {
+  private createH1El(cn = ''): JQuery<HTMLElement> {
     if (0 < cn.length) {
       return $(cn);
     }
@@ -505,7 +534,7 @@ export class ElService {
    * @param cn 내용
    * @returns 생성된 엘리먼트
    */
-  private createH2(cn = ''): JQuery<HTMLElement> {
+  private createH2El(cn = ''): JQuery<HTMLElement> {
     if (0 < cn.length) {
       return $(cn);
     }
@@ -519,7 +548,7 @@ export class ElService {
    * @param cn 내용
    * @returns 생성된 엘리먼트
    */
-  private createH3(cn = ''): JQuery<HTMLElement> {
+  private createH3El(cn = ''): JQuery<HTMLElement> {
     if (0 < cn.length) {
       return $(cn);
     }
@@ -533,7 +562,7 @@ export class ElService {
    * @param cn 태그 내용
    * @returns 엘리먼트
    */
-  private createInput(cn: string = ''): JQuery<HTMLElement> {
+  private createInputEl(cn: string = ''): JQuery<HTMLElement> {
     if (0 < cn.length) {
       return $(cn);
     }
@@ -554,7 +583,7 @@ export class ElService {
    * @param cn 태그 내용
    * @returns 엘리먼트
    */
-  private createTextarea(cn: string = ''): JQuery<HTMLElement> {
+  private createTextareaEl(cn: string = ''): JQuery<HTMLElement> {
     if (0 < cn.length) {
       return $(cn);
     }
@@ -575,7 +604,7 @@ export class ElService {
    * @param cn 내용
    * @returns 버튼 엘리먼트
    */
-  private createButton(cn: string = ''): JQuery<HTMLElement> {
+  private createButtonEl(cn: string = ''): JQuery<HTMLElement> {
     if (0 < cn.length) {
       return $(cn);
     }
@@ -591,7 +620,7 @@ export class ElService {
     return $wrapper;
   }
 
-  private createImg(cn: string = ''): JQuery<HTMLElement> {
+  private createImgEl(cn: string = ''): JQuery<HTMLElement> {
     if (0 < cn.length) {
       return $(cn);
     }
@@ -612,7 +641,7 @@ export class ElService {
    * @param cn 내용
    * @returns 테이블 엘리먼트
    */
-  private createTable(cn: string = ''): JQuery<HTMLElement> {
+  private createTableEl(cn: string = ''): JQuery<HTMLElement> {
     if (0 < cn.length) {
       return $(cn);
     }
@@ -625,6 +654,69 @@ export class ElService {
     const $el = $(`<table id="${id}" class="table list" ></table>`);
     $el.append(`<thead><tr><th>제목</th></tr></thead>`);
     $el.append(`<tbody><tr><td>내용</td></tr></tbody>`);
+
+    $wrapper.append($el);
+    return $wrapper;
+  }
+
+  /**
+   * 체크박스 엘리먼트 생성
+   * @param cn 내용
+   * @returns 체크박스 엘리먼트
+   */
+  private createCheckboxEl(cn: string = ''): JQuery<HTMLElement> {
+    if (0 < cn.length) {
+      return $(cn);
+    }
+
+    const id = ScUtil.createId();
+    const $wrapper = $(`<div id="${id}_wrapper" class="wrapper" style="position:absolute; width:32px; height:32px;"></div>`);
+    $wrapper.attr('data-tag-name', ElService.TAG_NAME_CHECKBOX);
+
+    const $el = $(`<input type="checkbox" id="${id}" value="" style="width:16px; height:16px; padding:0.5em; background-color:#efefef;" readonly focus  ></input>`);
+    $el.attr('data-eng-abrv-nm', '').attr('data-hngl-abrv-nm', '');
+
+    $wrapper.append($el);
+    return $wrapper;
+  }
+
+  /**
+   * 파일 엘리먼트 생성
+   * @param cn 내용
+   * @returns 파일 엘리먼트
+   */
+  private createFileEl(cn: string = ''): JQuery<HTMLElement> {
+    if (0 < cn.length) {
+      return $(cn);
+    }
+
+    const id = ScUtil.createId();
+    const $wrapper = $(`<div id="${id}_wrapper" class="wrapper" style="position:absolute; width:200px; height:50px;"></div>`);
+    $wrapper.attr('data-tag-name', ElService.TAG_NAME_FILE);
+
+    const $el = $(`<input type="file" id="${id}" value="" style="width:90px; height:40px; padding:0.5em; background-color:#efefef;" readonly focus  ></input>`);
+    $el.attr('data-eng-abrv-nm', '').attr('data-hngl-abrv-nm', '');
+
+    $wrapper.append($el);
+    return $wrapper;
+  }
+
+  /**
+   * 달력 엘리먼트 생성
+   * @param cn 내용
+   * @returns 달력 엘리먼트
+   */
+  private createCalendarEl(cn: string = ''): JQuery<HTMLElement> {
+    if (0 < cn.length) {
+      return $(cn);
+    }
+
+    const id = ScUtil.createId();
+    const $wrapper = $(`<div id="${id}_wrapper" class="wrapper" style="position:absolute; width:150px; height:30px;"></div>`);
+    $wrapper.attr('data-tag-name', ElService.TAG_NAME_CALENDAR);
+
+    const $el = $(`<input type="date" id="${id}" value="" style="width:100px; height:25px; padding:0.5em; background-color:#efefef;" readonly focus  ></input>`);
+    $el.attr('data-eng-abrv-nm', '').attr('data-hngl-abrv-nm', '');
 
     $wrapper.append($el);
     return $wrapper;

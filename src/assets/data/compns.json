@@ -1,11 +1,14 @@
 {
   "data": [
-    { "name": "영역", "tagName": "div", "imgFileNm": "div.png", "html": "TODO", "useAt": "Y" },
-    { "name": "값입력", "tagName": "input", "imgFileNm": "text.png", "html": "TODO", "useAt": "Y" },
-    { "name": "이미지", "tagName": "img", "imgFileNm": "image.png", "html": "TODO", "useAt": "Y" },
-    { "name": "버튼", "tagName": "button", "imgFileNm": "button.png", "html": "TODO", "useAt": "Y" },
-    { "name": "텍스트영역", "tagName": "textarea", "imgFileNm": "textarea.png", "html": "TODO", "useAt": "Y" },
-    { "name": "테이블", "tagName": "table", "imgFileNm": "table.png", "html": "TODO", "useAt": "Y" },
+    { "name": "영역", "tagName": "div", "imgFileNm": "div_icon.png", "html": "TODO", "useAt": "Y" },
+    { "name": "값입력", "tagName": "input", "imgFileNm": "t_icon.png", "html": "TODO", "useAt": "Y" },
+    { "name": "이미지", "tagName": "img", "imgFileNm": "photo_icon.png", "html": "TODO", "useAt": "Y" },
+    { "name": "버튼", "tagName": "button", "imgFileNm": "btn_icon.png", "html": "TODO", "useAt": "Y" },
+    { "name": "텍스트영역", "tagName": "textarea", "imgFileNm": "area_icon.png", "html": "TODO", "useAt": "Y" },
+    { "name": "테이블", "tagName": "table", "imgFileNm": "table_icon.png", "html": "TODO", "useAt": "Y" },
+    { "name": "체크박스", "tagName": "checkbox", "imgFileNm": "chk_icon.png", "html": "TODO", "useAt": "Y" },
+    { "name": "파일", "tagName": "file", "imgFileNm": "file_icon.png", "html": "TODO", "useAt": "Y" },
+    { "name": "달력", "tagName": "calendar", "imgFileNm": "calendar_icon.png", "html": "TODO", "useAt": "Y" },
 
     { "name": "제목1", "tagName": "h1", "imgFileNm": "", "html": "TODO", "useAt": "N" },
     { "name": "제목2", "tagName": "h2", "imgFileNm": "", "html": "TODO", "useAt": "N" },

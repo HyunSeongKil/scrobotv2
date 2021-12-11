@@ -23,4 +23,8 @@ export class DeployService {
   deploy(deploy: Scrobot.Deploy): Promise<any> {
     return this.http.put(`${this.BIZ_URI}`, deploy).toPromise();
   }
+
+  deployByPrjctId(prjctId: string): Promise<any> {
+    return this.http.put(`${this.BIZ_URI}/by-prjct/prjctId=` + prjctId, null).toPromise();
+  }
 }

@@ -1,0 +1,191 @@
+<ul class="tab" style="padding-left: 0">
+  <li class="on LEFT SCRIN" (click)="onTab('SCRIN')">
+    <a href="javascript:;">화면</a>
+    <div class="notice w-100 mt-2 text-center" *ngIf="undefined !== selectedScrin">편집상태에서는 활성화되지 않습니다.</div>
+    <div class="notice" *ngIf="undefined === selectedScrin">
+      <nav class="nav1">
+        <!--pc화면-->
+        <ul class="gnb" style="padding-left: 0">
+          <div class="add_btn"><a href="#none">등록</a></div>
+
+          <!-- 1depth menu-->
+          <li class="main_list" *ngFor="let m1 of menus">
+            <ng-container *ngIf="'-' === m1.prntsMenuId">
+              <i class="fas fa-angle-down"></i>
+              <img src="./assets/images/editor/tree.png" alt="검정화살표" />
+              <img src="./assets/images/editor/open_folder.png" alt="파란색폴더" />
+              {{ m1.menuNm }}
+
+              <!-- 2depth menu-->
+              <ul class="sub">
+                <li *ngFor="let m2 of menus">
+                  <ng-container *ngIf="m2.prntsMenuId === m1.menuId">
+                    <div class="row">
+                      <div class="col-6">
+                        {{ m2.menuNm }}
+                      </div>
+                      <div class="col-6 text-end">
+                        <a href="javascript:;" class="d-inline" title="화면 등록" (click)="onRegistScrinClick(scrinRegistDialogRef, m2)">화면등록</a>
+                      </div>
+                    </div>
+
+                    <!-- 화면 -->
+                    <ul>
+                      <li *ngFor="let s of scrins">
+                        <ng-container *ngIf="s.menuId === m2.menuId">
+                          <div class="row">
+                            <div class="col-5 fw-bold">
+                              {{ s.scrinNm }}
+                            </div>
+                            <div class="col-7 text-end">
+                              <a href="javascript:;" class="d-inline mx-1" title="화면 편집" (click)="onEditScrinClick(s)">편집</a>
+                              <a href="javascript:;" class="d-inline" title="화면 복사" (click)="onCopyScrinClick(scrinCopyDialogRef, s)">복사</a>
+                              <a href="javascript:;" class="d-inline mx-1" title="화면 수정" (click)="onUpdateScrinClick(scrinUpdtDialogRef, s)">수정</a>
+                              <a href="javascript:;" class="d-inline" title="화면 삭제" (click)="onDeleteScrinClick(s)">삭제</a>
+                            </div>
+                          </div>
+                        </ng-container>
+                      </li>
+                    </ul>
+                  </ng-container>
+                </li>
+              </ul>
+            </ng-container>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </li>
+
+  <!-- menu -->
+  <li class="sec2 LEFT MENU" (click)="onTab('MENU')">
+    <a href="javascript:;">메뉴</a>
+    <div class="notice w-100 mt-2 text-center" *ngIf="undefined !== selectedScrin">편집상태에서는 활성화되지 않습니다.</div>
+
+    <div class="notice" *ngIf="undefined === selectedScrin">
+      <nav class="nav1">
+        <!-- 1depth -->
+        <ul class="gnb" style="padding-left: 0">
+          <div class="add_btn"><a href="javascript:;" title="최상위 메뉴 등록" (click)="openMenuRegistDialog(menuRegistDialogRef, '-')">등록</a></div>
+          <li class="main_list" [attr.data-lvl]="1" *ngFor="let m1 of getMenus(menus, '-')">
+            <ng-container *ngIf="'-' === m1.prntsMenuId">
+              <div class="row">
+                <div class="col-6">
+                  <i class="fas fa-angle-down"></i>
+                  <img src="./assets/images/editor/tree.png" alt="검정화살표" />
+                  <img src="./assets/images/editor/open_folder.png" alt="파란색폴더" />
+                  {{ m1.menuNm }}
+                </div>
+                <div class="col-6 text-end">
+                  <a href="javascript:;" class="d-inline mx-1" title="화면 매핑" (click)="openMenuScrinMapngDialog(menuScrinMapngDialogRef, m1)">화면매핑</a>
+                  <a href="javascript:;" class="d-inline" title="하위메뉴 등록" (click)="openMenuRegistDialog(menuRegistDialogRef, m1.menuId)"></a>
+                  <a href="javascript:;" class="d-inline mx-1" title="메뉴 수정" (click)="openMenuUpdateDialog(menuUpdtDialogRef, m1)">수정</a>
+                  <a href="javascript:;" class="d-inline" title="메뉴 삭제" (click)="deleteMenu(m1)">삭제</a>
+                </div>
+              </div>
+
+              <!-- 2depth -->
+              <ul class="sub" *ngIf="0 < getMenus(menus, m1.menuId).length">
+                <li [attr.data-lvl]="2" *ngFor="let m2 of getMenus(menus, m1.menuId)">
+                  <div class="row">
+                    <div class="col-6">
+                      {{ m2.menuNm }}
+                    </div>
+                    <div class="col-6 text-end">
+                      <a href="javascript:;" class="d-inline mx-1" title="화면 매핑" (click)="openMenuScrinMapngDialog(menuScrinMapngDialogRef, m2)">화면매핑</a>
+                      <a href="javascript:;" class="d-inline" title="하위메뉴 등록" (click)="openMenuRegistDialog(menuRegistDialogRef, m2.menuId)"></a>
+                      <a href="javascript:;" class="d-inline mx-1" title="메뉴 수정" (click)="openMenuUpdateDialog(menuUpdtDialogRef, m2)">수정</a>
+                      <a href="javascript:;" class="d-inline" title="메뉴 삭제" (click)="deleteMenu(m2)">삭제</a>
+                    </div>
+                  </div>
+
+                  <!-- 3depth-->
+                  <ul class="sub" *ngIf="0 < getMenus(menus, m2.menuId).length">
+                    <li [attr.data-lvl]="3" *ngFor="let m3 of getMenus(menus, m2.menuId)">
+                      <div class="row">
+                        <div class="col-6">
+                          {{ m3.menuNm }}
+                        </div>
+                        <div class="col-6 text-end">
+                          <a href="javascript:;" class="d-inline" title="화면 매핑" (click)="openMenuScrinMapngDialog(menuScrinMapngDialogRef, m3)">화면매핑</a>
+                          <!-- 3depth은 하위메뉴 등록 할 수 없음-->
+                          <a href="javascript:;" class="d-inline mx-1" title="메뉴 수정" (click)="openMenuUpdateDialog(menuUpdtDialogRef, m3)">수정</a>
+                          <a href="javascript:;" class="d-inline" title="메뉴 삭제" (click)="deleteMenu(m3)">삭제</a>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </ng-container>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </li>
+</ul>
+
+<!--   m화면-->
+<ul class="tab3">
+  <li class="on">
+    <a href="#none">화면</a>
+    <div class="notice">
+      <nav class="nav1">
+        <ul class="gnb">
+          <div class="add_btn"><a href="#none">등록</a></div>
+          <li class="main_list">
+            <a href="#"><i class="fas fa-angle-down"></i><img src="./assets/images/editor/tree.png" alt="검정화살표" /><img src="./assets/images/editor/open_folder.png" alt="파란색폴더" /> 기타화면&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./assets/images/editor/plus3.png" alt="플러스" class="pl" />&nbsp;<img src="./assets/images/editor/pencil.png" alt="연필" />&nbsp;<img src="./assets/images/editor/waste.png" alt="휴지통" /></a>
+            <ul class="sub">
+              <li>
+                <a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;회원 등록 (C)&nbsp;&nbsp;&nbsp;<img src="./assets/images/editor/link_icon.png" alt="이미지1" />&nbsp;<img src="./assets/images/editor/plus2.png" alt="이미지2" />&nbsp;<img src="./assets/images/editor/penc.png" alt="이미지3" />&nbsp;<img src="./assets/images/editor/garbage.png" alt="이미지4" /></a>
+              </li>
+              <li class="img_nbsp2">
+                <a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;회원 목록 (L)&nbsp;&nbsp;&nbsp;<img src="./assets/images/editor/link_icon.png" alt="이미지1" />&nbsp;<img src="./assets/images/editor/plus2.png" alt="이미지2" />&nbsp;<img src="./assets/images/editor/penc.png" alt="이미지3" />&nbsp;<img src="./assets/images/editor/garbage.png" alt="이미지4" /></a>
+              </li>
+              <li>
+                <a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;회원 조회 (R)&nbsp;&nbsp;&nbsp;<img src="./assets/images/editor/link_icon.png" alt="이미지1" />&nbsp;<img src="./assets/images/editor/plus2.png" alt="이미지2" />&nbsp;<img src="./assets/images/editor/penc.png" alt="이미지3" />&nbsp;<img src="./assets/images/editor/garbage.png" alt="이미지4" /></a>
+              </li>
+              <li class="img_nbsp4">
+                <a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;회원 수정 (U)&nbsp;&nbsp;&nbsp;<img src="./assets/images/editor/link_icon.png" alt="이미지1" />&nbsp;<img src="./assets/images/editor/plus2.png" alt="이미지2" />&nbsp;<img src="./assets/images/editor/penc.png" alt="이미지3" />&nbsp;<img src="./assets/images/editor/garbage.png" alt="이미지4" /></a>
+              </li>
+            </ul>
+          </li>
+          <li class="note__">
+            <a href="#none"><img src="./assets/images/editor/tree2.png" alt="회색화살표" /><img src="./assets/images/editor/page.png" alt="페이지" /> 게시글 관리&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./assets/images/editor/plus3.png" alt="플러스" class="pl" />&nbsp;<img src="./assets/images/editor/pencil.png" alt="연필" />&nbsp;<img src="./assets/images/editor/waste.png" alt="휴지통" /></a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </li>
+  <li class="sec2">
+    <a href="#none">메뉴</a>
+    <div class="notice">
+      <nav class="nav1">
+        <ul class="gnb">
+          <div class="add_btn"><a href="#none">등록</a></div>
+          <li class="main_list">
+            <a href="#"><i class="fas fa-angle-down"></i><img src="./assets/images/editor/tree.png" alt="검정화살표" /><img src="./assets/images/editor/open_folder.png" alt="파란색폴더" /> 회원관리&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./assets/images/editor/plus3.png" alt="플러스" class="pl" />&nbsp;<img src="./assets/images/editor/pencil.png" alt="연필" />&nbsp;<img src="./assets/images/editor/waste.png" alt="휴지통" /></a>
+            <ul class="sub">
+              <li>
+                <a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;목록&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./assets/images/editor/penc.png" alt="이미지3" />&nbsp;<img src="./assets/images/editor/garbage.png" alt="이미지4" /></a>
+              </li>
+              <li>
+                <a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;등록&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./assets/images/editor/penc.png" alt="이미지3" />&nbsp;<img src="./assets/images/editor/garbage.png" alt="이미지4" /></a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </li>
+</ul>
+
+<app-scrin-group-regist-dialog #scrinGroupRegistDialogRef></app-scrin-group-regist-dialog>
+<app-scrin-group-updt-dialog #scrinGroupUpdtDialogRef></app-scrin-group-updt-dialog>
+<app-scrin-regist-dialog #scrinRegistDialogRef (initedEvent)="scrinRegistInited($event)"></app-scrin-regist-dialog>
+<app-scrin-updt-dialog #scrinUpdtDialogRef (initedEvent)="scrinUpdtInited($event)"></app-scrin-updt-dialog>
+<app-scrin-copy-dialog #scrinCopyDialogRef (initedEvent)="scrinCopyInited($event)"></app-scrin-copy-dialog>
+
+<app-menu-regist-dialog #menuRegistDialogRef (initedEvent)="menuRegistInitedEvent($event)"></app-menu-regist-dialog>
+<app-menu-updt-dialog #menuUpdtDialogRef (initedEvent)="menuUpdtInitedEvent($event)"></app-menu-updt-dialog>
+<app-menu-scrin-mapng-dialog #menuScrinMapngDialogRef (initedEvent)="menuScrinMapngInited($event)"></app-menu-scrin-mapng-dialog>

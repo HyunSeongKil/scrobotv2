@@ -119,6 +119,10 @@ export namespace Scrobot {
     updtDt: string;
     scrinGroups: ScrinGroup[];
     menus: Menu[];
+    /**
+     * 화면 개수
+     */
+    scrinCo: number;
   }
 
   export interface ScrinGroup {
@@ -169,6 +173,12 @@ export namespace Scrobot {
   export interface TrgetSys {
     trgetSysId: string;
     trgetSysNm: string;
+    dbNm: string;
+    dbUserNm: string;
+    dbPasswordNm: string;
+    dbTyNm: string;
+    dbPortValue: number;
+    dbHostNm: string;
   }
 
   export interface Deploy {

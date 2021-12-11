@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>SC-ROBOT-EDIT</title>
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1, user-scalable=yes,initial-scale=1.0" />
+
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" /> -->
+
+    <script>
+      $(function () {
+        var on_off = false;
+        $(".menu_btn").click(function () {
+          on_off = !on_off;
+          if (on_off) {
+            $("aside").animate(
+              {
+                left: "0",
+              },
+              1000,
+              "easeOutExpo"
+            );
+            $("section").animate(
+              {
+                width: "75%",
+              },
+              1000,
+              "easeOutExpo"
+            );
+            $(".t_stick, .b_stick")
+              .animate(
+                {
+                  top: "24px",
+                },
+                500,
+                "easeOutExpo"
+              )
+              .animate(
+                {
+                  rotate: "45deg",
+                },
+                500,
+                "easeOutExpo"
+              );
+            $(".m_stick").delay(500).animate(
+              {
+                rotate: "-45deg",
+              },
+              500,
+              "easeOutExpo"
+            );
+          } else {
+            $("aside").animate(
+              {
+                left: "-25%",
+              },
+              1000,
+              "easeOutExpo"
+            );
+            $("section").animate(
+              {
+                width: "100%",
+              },
+              1000,
+              "easeOutExpo"
+            );
+            $(".menu_btn span").animate(
+              {
+                rotate: "0",
+              },
+              500,
+              "easeOutExpo"
+            );
+            $(".t_stick").animate(
+              {
+                top: "15px",
+              },
+              500,
+              "easeOutExpo"
+            );
+            $(".b_stick").animate(
+              {
+                top: "33px",
+              },
+              500,
+              "easeOutExpo"
+            );
+          }
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <!--메뉴바-->
+
+    <header>
+      <!--       탑메뉴  -->
+      <app-menu4 (initedEvent)="menuInited($event)"></app-menu4>
+
+      <!--       메인헤더-좌측메뉴pc -->
+      <div id="contents" class="clearfix">
+        <section id="sec1" class="clear">
+          <app-left4 (initedEvent)="leftInited($event)"></app-left4>
+
+          <div id="imgbox1" class="clear content" style="position: relative; width: 1000px; height: 1000px; background-color: #efefef">
+            <!-- <img src="./assets/images/editor/graphpaper1.png" alt="모눈종이이미지pc" /> -->
+          </div>
+          <div id="imgbox2" class="clear">
+            <img src="./assets/images/editor/graphpaper2.png" alt="모눈종이이미지t" />
+          </div>
+          <div id="imgbox4" class="clear">
+            <img src="./assets/images/editor/graphpaper4.png" alt="모눈종이이미지m_small" />
+          </div>
+
+          <app-right4 (initedEvent)="rightInited($event)"></app-right4>
+        </section>
+      </div>
+    </header>
+
+    <!--팝업-->
+
+    <!--팝업-->
+    <div class="pop_bg8">
+      <div class="popup8">
+        <div class="top_header_pop8">
+          <h2>prompt<button class="close">X</button></h2>
+        </div>
+        <div id="div_pop8">
+          <div class="main_dot_8">삭제 하시겠습니까?</div>
+          <div class="btn8">
+            <p><a href="editmain.html">삭제</a></p>
+            &nbsp;
+            <p><a href="editmain.html">취소</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/index2.js"></script>
+  </body>
+</html>

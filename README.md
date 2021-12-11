@@ -13,3 +13,18 @@
   -- 오른쪽에 화면생성 아이콘 표시
   -- 화면생성 아이콘 클릭시 팝업창으로 메뉴화면생성 실행
   -- 기준데이터는 선택된 메뉴명 들어가면 됨
+
+# 1211
+
+에디터
+
+- 체크박스 클릭시 체크 on/off되는 현상 해결해야 함
+- 프로젝트 생성 퍼블 없음
+
+콤포넌트 추가시 수정해야 할 곳
+
+- compns.json
+- ElService.createEl()
+- ElService.setDraggable();
+- ElService.setResizeable();
+- ElService.listen()

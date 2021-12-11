@@ -1,0 +1,151 @@
+<div class="top_menu">
+  <div class="top_pc" [ngStyle]="{ 'background-color': undefined === selectedScrin ? '' : 'orange' }">
+    <div class="left_top">
+      <ul>
+        <li><a href="javascript:;" (click)="onGotoIndexClick()">SC-ROBOT</a></li>
+        <li class="add_btn7" *ngIf="undefined === selectedScrin"><a href="javascript:;" title="프로젝트열기" (click)="onOpenPrjctClick()">열기</a></li>
+        <li><a href="javascript:alert('TODO')">다른이름 저장</a></li>
+        <li><a href="javascript:alert('TODO')">미리보기</a></li>
+        <li><a href="javascript:alert('TODO')">소스보기</a></li>
+        <li><a href="javascript:alert('TODO')">HTML 다운로드</a></li>
+        <li><a href="javascript:;" (click)="onDeployClick()">서비스 시작</a></li>
+        <li *ngIf="undefined !== selectedScrin">[{{ selectedScrin?.scrinNm }}화면 편집중...]</li>
+        <li *ngIf="undefined !== selectedScrin"><a href="javascript:;" (click)="onSaveScrinClick()">저장</a></li>
+        <li *ngIf="undefined !== selectedScrin"><a href="javascript:;" (click)="onCloseScrinClick()">닫기</a></li>
+      </ul>
+    </div>
+    <div class="right_top">
+      <ul>
+        <li>
+          <a href="javascript:alert('TODO')"><img src="./assets/images/editor/l_arrow_box.png" alt="이전으로가기" /></a>
+        </li>
+        <li>
+          <a href="javascript:alert('TODO')"><img src="./assets/images/editor/r_arrow_box.png" alt="다음으로가기" /></a>
+        </li>
+        <li><a href="javascript:alert('TODO')">모두제거</a></li>
+        <li><a href="../main_br.html">홈</a></li>
+        <li>
+          <a href="#" class="sch_button"><i class="fas fa-search"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="pop_bg2">
+  <div class="popup2">
+    <div class="top_header_pop">
+      <h2>프로젝트 열기<button class="close" (click)="onClosePrjctPopClick()">X</button></h2>
+    </div>
+    <div id="div_pop">
+      <!-- 타이틀 -->
+      <div class="main_dot_">
+        <h3>환영합니다 {{ getUserNm() }}님.</h3>
+        <span>프로젝트</span>
+      </div>
+      <div class="center">
+        <ul class="fir_ul">
+          <li class="leftz">
+            <a href="javascript:TODO('퍼블없음');">
+              <img src="./assets/images/editor/add_new_icon.png" alt="플러스" />
+              <div class="txt">
+                <h2>새 프로젝트 ({{ prjcts.length }})</h2>
+              </div>
+            </a>
+          </li>
+          <li *ngFor="let x of prjcts">
+            <a href="javascript:;">
+              <div class="txt">
+                <h3><input type="text" value="{{ x.prjctNm }}" readonly="readonly" /></h3>
+                <p class="cancel8" (click)="onDeletePrjctClick(x.prjctId)">삭제</p>
+                <p class="change" (click)="onUpdatePrjctClick(x.prjctId)">수정</p>
+              </div>
+              <div class="fir_div">화면 ㅣ {{ x.scrinCo }}개</div>
+              <div class="sec_div">{{ x.registDt | date: "yyyy-MM-dd" }}에 등록됨</div>
+              <div class="btnn"><a href="javascript:;" (click)="onEditClick(x.prjctId)">프로젝트 편집</a></div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--팝업-->
+<div class="pop_bg3">
+  <div class="popup3">
+    <div class="top_header_pop3">
+      <h2>프로젝트 수정<button class="close" (click)="onCloseUpdatePrjctPopupClick()">X</button></h2>
+    </div>
+    <div id="div_pop3">
+      <!-- 타이틀 -->
+
+      <div class="main_dot_3">
+        <h3><img src="./assets/images/editor/dot.png" alt="목록아이콘" />&nbsp;프로젝트 정보</h3>
+      </div>
+
+      <div class="table_content7">
+        <form method="post" [formGroup]="prjctForm">
+          <table>
+            <tr>
+              <th><img src="./assets/images/editor/dot.png" alt="목록아이콘" />&nbsp;프로젝트 명 *</th>
+              <td colspan="3">&nbsp;&nbsp;&nbsp;<input type="text" formControlName="prjctNm" /></td>
+            </tr>
+            <tr>
+              <th><img src="./assets/images/editor/dot.png" alt="목록아이콘" />&nbsp;프로젝트 설명</th>
+              <td colspan="3">&nbsp;&nbsp;&nbsp;<input type="text" class="w-100" formControlName="prjctCn" /></td>
+            </tr>
+            <tr>
+              <th><img src="./assets/images/editor/dot.png" alt="목록아이콘" />&nbsp;서비스 선택 *</th>
+              <td>
+                &nbsp;&nbsp;<input type="radio" name="check" checked="checked" /> 기본모드 &nbsp;<input type="radio" name="check" /> 고급모드1 &nbsp;<input type="radio" name="check" /> 고급모드2<br />
+                &nbsp;&nbsp;SC-ROBOT 기본 제공 DB, 어플리케이션 배포 옵션을 사용합니다.
+              </td>
+            </tr>
+          </table>
+        </form>
+
+        <div class="main_dot_3">
+          <h3><img src="./assets/images/editor/dot.png" alt="목록아이콘" />&nbsp;DB 설정</h3>
+        </div>
+
+        <form [formGroup]="trgetSysForm">
+          <table>
+            <tr>
+              <th><img src="./assets/images/editor/dot.png" alt="목록아이콘" />&nbsp;데이터베이스 종류 *</th>
+              <td>
+                &nbsp;&nbsp;&nbsp;<select formControlName="dbTyNm">
+                  <option [value]="x.cmmnCodeId" *ngFor="let x of dbTys">{{ x.cmmnCodeNm }}</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <th><img src="./assets/images/editor/dot.png" alt="목록아이콘" />&nbsp;호스트 *</th>
+              <td colspan="3">&nbsp;&nbsp;&nbsp;<input type="text" formControlName="dbHostNm" /></td>
+            </tr>
+            <tr>
+              <th><img src="./assets/images/editor/dot.png" alt="목록아이콘" />&nbsp;포트 *</th>
+              <td colspan="3">&nbsp;&nbsp;&nbsp;<input type="text" formControlName="dbPortValue" /></td>
+            </tr>
+            <tr>
+              <th><img src="./assets/images/editor/dot.png" alt="목록아이콘" />&nbsp;데이터베이스 *</th>
+              <td colspan="3">&nbsp;&nbsp;&nbsp;<input type="text" formControlName="dbNm" /></td>
+            </tr>
+            <tr>
+              <th><img src="./assets/images/editor/dot.png" alt="목록아이콘" />&nbsp;사용자 이름 *</th>
+              <td colspan="3">&nbsp;&nbsp;&nbsp;<input type="text" formControlName="dbUserNm" /></td>
+            </tr>
+            <tr>
+              <th><img src="./assets/images/editor/dot.png" alt="목록아이콘" />&nbsp;비밀번호 *</th>
+              <td colspan="3">&nbsp;&nbsp;&nbsp;<input type="password" formControlName="dbPasswordNm" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      <br />
+      <div class="btn3">
+        <a href="javascript:;" (click)="onSavePrjctClick()">저장</a>
+      </div>
+    </div>
+  </div>
+</div>

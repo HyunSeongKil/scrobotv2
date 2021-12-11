@@ -32,6 +32,7 @@ import { StplatRegistComponent } from './admin/stplat-regist/stplat-regist.compo
 import { CrudComponent } from './biz/crud/crud.component';
 import { EditorComponent } from './editor/editor.component';
 import { Edit2Component } from './editor2/edit2/edit2.component';
+import { Edit4Component } from './editor2/edit4/edit4.component';
 import { Editor2Module } from './editor2/editor2.module';
 import { IndexComponent } from './index/index.component';
 import { PrjctListComponent } from './prjct/prjct-list/prjct-list.component';
@@ -130,6 +131,7 @@ const routes: Routes = [
   { path: 'prjcts', component: PrjctListComponent },
 
   { path: 'edit2', component: Edit2Component },
+  { path: 'edit4', component: Edit4Component },
 
   { path: 'admin/bbs-list', component: BbsListComponent },
   { path: 'admin/bbs-regist', component: BbsRegistComponent },
