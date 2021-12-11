@@ -53,6 +53,7 @@ import { Business3Component } from './sub/business3/business3.component';
 import { BusinessComponent } from './sub/business/business.component';
 import { Business21Component } from './sub/business21/business21.component';
 import { Business22Component } from './sub/business22/business22.component';
+import { Editor2Module } from './editor2/editor2.module';
 
 const JWT_Module_Options: JwtModuleOptions = {
   config: { tokenGetter },
@@ -106,8 +107,8 @@ export function tokenGetter() {
     Business21Component,
     Business22Component,
   ],
-  exports: [HeaderComponent, FooterComponent],
-  imports: [CmmnModule, AdminModule, BrowserModule, AppRoutingModule, HttpClientModule, BizModule, ServiceModule, PrjctModule, FormsModule, NgbModule, ReactiveFormsModule, JwtModule.forRoot(JWT_Module_Options)],
+  exports: [HeaderComponent, FooterComponent, SourceEditDialogComponent],
+  imports: [CmmnModule, Editor2Module, AdminModule, BrowserModule, AppRoutingModule, HttpClientModule, BizModule, ServiceModule, PrjctModule, FormsModule, NgbModule, ReactiveFormsModule, JwtModule.forRoot(JWT_Module_Options)],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],
 })

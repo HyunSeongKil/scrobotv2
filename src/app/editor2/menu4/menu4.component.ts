@@ -3,9 +3,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Scrobot } from 'src/app/@types/scrobot';
+import { CmmnViewSourceDialogComponent } from 'src/app/cmmn/cmmn-view-source-dialog/cmmn-view-source-dialog.component';
 import { AuthService } from 'src/app/service/auth.service';
 import { CmmnCodeService } from 'src/app/service/cmmn-code.service';
 import { DeployService } from 'src/app/service/deploy.service';
+import { ElService } from 'src/app/service/el.service';
 import { PrjctTrgetSysMapngService } from 'src/app/service/prjct-trget-sys-mapng.service';
 import { PrjctService } from 'src/app/service/prjct.service';
 import { ScrinService } from 'src/app/service/scrin.service';
@@ -46,7 +48,7 @@ export class Menu4Component implements OnInit, AfterViewInit, OnDestroy {
    * @param left4Service
    * @param edit4Service
    */
-  constructor(@Host() private hostComponent: Edit4Component, private deployService: DeployService, private prjctTrgetSysMapngService: PrjctTrgetSysMapngService, private cmmnCodeService: CmmnCodeService, private trgetSysService: TrgetSysService, private scrinService: ScrinService, private router: Router, private authService: AuthService, private prjctService: PrjctService, private left4Service: Left4Service, private edit4Service: Edit4Service) {
+  constructor(@Host() private hostComponent: Edit4Component, private elService: ElService, private deployService: DeployService, private prjctTrgetSysMapngService: PrjctTrgetSysMapngService, private cmmnCodeService: CmmnCodeService, private trgetSysService: TrgetSysService, private scrinService: ScrinService, private router: Router, private authService: AuthService, private prjctService: PrjctService, private left4Service: Left4Service, private edit4Service: Edit4Service) {
     this.prjctForm = new FormGroup({
       prjctId: new FormControl('', [Validators.required]),
       prjctNm: new FormControl('', [Validators.required]),
@@ -295,5 +297,26 @@ export class Menu4Component implements OnInit, AfterViewInit, OnDestroy {
       .catch(() => {
         alert('배포중 오류가 발생했습니다.');
       });
+  }
+
+  /**
+   * 소스 편집 창 열기
+   */
+  openSourceEditDialog(a: CmmnViewSourceDialogComponent): void {
+    this.elService.clearAllBorder();
+    this.elService.clearAllDraggable();
+    this.elService.clearAllResizable();
+
+    const $cloneEls: JQuery<HTMLElement>[] = [];
+    this.elService.getAll().forEach(($el) => {
+      const $cloneEl = $el.clone();
+
+      // draggle, resizable 클래스 제거
+      $cloneEl.draggable({}).draggable('destroy');
+      $cloneEl.resizable({}).resizable('destroy');
+      $cloneEls.push($cloneEl);
+    });
+
+    a.open($cloneEls);
   }
 }
