@@ -146,7 +146,7 @@ export class Right4Component implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    $('table.table.property > tbody > tr').remove();
+    $('table.property > tbody > tr').remove();
 
     this.showAttrProperty(this.$selectedEl);
     this.showCssProperty(this.$selectedEl);
@@ -691,7 +691,7 @@ export class Right4Component implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   *
+   * 변경된 속성 적용
    */
   applyProperty(): void {
     if (undefined === this.$selectedEl) {
@@ -798,7 +798,7 @@ export class Right4Component implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   *
+   * 단어사전 속성 적용
    * @param $el
    * @returns
    */
@@ -827,7 +827,7 @@ export class Right4Component implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   *
+   * 엘리먼트 속성 적용
    * @param $el
    * @returns
    */
@@ -872,7 +872,7 @@ export class Right4Component implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   *
+   * 어트리뷰트 속성 적용
    * @param $el
    * @returns
    */
@@ -903,7 +903,7 @@ export class Right4Component implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   *
+   * css 속성 적용
    * @param $el
    * @returns
    */
@@ -935,5 +935,124 @@ export class Right4Component implements OnInit, AfterViewInit, OnDestroy {
           .css(selector, v + (undefined !== cssRule.unit ? cssRule.unit : ''));
       }
     });
+  }
+
+  /**
+   * 테이블 행 추가
+   * TODO 행이 1도 없을때 추가 처리 필요
+   */
+  addTableRow(): void {
+    const $el: JQuery<HTMLElement> | undefined = this.selectedElService.getOne();
+    if (undefined === $el) {
+      return;
+    }
+
+    if (ElService.TAG_NAME_TABLE !== $el.attr('data-tag-name')) {
+      return;
+    }
+
+    const $table = $el.children().first();
+    const $tr = $table.find('tbody > tr:last');
+    $table.find('tbody').append($tr.clone());
+
+    const h = $table.css('height');
+    $el.css('height', h);
+  }
+
+  /**
+   * 테이블 행 삭제
+   */
+  deleteTableRow(): void {
+    const $el: JQuery<HTMLElement> | undefined = this.selectedElService.getOne();
+    if (undefined === $el) {
+      return;
+    }
+
+    if (ElService.TAG_NAME_TABLE !== $el.attr('data-tag-name')) {
+      return;
+    }
+
+    const $table = $el.children().first();
+    // 삭제 전 행 갯수
+    const trCo = $table.find('tbody > tr').length;
+
+    if (1 === trCo) {
+      alert('행을 삭제할 수 없습니다.\n남은 행이 1개 일때는 삭제할 수 없습니다.');
+      return;
+    }
+
+    $table.find('tbody > tr:last').remove();
+
+    const h = $table.css('height');
+    $el.css('height', h);
+  }
+
+  /**
+   * 테이블 열 추가
+   */
+  addTableCol(): void {
+    const $el: JQuery<HTMLElement> | undefined = this.selectedElService.getOne();
+    if (undefined === $el) {
+      return;
+    }
+
+    if (ElService.TAG_NAME_TABLE !== $el.attr('data-tag-name')) {
+      return;
+    }
+
+    const $table = $el.children().first();
+    // 추가 전 th 1개의 넓이
+    const thWidth: number = Number($table.find('thead > tr:last > th:last').css('width').replace(/px/gi, ''));
+
+    const $th = $table.find('thead > tr:last > th:last');
+    $table.find('thead > tr:last').append($th.clone());
+
+    // 추가 후 전체 th 갯수
+    const thCo = $table.find('thead > tr:last > th').length;
+
+    // tr 갯수만큼 td 추가
+    $table.find('tbody > tr').each((i, item) => {
+      const $tr = $(item);
+      const $td = $tr.find('td:last');
+      $tr.append($td.clone());
+    });
+
+    $el.css('width', thWidth * thCo);
+  }
+
+  /**
+   * 테이블 열 삭제
+   */
+  deleteTableCol(): void {
+    const $el: JQuery<HTMLElement> | undefined = this.selectedElService.getOne();
+    if (undefined === $el) {
+      return;
+    }
+
+    if (ElService.TAG_NAME_TABLE !== $el.attr('data-tag-name')) {
+      return;
+    }
+
+    //
+    const $table = $el.children().first();
+    // 삭제 전 th 1개의 넓이
+    const thWidth: number = Number($table.find('thead > tr:last > th:last').css('width').replace(/px/gi, ''));
+    // 삭제 전 전체 th 갯수
+    let thCo: number = $table.find('thead > tr:last > th').length;
+
+    if (1 === thCo) {
+      alert('열을 삭제할 수 없습니다.\n남은 열이 1개일 때는 삭제할 수 없습니다.');
+      return;
+    }
+
+    $table.find('thead > tr:last > th:last').remove();
+
+    // tr 갯수만큼 td 삭제
+    $table.find('tbody > tr').each((i, item) => {
+      const $tr = $(item);
+      $tr.find('td:last').remove();
+    });
+
+    $el.css('width', (thCo - 1) * thWidth);
   }
 }

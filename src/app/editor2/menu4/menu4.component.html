@@ -58,7 +58,7 @@
               <div class="txt">
                 <h3><input type="text" value="{{ x.prjctNm }}" readonly="readonly" /></h3>
                 <p class="cancel8" (click)="onDeletePrjctClick(x.prjctId)">삭제</p>
-                <p class="change" (click)="onUpdatePrjctClick(x.prjctId)">수정</p>
+                <p class="change" (click)="onShowUpdatePrjctPopupClick(x.prjctId)">수정</p>
               </div>
               <div class="fir_div">화면 ㅣ {{ x.scrinCo }}개</div>
               <div class="sec_div">{{ x.registDt | date: "yyyy-MM-dd" }}에 등록됨</div>
@@ -75,7 +75,7 @@
 <div class="pop_bg3">
   <div class="popup3">
     <div class="top_header_pop3">
-      <h2>프로젝트 수정<button class="close" (click)="onCloseUpdatePrjctPopupClick()">X</button></h2>
+      <h2>프로젝트 수정<button class="close" (click)="onHideUpdatePrjctPopupClick()">X</button></h2>
     </div>
     <div id="div_pop3">
       <!-- 타이틀 -->
@@ -115,7 +115,7 @@
               <th><img src="./assets/images/editor/dot.png" alt="목록아이콘" />&nbsp;데이터베이스 종류 *</th>
               <td>
                 &nbsp;&nbsp;&nbsp;<select formControlName="dbTyNm">
-                  <option [value]="x.cmmnCodeId" *ngFor="let x of dbTys">{{ x.cmmnCodeNm }}</option>
+                  <option [value]="x.cmmnCode" *ngFor="let x of dbTys">{{ x.cmmnCodeNm }}</option>
                 </select>
               </td>
             </tr>

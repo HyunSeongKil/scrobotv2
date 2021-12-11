@@ -9,6 +9,7 @@
     { "name": "체크박스", "tagName": "checkbox", "imgFileNm": "chk_icon.png", "html": "TODO", "useAt": "Y" },
     { "name": "파일", "tagName": "file", "imgFileNm": "file_icon.png", "html": "TODO", "useAt": "Y" },
     { "name": "달력", "tagName": "calendar", "imgFileNm": "calendar_icon.png", "html": "TODO", "useAt": "Y" },
+    { "name": "셀렉트박스", "tagName": "select", "imgFileNm": "sel_icon.png", "html": "TODO", "useAt": "Y" },
 
     { "name": "제목1", "tagName": "h1", "imgFileNm": "", "html": "TODO", "useAt": "N" },
     { "name": "제목2", "tagName": "h2", "imgFileNm": "", "html": "TODO", "useAt": "N" },

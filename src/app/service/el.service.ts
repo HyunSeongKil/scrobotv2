@@ -25,8 +25,14 @@ export class ElService {
   static TAG_NAME_FILE = 'file';
   static TAG_NAME_CALENDAR = 'calendar';
 
+  /**
+   * 엘리먼트 선택됨 이벤트
+   */
   @Output() elSelectedEvent = new EventEmitter<ElEventMessage>();
   @Output() endedEvent = new EventEmitter<ElEventMessage>();
+  /**
+   * 엘리먼트 삭제됨 이벤트
+   */
   @Output() elDeletedEvent = new EventEmitter<string>();
 
   /**
@@ -170,6 +176,11 @@ export class ElService {
     return this.els;
   }
 
+  /**
+   * html 문자열 생성
+   * @param $el 엘리먼트
+   * @returns html 문자열
+   */
   getHtmlString($el: JQuery<HTMLElement> | undefined): string {
     if (undefined === $el) {
       return '';
@@ -239,6 +250,7 @@ export class ElService {
       case ElService.TAG_NAME_TEXTAREA:
       case ElService.TAG_NAME_CHECKBOX:
       case ElService.TAG_NAME_CALENDAR:
+      case ElService.TAG_NAME_SELECT:
         $el.draggable({
           containment: 'div.content',
           start: function (event, ui) {
@@ -283,6 +295,7 @@ export class ElService {
       case ElService.TAG_NAME_CHECKBOX:
       case ElService.TAG_NAME_CALENDAR:
       case ElService.TAG_NAME_TEXTAREA:
+      case ElService.TAG_NAME_SELECT:
       case ElService.TAG_NAME_BUTTON:
       case ElService.TAG_NAME_H1:
       case ElService.TAG_NAME_H2:
@@ -317,6 +330,7 @@ export class ElService {
       case ElService.TAG_NAME_CHECKBOX:
       case ElService.TAG_NAME_TEXTAREA:
       case ElService.TAG_NAME_CALENDAR:
+      case ElService.TAG_NAME_SELECT:
       case ElService.TAG_NAME_IMG:
       case ElService.TAG_NAME_BUTTON:
         $el.on('click', (event, ui) => {
@@ -340,7 +354,7 @@ export class ElService {
         });
 
         //
-        const selector: string = `${ElService.TAG_NAME_BUTTON},${ElService.TAG_NAME_CALENDAR},${ElService.TAG_NAME_FILE},${ElService.TAG_NAME_INPUT_TEXT},${ElService.TAG_NAME_CHECKBOX},${ElService.TAG_NAME_TEXTAREA},${ElService.TAG_NAME_IMG}`;
+        const selector: string = `${ElService.TAG_NAME_BUTTON},${ElService.TAG_NAME_SELECT},${ElService.TAG_NAME_CALENDAR},${ElService.TAG_NAME_FILE},${ElService.TAG_NAME_INPUT_TEXT},${ElService.TAG_NAME_CHECKBOX},${ElService.TAG_NAME_TEXTAREA},${ElService.TAG_NAME_IMG}`;
 
         // 마우스 업이면 자식의 사이즈 변경
         $el.on('mouseup', (event) => {
@@ -362,12 +376,29 @@ export class ElService {
           $(this).closest('.wrapper')[0].dispatchEvent(mdown);
         });
 
+        //
         $el.find(selector).on('click', function (e) {
-          // console.log($(this));
+          // console.log(e);
+
           var $draggable = $(this).closest('.wrapper');
           if ($draggable.data('preventBehaviour')) {
             e.preventDefault();
             $draggable.data('preventBehaviour', false);
+          }
+
+          // 파일의 클릭 이벤트 무력화
+          if (ElService.TAG_NAME_FILE === tagName) {
+            e.preventDefault();
+          }
+
+          // 셀렉트박스 클릭 이벤트 무력화
+          if (ElService.TAG_NAME_SELECT === tagName) {
+            e.preventDefault();
+          }
+
+          // 체크박스의 경우 항상 unchecked상태로 유지
+          if (ElService.TAG_NAME_CHECKBOX === tagName) {
+            (e.currentTarget as HTMLInputElement).checked = false;
           }
         });
         break;
@@ -478,6 +509,9 @@ export class ElService {
 
       case ElService.TAG_NAME_CALENDAR:
         return this.createCalendarEl(cn);
+
+      case ElService.TAG_NAME_SELECT:
+        return this.createSelectEl(cn);
 
       default:
         throw new Error('not impl ' + tagName);
@@ -620,6 +654,11 @@ export class ElService {
     return $wrapper;
   }
 
+  /**
+   * 이미지 엘리먼트 생성
+   * @param cn 내용
+   * @returns 이미지 엘리먼트
+   */
   private createImgEl(cn: string = ''): JQuery<HTMLElement> {
     if (0 < cn.length) {
       return $(cn);
@@ -723,6 +762,26 @@ export class ElService {
   }
 
   /**
+   * 셀렉트박스 엘리먼트 생성
+   * @param cn 내용
+   */
+  private createSelectEl(cn: string = ''): JQuery<HTMLElement> {
+    if (0 < cn.length) {
+      return $(cn);
+    }
+
+    const id = ScUtil.createId();
+    const $wrapper = $(`<div id="${id}_wrapper" class="wrapper" style="position:absolute; width:150px; height:30px;"></div>`);
+    $wrapper.attr('data-tag-name', ElService.TAG_NAME_SELECT);
+
+    const $el = $(`<select id="${id}" value="" style="width:140px; height:20px; padding:0.5em; background-color:#ffffff;" readonly focus   ></select>`);
+    $el.attr('data-eng-abrv-nm', '').attr('data-hngl-abrv-nm', '');
+
+    $wrapper.append($el);
+    return $wrapper;
+  }
+
+  /**
    * 드래그기능 파괴
    */
   destroyAllDraggable(): void {
@@ -742,6 +801,11 @@ export class ElService {
     });
   }
 
+  /**
+   * 드래그 비활성화
+   * @param $el 엘리먼트
+   * @returns void
+   */
   disabledDraggable($el: JQuery<HTMLElement> | undefined): void {
     if (undefined === $el) {
       return;
@@ -768,6 +832,11 @@ export class ElService {
     });
   }
 
+  /**
+   * 크기변경 비활성화
+   * @param $el 엘리먼트
+   * @returns void
+   */
   disabledResizable($el: JQuery<HTMLElement> | undefined): void {
     if (undefined === $el) {
       return;

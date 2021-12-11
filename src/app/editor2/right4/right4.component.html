@@ -16,12 +16,6 @@
               <a href="javascript:alert('TODO')"><img src="./assets/images/editor/radio_icon.png" alt="radiobox아이콘" /> 라디오박스</a>
             </li>
             <li>
-              <a href="javascript:alert('TODO')"><img src="./assets/images/editor/input_icon.png" alt="input아이콘" /> 인풋박스</a>
-            </li>
-            <li>
-              <a href="javascript:alert('TODO')"><img src="./assets/images/editor/sel_icon.png" alt="select아이콘" /> 셀렉트박스</a>
-            </li>
-            <li>
               <a href="javascript:alert('TODO')"><img src="./assets/images/editor/menu_grid_icon.png" alt="grid아이콘" /> 그리드</a>
             </li>
           </ul>
@@ -49,8 +43,23 @@
               <a href="javascript:;" (click)="onBackwardClick()"><img src="./assets/images/editor/bk.png" alt="뒤로이미지" /> 뒤로</a>
             </div>
           </div>
+          <!--테이블일때만 표시-->
+          <div class="add_btn_box_" *ngIf="'table' === $selectedEl?.attr('data-tag-name')">
+            <div class="add_btn3"><a href="javascript:;" (click)="addTableRow()">행추가</a></div>
+            <div class="add_btn4"><a href="javascript:;" (click)="deleteTableRow()">행삭제</a></div>
+            <div class="add_btn5">
+              <a href="javascript:;" (click)="addTableCol()">열추가</a>
+            </div>
+            <div class="add_btn6">
+              <a href="javascript:;" (click)="deleteTableCol()">열삭제</a>
+            </div>
+          </div>
           <li class="main_list">
             <table class="table property">
+              <colgroup>
+                <col width="40%" />
+                <col width="*" />
+              </colgroup>
               <thead>
                 <tr>
                   <th>항목</th>

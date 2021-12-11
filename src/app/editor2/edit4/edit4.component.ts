@@ -22,23 +22,55 @@ import { Edit4Service } from './edit4.service';
   styleUrls: ['./edit4.component.css'],
 })
 export class Edit4Component implements OnInit, AfterViewInit, OnDestroy {
+  /**
+   * 초기화 완료됨 이벤트
+   */
   @Output() initedEvent = new EventEmitter<any>();
 
+  /**
+   * 프로젝트아이디 변경됨 이벤트 구독
+   */
   prjctIdChangedEventSub: Subscription = new Subscription();
+  /**
+   * 화면 선택됨 이벤트 구독
+   */
   scrinSelectedEventSub: Subscription = new Subscription();
+  /**
+   * 화면 닫힘 이벤트 구독
+   */
   scrinClosedEventSub: Subscription = new Subscription();
+  /**
+   * 콤포넌트 선택됨 이벤트 구독
+   */
   compnSelectedEventSub: Subscription = new Subscription();
+  /**
+   * 엘리먼트 선택됨 이벤트 구독
+   */
   elSelectedEventSub: Subscription = new Subscription();
+  /**
+   * 엘리먼트 선택해제됨 이벤트 구독
+   */
   unselectedEventSub: Subscription = new Subscription();
 
   menuRef?: Menu4Component;
   leftRef?: Left4Component;
   rightRef?: Right4Component;
 
+  /**
+   * 프로젝트아이디
+   */
   prjctId: string = '';
+  /**
+   * 선택된 화면
+   */
   selectedScrin: Scrobot.Scrin | undefined = undefined;
+  /**
+   * 콤포넌트 목록
+   */
   compns: Scrobot.Compn[] = [];
-
+  /**
+   * 선택된 엘리먼트
+   */
   $selectedEl: JQuery<HTMLElement> | undefined;
 
   constructor(route: ActivatedRoute, private authService: AuthService, private elService: ElService, private right4Service: Right4Service, private atchmnflService: AtchmnflService, private selectedElService: SelectedElService, private service: Edit4Service, private left4Service: Left4Service, private compnService: CompnService) {
@@ -121,6 +153,10 @@ export class Edit4Component implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  /**
+   * 콤포넌트 목록 조회
+   * @param scrinId 화면아이디
+   */
   loadCompn(scrinId: string): void {
     this.compnService.listByScrinId(scrinId).then((res: any) => {
       this.compns = res.data;
@@ -180,17 +216,31 @@ export class Edit4Component implements OnInit, AfterViewInit, OnDestroy {
       $img.attr('src', this.atchmnflService.getUrl($img.attr('data-atchmnfl-id')));
     }
 
+    this.elService.elSelectedEvent.emit({ e: '', tagName, $el });
+
     $('div.content').append($el);
   }
 
+  /**
+   * 메뉴 인스턴스 완료됨
+   * @param c 메뉴 인스턴스
+   */
   menuInited(c: Menu4Component): void {
     this.menuRef = c;
   }
 
+  /**
+   * 왼쪽 인스턴스 완료됨
+   * @param c 왼쪽 인스턴스
+   */
   leftInited(c: Left4Component): void {
     this.leftRef = c;
   }
 
+  /**
+   * 오른쪽 인스턴스 완료됨
+   * @param c 오른쪽 인스턴스
+   */
   rightInited(c: Right4Component): void {
     this.rightRef = c;
   }
@@ -206,18 +256,31 @@ export class Edit4Component implements OnInit, AfterViewInit, OnDestroy {
     this.elService.regist(this.selectedScrin?.scrinId);
   }
 
+  /**
+   * 메뉴 변경됨 이벤트 유발자
+   */
   triggerMenuChangedEvent(): void {
     this.service.menuChangedEvent.emit('');
   }
 
+  /**
+   * 화면 변경됨 이벤트 유발자
+   */
   triggerScrinChangedEvent(): void {
     this.service.scrinChangedEvent.emit('');
   }
 
+  /**
+   * 화면 선택됨 이벤트 유발자
+   * @param scrin 화면
+   */
   triggerScrinSelectedEvent(scrin: Scrobot.Scrin): void {
     this.service.scrinSelectedEvent.emit(scrin);
   }
 
+  /**
+   * 화면 닫힘 이벤트 유발자
+   */
   triggerScrinClosedEvent(): void {
     this.service.scrinClosedEvent.emit('');
   }

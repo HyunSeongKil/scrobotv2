@@ -22,13 +22,34 @@ import { Left4Service } from '../left4/left4.service';
   styleUrls: ['./menu4.component.css'],
 })
 export class Menu4Component implements OnInit, AfterViewInit, OnDestroy {
+  /**
+   * 초기화 완료됨 이벤트
+   */
   @Output() initedEvent = new EventEmitter<Menu4Component>();
+  /**
+   * 프로젝트아이디 변경됨 이벤트
+   */
   @Output() prjctIdChangedEvent = new EventEmitter<string>();
 
+  /**
+   * 프로젝트아이디 변경됨 이벤트 구독
+   */
   prjctIdChangedEventSub: Subscription = new Subscription();
+  /**
+   * 화면 선택됨 이벤트 구독
+   */
   scrinSelectedEventSub: Subscription = new Subscription();
+  /**
+   * 화면 변경됨 이벤트 구독
+   */
   scrinChangedEventSub: Subscription = new Subscription();
-  menuChangedEventSubSub: Subscription = new Subscription();
+  /**
+   * 메뉴 변경됨 이벤트 구독
+   */
+  menuChangedEventSub: Subscription = new Subscription();
+  /**
+   * 화면 닫힘 이벤트 두독
+   */
   scrinClosedEventSub: Subscription = new Subscription();
 
   prjctForm: FormGroup;
@@ -81,8 +102,8 @@ export class Menu4Component implements OnInit, AfterViewInit, OnDestroy {
     if (!this.scrinChangedEventSub.closed) {
       this.scrinChangedEventSub.unsubscribe();
     }
-    if (!this.menuChangedEventSubSub.closed) {
-      this.menuChangedEventSubSub.unsubscribe();
+    if (!this.menuChangedEventSub.closed) {
+      this.menuChangedEventSub.unsubscribe();
     }
     if (!this.scrinClosedEventSub.closed) {
       this.scrinClosedEventSub.unsubscribe();
@@ -126,6 +147,9 @@ export class Menu4Component implements OnInit, AfterViewInit, OnDestroy {
     this.loadPrjcts();
   }
 
+  /**
+   * 프로젝트 목록 조회
+   */
   loadPrjcts(): void {
     this.prjctService.findAllByUserId(this.authService.getUserId()).then((res: any) => {
       (res.data as Scrobot.Prjct[]).forEach(async (x) => {
@@ -180,6 +204,10 @@ export class Menu4Component implements OnInit, AfterViewInit, OnDestroy {
     this.hostComponent.saveScrin();
   }
 
+  /**
+   * 사용자 명 조회
+   * @returns 사용자 명
+   */
   getUserNm(): string {
     return this.authService.getUserNm();
   }
@@ -204,6 +232,10 @@ export class Menu4Component implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  /**
+   * 인덱스 페이지로 이동
+   * @returns void
+   */
   onGotoIndexClick(): void {
     if (undefined !== this.selectedScrin) {
       alert('편집상태에서는 이동할 수 없습니다.');
@@ -213,7 +245,11 @@ export class Menu4Component implements OnInit, AfterViewInit, OnDestroy {
     location.href = 'index';
   }
 
-  onUpdatePrjctClick(prjctId: string): void {
+  /**
+   * 프로젝트 수정 팝업창 실행
+   * @param prjctId 프로젝트아이디
+   */
+  onShowUpdatePrjctPopupClick(prjctId: string): void {
     $('.pop_bg3').show();
 
     //
@@ -237,7 +273,7 @@ export class Menu4Component implements OnInit, AfterViewInit, OnDestroy {
   /**
    * 프로젝트 수정 팝업 닫기
    */
-  onCloseUpdatePrjctPopupClick(): void {
+  onHideUpdatePrjctPopupClick(): void {
     this.prjctForm.reset();
     this.trgetSysForm.reset();
 
@@ -246,6 +282,7 @@ export class Menu4Component implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * 편집중인 프로젝트 정보 저장
+   * TODO 한 tx로 처리해야 함
    * @returns void
    */
   async onSavePrjctClick(): Promise<void> {
@@ -280,12 +317,23 @@ export class Menu4Component implements OnInit, AfterViewInit, OnDestroy {
       await this.trgetSysService.update(this.trgetSysForm.value);
     }
 
-    this.onCloseUpdatePrjctPopupClick();
+    this.onHideUpdatePrjctPopupClick();
     this.loadPrjcts();
   }
 
-  onDeployClick(): void {
+  /**
+   * 배포
+   * @returns void
+   */
+  async onDeployClick(): Promise<void> {
     if (!confirm('서비스를 배포하시겠습니까?')) {
+      return;
+    }
+
+    //
+    const p: any = await this.trgetSysService.existsByPrjctId(this.prjctId);
+    if ('Y' !== p.data) {
+      alert('배포를 취소합니다.\n대상 시스템 정보가 존재하지 않습니다.');
       return;
     }
 
