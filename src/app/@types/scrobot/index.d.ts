@@ -1,5 +1,21 @@
 export namespace Scrobot {
   /**
+   * 프로젝트 공통 코드
+   */
+  export interface PrjctCmmnCode {
+    prjctCmmnCodeId: number;
+    prjctId: string;
+    cmmnCode: string;
+    cmmnCodeNm: string;
+    cmmnCodeCn: string;
+    prntsCmmnCode: string;
+    useAt: string;
+    registerId: string;
+    registerNm: string;
+    registDt: string;
+  }
+
+  /**
    * 프로젝트-사용자 매핑
    */
   export interface PrjctUserMapng {

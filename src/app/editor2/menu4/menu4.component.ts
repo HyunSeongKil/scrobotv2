@@ -16,6 +16,7 @@ import { TrgetSysService } from 'src/app/service/trget-sys.service';
 import { Edit4Component } from '../edit4/edit4.component';
 import { Edit4Service } from '../edit4/edit4.service';
 import { Left4Service } from '../left4/left4.service';
+import { PrjctCmmnCodeListDialogComponent } from './prjct-cmmn-code-list-dialog/prjct-cmmn-code-list-dialog.component';
 
 @Component({
   selector: 'app-menu4',
@@ -388,5 +389,13 @@ export class Menu4Component implements OnInit, AfterViewInit, OnDestroy {
    */
   onOpenSharePrjctPopupClick(cmmnSharePrjctDialogRef: CmmnSharePrjctDialogComponent): void {
     cmmnSharePrjctDialogRef.open(this.prjctId);
+  }
+
+  /**
+   * 프로젝트-공통코드 목록 팝업 실행
+   * @param prjctCmmnCodeListDialog 인스턴스
+   */
+  onOpenPrjctCmmnCodeListPopupClick(prjctCmmnCodeListDialog: PrjctCmmnCodeListDialogComponent): void {
+    prjctCmmnCodeListDialog.open(this.prjctId);
   }
 }

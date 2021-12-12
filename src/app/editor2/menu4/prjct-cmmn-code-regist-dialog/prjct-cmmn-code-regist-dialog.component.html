@@ -1,0 +1,38 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">(프로젝트)공통코드 등록</h4>
+    <button type="button" class="btn btn-sm close d-none" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <form [formGroup]="form">
+        <div class="row">
+          <div class="col-6">
+            <label>코드</label>
+            <input type="text" class="form-control" formControlName="cmmnCode" />
+          </div>
+          <div class="col-6">
+            <label>코드 명</label>
+            <input type="text" class="form-control" formControlName="cmmnCodeNm" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <label>설명</label>
+            <input type="text" class="form-control" formControlName="cmmnCodeCn" />
+          </div>
+          <div class="col-6">
+            <label>부모 코드</label>
+            <input type="text" class="form-control" formControlName="prntsCmmnCode" />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.close('SAVE')">등록</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.close('CLOSE')">닫기</button>
+  </div>
+</ng-template>

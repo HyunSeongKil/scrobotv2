@@ -1,0 +1,46 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">엑셀업로드</h4>
+    <button type="button" class="btn btn-sm close d-none" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <input type="file" #fileEl />
+      <button type="button" class="btn btn-outline-secondary" (click)="onUploadClick(fileEl)">업로드</button>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>부모코드</th>
+          <th>코드</th>
+          <th>코드명</th>
+          <th>등록자</th>
+          <th>등록일</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of prjctCmmnCodes; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ x.prntsCmmnCode }}</td>
+          <td>{{ x.cmmnCode }}</td>
+          <td>{{ x.cmmnCodeNm }}</td>
+          <td>{{ x.registerNm }}</td>
+          <td>
+            {{ x.registDt | date: "yyyy-MM-dd" }}
+          </td>
+        </tr>
+
+        <tr *ngIf="0 === prjctCmmnCodes.length">
+          <td colspan="6" class="text-center">데이터가 없습니다.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.close('SAVE')">등록</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.close('CLOSE')">닫기</button>
+  </div>
+</ng-template>

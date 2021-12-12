@@ -1,0 +1,61 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">(프로젝트)공통코드 목록</h4>
+    <button type="button" class="btn btn-sm close d-none" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <form [formGroup]="searchForm">
+        <select formControlName="searchCondition">
+          <option value="ID">코드</option>
+          <option value="NM">명</option>
+        </select>
+        <input type="text" formControlName="searchValue" />
+        <button type="button" class="btn btn-outline-secondary" (click)="onSearchClick()">조회</button>
+      </form>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>부모코드</th>
+          <th>코드</th>
+          <th>코드명</th>
+          <th>등록자</th>
+          <th>등록일</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of prjctCmmnCodes; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ x.prntsCmmnCode }}</td>
+          <td>
+            <a href="javascript:;" (click)="onDetailClick(prjctCmmnCodeDetailDialog, x)">{{ x.cmmnCode }}</a>
+          </td>
+          <td>{{ x.cmmnCodeNm }}</td>
+          <td>{{ x.registerNm }}</td>
+          <td>
+            {{ x.registDt | date: "yyyy-MM-dd" }}
+          </td>
+        </tr>
+
+        <tr *ngIf="0 === prjctCmmnCodes.length">
+          <td colspan="6" class="text-center">데이터가 없습니다.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-cmmn-pager (initedEvent)="cmmnPagerInited($event)"></app-cmmn-pager>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="onOpenRegistPopupClick(prjctCmmnCodeRegistDialog)">등록</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="onOpenRegistExcelPopupClick(prjctCmmnCodeRegistExcelDialog)">엑셀업로드</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.close('CLOSE')">닫기</button>
+  </div>
+</ng-template>
+
+<app-prjct-cmmn-code-regist-dialog #prjctCmmnCodeRegistDialog (initedEvent)="prjctCmmnCodeRegistDialogInited($event)"></app-prjct-cmmn-code-regist-dialog>
+<app-prjct-cmmn-code-detail-dialog #prjctCmmnCodeDetailDialog (initedEvent)="prjctCmmnCodeDetailDialogInited($event)"></app-prjct-cmmn-code-detail-dialog>
+<app-prjct-cmmn-code-regist-excel-dialog #prjctCmmnCodeRegistExcelDialog (initedEvent)="prjctCmmnCodeRegistExcelDialogInited($event)"></app-prjct-cmmn-code-regist-excel-dialog>
