@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Scrobot } from 'src/app/@types/scrobot';
+import { CmmnSharePrjctDialogComponent } from 'src/app/cmmn/cmmn-share-prjct-dialog/cmmn-share-prjct-dialog.component';
 import { CmmnViewSourceDialogComponent } from 'src/app/cmmn/cmmn-view-source-dialog/cmmn-view-source-dialog.component';
 import { AuthService } from 'src/app/service/auth.service';
 import { CmmnCodeService } from 'src/app/service/cmmn-code.service';
@@ -366,5 +367,26 @@ export class Menu4Component implements OnInit, AfterViewInit, OnDestroy {
     });
 
     a.open($cloneEls);
+  }
+
+  /**
+   * 프로젝트 복사
+   * @returns void
+   */
+  onCopyPrjctClick(): void {
+    if (!confirm('현재 프로젝트를 복사하시겠습니까?')) {
+      return;
+    }
+
+    this.prjctService.copy(this.prjctId).then(() => {
+      alert('복사되었습니다.');
+    });
+  }
+
+  /**
+   * 프로젝트 공유 팝업 실행
+   */
+  onOpenSharePrjctPopupClick(cmmnSharePrjctDialogRef: CmmnSharePrjctDialogComponent): void {
+    cmmnSharePrjctDialogRef.open(this.prjctId);
   }
 }

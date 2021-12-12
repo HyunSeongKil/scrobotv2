@@ -14,10 +14,11 @@ import { CmmnPagerComponent } from './cmmn-pager/cmmn-pager.component';
 import { MenuScrinMapngDialogComponent } from './menu-scrin-mapng-dialog/menu-scrin-mapng-dialog.component';
 import { CmmnAtchmnflListComponent } from './cmmn-atchmnfl-list/cmmn-atchmnfl-list.component';
 import { CmmnViewSourceDialogComponent } from './cmmn-view-source-dialog/cmmn-view-source-dialog.component';
+import { CmmnSharePrjctDialogComponent } from './cmmn-share-prjct-dialog/cmmn-share-prjct-dialog.component';
 
 @NgModule({
-  declarations: [ScrinGroupRegistDialogComponent, WordDicarySelectDialogComponent, ScrinRegistDialogComponent, ScrinGroupUpdtDialogComponent, ScrinUpdtDialogComponent, ScrinCopyDialogComponent, MenuRegistDialogComponent, MenuUpdtDialogComponent, TableItemEditDialogComponent, CmmnPagerComponent, MenuScrinMapngDialogComponent, CmmnAtchmnflListComponent, CmmnViewSourceDialogComponent],
+  declarations: [ScrinGroupRegistDialogComponent, WordDicarySelectDialogComponent, ScrinRegistDialogComponent, ScrinGroupUpdtDialogComponent, ScrinUpdtDialogComponent, ScrinCopyDialogComponent, MenuRegistDialogComponent, MenuUpdtDialogComponent, TableItemEditDialogComponent, CmmnPagerComponent, MenuScrinMapngDialogComponent, CmmnAtchmnflListComponent, CmmnViewSourceDialogComponent, CmmnSharePrjctDialogComponent],
   imports: [CommonModule, ReactiveFormsModule, FormsModule],
-  exports: [CmmnViewSourceDialogComponent, CmmnAtchmnflListComponent, CmmnPagerComponent, TableItemEditDialogComponent, ScrinGroupRegistDialogComponent, ScrinGroupUpdtDialogComponent, ScrinRegistDialogComponent, ScrinUpdtDialogComponent, ScrinCopyDialogComponent, MenuRegistDialogComponent, MenuUpdtDialogComponent, WordDicarySelectDialogComponent, MenuScrinMapngDialogComponent],
+  exports: [CmmnViewSourceDialogComponent, CmmnSharePrjctDialogComponent, CmmnAtchmnflListComponent, CmmnPagerComponent, TableItemEditDialogComponent, ScrinGroupRegistDialogComponent, ScrinGroupUpdtDialogComponent, ScrinRegistDialogComponent, ScrinUpdtDialogComponent, ScrinCopyDialogComponent, MenuRegistDialogComponent, MenuUpdtDialogComponent, WordDicarySelectDialogComponent, MenuScrinMapngDialogComponent],
 })
 export class CmmnModule {}

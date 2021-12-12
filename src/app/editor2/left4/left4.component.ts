@@ -118,8 +118,13 @@ export class Left4Component implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  loadScrin(prjctId: string): void {
+  async loadScrin(prjctId: string): Promise<void> {
     this.scrinService.findAllByPrjctId(prjctId).then((res: any) => {
+      (res.data as Scrobot.Scrin[]).forEach(async (x) => {
+        const p: any = await this.menuScrinMapngService.findAllByScrinId(x.scrinId);
+        x.menuScrinMapngs = p.data;
+      });
+
       this.scrins = res.data;
     });
   }
@@ -256,7 +261,7 @@ export class Left4Component implements OnInit, AfterViewInit, OnDestroy {
    */
   menuScrinMapngInited(a: MenuScrinMapngDialogComponent): void {
     a.mapngedEvent.subscribe(() => {
-      // TODO 할꺼 없음. 화면에 목록 표시 안 한다고 함
+      this.hostComponent.triggerMenuChangedEvent();
     });
   }
 
@@ -296,5 +301,13 @@ export class Left4Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.hostComponent.triggerScrinSelectedEvent(scrin);
+  }
+
+  isMapnged(menuScrinMapngs: Scrobot.MenuScrinMapng[] | undefined, menuId: string): boolean {
+    if (undefined === menuScrinMapngs) {
+      return false;
+    }
+
+    return undefined !== menuScrinMapngs.find((x) => x.menuId === menuId);
   }
 }

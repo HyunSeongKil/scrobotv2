@@ -48,4 +48,16 @@ export class MenuScrinMapngService {
   findAllByMenuId(menuId: string) {
     return this.http.get(`${this.BIZ_URI}/by-menu?menuId=` + menuId).toPromise();
   }
+
+  findAllByScrinId(scrinId: string) {
+    return this.http.get(`${this.BIZ_URI}/by-scrin?scrinId=` + scrinId).toPromise();
+  }
+
+  findByMenuIdAndScrinId(menuId: string, scrinId: string): Promise<any> {
+    return this.http.get(`${this.BIZ_URI}/by-menu-scrin?menuId=${menuId}&scrinId=${scrinId}`).toPromise();
+  }
+
+  existsByMenuIdAndScrinId(menuId: string, scrinId: string): Promise<any> {
+    return this.http.get(`${this.BIZ_URI}/exists-by-menu-scrin?menuId=${menuId}&scrinId=${scrinId}`).toPromise();
+  }
 }

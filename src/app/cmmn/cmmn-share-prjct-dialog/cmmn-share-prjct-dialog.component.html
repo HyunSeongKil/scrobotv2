@@ -1,0 +1,42 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">프로젝트 공유</h4>
+    <button type="button" class="btn btn-sm close d-none" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>사용자명</th>
+          <th>아이디</th>
+          <th>관리자여부</th>
+          <th>기능</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of prjctUserMapngs; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ x.user?.userNm }}</td>
+          <td>{{ x.userId }}</td>
+          <td>{{ x.mngrAt }}</td>
+          <td>
+            <button type="button" class="btn btn-outline-secondary btn-sm mx-1" (click)="onDeleteClick(x)">추방</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onSetMngrClick(x)">위임</button>
+          </td>
+        </tr>
+
+        <tr *ngIf="0 === prjctUserMapngs.length">
+          <td colspan="5" class="text-center">데이터가 없습니다.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <input type="text" class="form-control d-inlin w-50" placeholder="사용자이이디" #userIdEl />
+    <button type="button" class="btn btn-outline-primary" (click)="onShareClick(userIdEl.value)">초대</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.close('CLOSE')">닫기</button>
+  </div>
+</ng-template>

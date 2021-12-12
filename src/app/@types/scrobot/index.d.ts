@@ -1,5 +1,16 @@
 export namespace Scrobot {
   /**
+   * 프로젝트-사용자 매핑
+   */
+  export interface PrjctUserMapng {
+    prjctUserMapngId?: number;
+    prjctId: string;
+    userId: string;
+    mngrAt: string;
+    user?: Scrobot.User;
+  }
+
+  /**
    * 약관
    */
   export interface Stplat {
@@ -138,12 +149,19 @@ export namespace Scrobot {
      * @deprecated 1128
      */
     scrinGroupId: string;
+
     scrinId: string;
     scrinNm: string;
     prjctId: string;
     menuId: string;
     scrinSeCode: string;
+    /**
+     * 기준 데이터 명
+     */
+    stdrDataNm: string;
     compns: Compn[];
+
+    menuScrinMapngs: Scrobot.MenuScrinMapng[];
   }
 
   export interface Compn {

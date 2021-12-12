@@ -67,4 +67,17 @@ export class UserService {
   findById(userId: string): Observable<Scrobot.User> {
     return this.http.get<any>(`${this.BIZ_URI}/` + userId).pipe(map((x) => x.data as Scrobot.User));
   }
+
+  /**
+   * 프로젝트아이디로 사용자 목록 조회
+   * @param prjctId 프로젝트아이디
+   * @returns 목록
+   */
+  findAllByPrjctId(prjctId: string): Promise<any> {
+    return this.http.get(`${this.BIZ_URI}/by-prjct?prjctId=` + prjctId).toPromise();
+  }
+
+  existsByUserId(userId: string): Promise<any> {
+    return this.http.get(`${this.BIZ_URI}/exists?userId=` + userId).toPromise();
+  }
 }

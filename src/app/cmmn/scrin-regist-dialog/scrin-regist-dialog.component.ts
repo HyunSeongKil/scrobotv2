@@ -18,6 +18,7 @@ export class ScrinRegistDialogComponent implements OnInit {
   @Output() registedEvent = new EventEmitter<any>();
 
   form: FormGroup;
+  stdrDataNms: string[] = [];
 
   /**
    * 화면 구분 공통 코드
@@ -34,6 +35,8 @@ export class ScrinRegistDialogComponent implements OnInit {
       scrinSeCode: new FormControl('', [Validators.required]),
       menuId: new FormControl('', [Validators.required]),
       menuNm: new FormControl('', []),
+      stdrDataNm: new FormControl(''),
+      stdrDataNmTmp: new FormControl(''),
     });
   }
   ngOnInit(): void {
@@ -47,9 +50,23 @@ export class ScrinRegistDialogComponent implements OnInit {
    * @param menuNm (기준 데이터용)메뉴 명
    */
   open(prjctId: string, menuId: string, menuNm: string): void {
+    this.form.reset();
+
     // 화면 구분 코드 목록 조회
     this.cmmnCodeService.listByPrntsCmmnCode('scrin_se').then((res: any) => {
       this.scrinSeCodes = res.data;
+    });
+
+    // 이미 입력된 기준 데이터 목록 조회
+    this.service.findAllByPrjctId(prjctId).then((res: any) => {
+      const scrins: Scrobot.Scrin[] = res.data;
+      const map: any = {};
+      scrins.forEach((x) => {
+        if (null !== x.stdrDataNm) {
+          map[x.stdrDataNm] = '';
+        }
+      });
+      this.stdrDataNms = Object.keys(map);
     });
 
     //
@@ -63,9 +80,7 @@ export class ScrinRegistDialogComponent implements OnInit {
           return;
         }
 
-        if (!this.form.valid) {
-          console.log(this.form.value);
-          alert('입력값을 확인하시기 바랍니다.');
+        if (!this.valid()) {
           this.open(prjctId, menuId, menuNm);
           return;
         }
@@ -85,6 +100,24 @@ export class ScrinRegistDialogComponent implements OnInit {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       }
     );
+  }
+
+  onStdrDataNmTmpChange(stdrDataNmTmp: string): void {
+    this.form.controls.stdrDataNm.setValue(stdrDataNmTmp);
+  }
+
+  private valid(): boolean {
+    if (!this.form.valid) {
+      alert('입력값을 확인하시기 바랍니다.');
+      return false;
+    }
+
+    if ('' === this.form.controls.stdrDataNm.value && '' === this.form.controls.stdrDataNmTmp.value) {
+      alert('기준 데이터를 선택 또는 입력하시기 바랍니다.');
+      return false;
+    }
+
+    return true;
   }
 
   private getDismissReason(reason: any): string {

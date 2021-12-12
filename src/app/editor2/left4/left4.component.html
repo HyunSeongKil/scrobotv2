@@ -36,12 +36,13 @@
                           <div class="row">
                             <div class="col-5 fw-bold">
                               {{ s.scrinNm }}
+                              <span title="메뉴와 매핑됨" *ngIf="isMapnged(s.menuScrinMapngs, m2.menuId)">*</span>
                             </div>
                             <div class="col-7 text-end">
                               <a href="javascript:;" class="d-inline mx-1" title="화면 편집" (click)="onEditScrinClick(s)">편집</a>
                               <a href="javascript:;" class="d-inline" title="화면 복사" (click)="onCopyScrinClick(scrinCopyDialogRef, s)">복사</a>
-                              <a href="javascript:;" class="d-inline mx-1" title="화면 수정" (click)="onUpdateScrinClick(scrinUpdtDialogRef, s)">수정</a>
-                              <a href="javascript:;" class="d-inline" title="화면 삭제" (click)="onDeleteScrinClick(s)">삭제</a>
+                              <img src="./assets/images/editor/pencil.png" alt="연필" class="mx-1" style="width: 15%" title="화면 수정" (click)="onUpdateScrinClick(scrinUpdtDialogRef, s)" />
+                              <img src="./assets/images/editor/garbage.png" alt="이미지4" style="width: 15%" title="화면 삭제" (click)="onDeleteScrinClick(s)" />
                             </div>
                           </div>
                         </ng-container>
@@ -78,9 +79,9 @@
                 </div>
                 <div class="col-6 text-end">
                   <a href="javascript:;" class="d-inline mx-1" title="화면 매핑" (click)="openMenuScrinMapngDialog(menuScrinMapngDialogRef, m1)">화면매핑</a>
-                  <a href="javascript:;" class="d-inline" title="하위메뉴 등록" (click)="openMenuRegistDialog(menuRegistDialogRef, m1.menuId)"></a>
-                  <a href="javascript:;" class="d-inline mx-1" title="메뉴 수정" (click)="openMenuUpdateDialog(menuUpdtDialogRef, m1)">수정</a>
-                  <a href="javascript:;" class="d-inline" title="메뉴 삭제" (click)="deleteMenu(m1)">삭제</a>
+                  <img src="./assets/images/editor/plus3.png" alt="플러스" class="pl" style="width: 15%" title="하위메뉴 등록" (click)="openMenuRegistDialog(menuRegistDialogRef, m1.menuId)" />
+                  <img src="./assets/images/editor/pencil.png" alt="연필" class="mx-1" style="width: 15%" title="메뉴 수정" (click)="openMenuUpdateDialog(menuUpdtDialogRef, m1)" />
+                  <img src="./assets/images/editor/garbage.png" alt="이미지4" style="width: 15%" title="메뉴 삭제" (click)="deleteMenu(m1)" />
                 </div>
               </div>
 
@@ -93,9 +94,9 @@
                     </div>
                     <div class="col-6 text-end">
                       <a href="javascript:;" class="d-inline mx-1" title="화면 매핑" (click)="openMenuScrinMapngDialog(menuScrinMapngDialogRef, m2)">화면매핑</a>
-                      <a href="javascript:;" class="d-inline" title="하위메뉴 등록" (click)="openMenuRegistDialog(menuRegistDialogRef, m2.menuId)"></a>
-                      <a href="javascript:;" class="d-inline mx-1" title="메뉴 수정" (click)="openMenuUpdateDialog(menuUpdtDialogRef, m2)">수정</a>
-                      <a href="javascript:;" class="d-inline" title="메뉴 삭제" (click)="deleteMenu(m2)">삭제</a>
+                      <img src="./assets/images/editor/plus3.png" alt="플러스" class="pl" style="width: 15%" title="하위메뉴 등록" (click)="openMenuRegistDialog(menuRegistDialogRef, m2.menuId)" />
+                      <img src="./assets/images/editor/pencil.png" alt="연필" class="mx-1" style="width: 15%" title="메뉴 수정" (click)="openMenuUpdateDialog(menuUpdtDialogRef, m2)" />
+                      <img src="./assets/images/editor/garbage.png" alt="이미지4" style="width: 15%" title="메뉴 삭제" (click)="deleteMenu(m2)" />
                     </div>
                   </div>
 
@@ -109,8 +110,8 @@
                         <div class="col-6 text-end">
                           <a href="javascript:;" class="d-inline" title="화면 매핑" (click)="openMenuScrinMapngDialog(menuScrinMapngDialogRef, m3)">화면매핑</a>
                           <!-- 3depth은 하위메뉴 등록 할 수 없음-->
-                          <a href="javascript:;" class="d-inline mx-1" title="메뉴 수정" (click)="openMenuUpdateDialog(menuUpdtDialogRef, m3)">수정</a>
-                          <a href="javascript:;" class="d-inline" title="메뉴 삭제" (click)="deleteMenu(m3)">삭제</a>
+                          <img src="./assets/images/editor/pencil.png" alt="연필" class="mx-1" style="width: 15%" title="메뉴 수정" (click)="openMenuUpdateDialog(menuUpdtDialogRef, m3)" />
+                          <img src="./assets/images/editor/garbage.png" alt="이미지4" style="width: 15%" title="메뉴 삭제" (click)="deleteMenu(m3)" />
                         </div>
                       </div>
                     </li>
