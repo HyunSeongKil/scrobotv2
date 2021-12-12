@@ -7,6 +7,7 @@ import { WordDicarySelectDialogComponent, WordDicarySelectMessage } from 'src/ap
 import { AtchmnflService } from 'src/app/service/atchmnfl.service';
 import { CmmnCodeService } from 'src/app/service/cmmn-code.service';
 import { ElEventMessage, ElService } from 'src/app/service/el.service';
+import { PrjctCmmnCodeService } from 'src/app/service/prjct-cmmn-code.service';
 import { SelectedElService } from 'src/app/service/selected-el.service';
 import { ScUtil } from 'src/app/service/util';
 import { Edit4Service } from '../edit4/edit4.service';
@@ -49,7 +50,7 @@ export class Right4Component implements OnInit, AfterViewInit, OnDestroy {
   btnSes: Scrobot.CmmnCode[] = [];
   editedTableItems: TableItemEditEventMessage[] = [];
 
-  constructor(http: HttpClient, private service: Right4Service, private atchmnflService: AtchmnflService, private cmmnCodeService: CmmnCodeService, private selectedElService: SelectedElService, private elService: ElService, private left4Service: Left4Service, private edit4Service: Edit4Service) {
+  constructor(http: HttpClient, private service: Right4Service, private prjctCmmnCodeService: PrjctCmmnCodeService, private atchmnflService: AtchmnflService, private cmmnCodeService: CmmnCodeService, private selectedElService: SelectedElService, private elService: ElService, private left4Service: Left4Service, private edit4Service: Edit4Service) {
     //
     http.get(`./assets/data/compns.json`).subscribe((res: any) => {
       this.list = res.data;
@@ -155,6 +156,7 @@ export class Right4Component implements OnInit, AfterViewInit, OnDestroy {
     this.showBtnProperty(this.$selectedEl);
     this.showImgProperty(this.$selectedEl);
     this.showTableProperty(this.$selectedEl);
+    this.showSelectProperty(this.$selectedEl);
   }
 
   /**
@@ -209,6 +211,67 @@ export class Right4Component implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
+   * 셀렉트박스 속성 표시
+   * @param $el 엘리먼트
+   * @returns void
+   */
+  private showSelectProperty($el: JQuery<HTMLElement> | undefined): void {
+    /**
+     * 프로젝트공통코드중 부모 코드 목록만 조회
+     * @returns 프로젝트공통코드 목록
+     */
+    const getPrntsCmmnCodes = async (): Promise<Scrobot.PrjctCmmnCode[]> => {
+      const arr: Scrobot.PrjctCmmnCode[] = [];
+
+      const p: any = await this.prjctCmmnCodeService.findAll(undefined);
+      (p.data as Scrobot.PrjctCmmnCode[]).forEach((x) => {
+        if ('-' === x.prntsCmmnCode) {
+          arr.push(x);
+        }
+      });
+
+      return arr;
+    };
+
+    //
+    if (undefined === $el) {
+      return;
+    }
+
+    //
+    const tagName = ScUtil.getTagName($el);
+    if (ElService.TAG_NAME_SELECT !== tagName) {
+      return;
+    }
+
+    //
+    const $select = $el.children().first();
+    const prntsCmmnCode = $select.attr('data-prnts-cmmn-code');
+
+    //
+    getPrntsCmmnCodes().then((arr: Scrobot.PrjctCmmnCode[]) => {
+      let s = ``;
+      s += `<tr class="${tagName}">`;
+      s += `  <th>공통코드</th>`;
+      s += `  <td>`;
+      s += `    <select class="form-select" name="prntsCmmnCode">`;
+      s += `      <option value="">선택</option>`;
+
+      arr.forEach((x) => {
+        s += `  <option value="${x.cmmnCode}" ${prntsCmmnCode === x.cmmnCode ? 'selected' : ''}>${x.cmmnCodeNm}</option>`;
+      });
+
+      s += `    </select>`;
+      s += `  </td>`;
+      s += `</tr>`;
+      // 기존꺼 삭제
+      $(`table.property > tbody > tr.${tagName}`).remove();
+      // 추가
+      $('table.property > tbody').append(s);
+    });
+  }
+
+  /**
    * 항목 수정
    */
   editItem($el: JQuery<HTMLElement> | undefined, tagName: string): void {
@@ -247,8 +310,8 @@ export class Right4Component implements OnInit, AfterViewInit, OnDestroy {
     s += `<tr class="img">`;
     s += `  <th>${imgRule.name}</th>`;
     s += `  <td>`;
-    s += `    <input type="file" class="form-control d-100" />`;
-    s += `    <a href="javascript:;">X</a>`;
+    s += `    <input type="file" class="form-control d-100" style="width:100%" />`;
+    s += `    <a href="javascript:;" title="삭제">X</a>`;
     s += `  </td>`;
     s += `</tr>`;
 
@@ -268,29 +331,45 @@ export class Right4Component implements OnInit, AfterViewInit, OnDestroy {
     $('table.table.property > tbody > tr.img')
       .find('input[type=file]')
       .on('change', (e: any) => {
-        const el: HTMLInputElement = e.currentTarget as HTMLInputElement;
-        if (null === el || null === el.files) {
+        const fileEl: HTMLInputElement = e.currentTarget;
+        if (null === fileEl || null === fileEl.files || 0 === fileEl.files.length) {
           return;
         }
 
-        if (0 === el.files.length) {
-          alert('파일을 선택하세요.');
-          return;
-        }
+        var FR = new FileReader();
 
-        if (!ScUtil.isImageFile(el.files[0].name)) {
-          alert('이미지 파일만 첨부가능합니다.');
-          return;
-        }
-
-        //  파일 첨부
-        this.atchmnflService.regist(this.prjctId ?? '', el.files[0]).then((res: any) => {
-          if (ScUtil.isWrapperEl($el)) {
-            const $el2 = $el.children().first();
-
-            $el2.attr('src', `${this.atchmnflService.getUrl(res.data)}`);
-          }
+        FR.addEventListener('load', function (e1) {
+          // console.log(e1.target?.result);
+          $el2.prop('src', e1.target?.result);
+          // document.getElementById("b64").innerHTML = e.target.result;
         });
+
+        FR.readAsDataURL(fileEl.files[0]);
+
+        // 아래껀 파일 업로드해서 표시하는 버전
+        //   const el: HTMLInputElement = e.currentTarget as HTMLInputElement;
+        //   if (null === el || null === el.files) {
+        //     return;
+        //   }
+
+        //   if (0 === el.files.length) {
+        //     alert('파일을 선택하세요.');
+        //     return;
+        //   }
+
+        //   if (!ScUtil.isImageFile(el.files[0].name)) {
+        //     alert('이미지 파일만 첨부가능합니다.');
+        //     return;
+        //   }
+
+        //   //  파일 첨부
+        //   this.atchmnflService.regist(this.prjctId ?? '', el.files[0]).then((res: any) => {
+        //     if (ScUtil.isWrapperEl($el)) {
+        //       const $el2 = $el.children().first();
+
+        //       $el2.attr('src', `${this.atchmnflService.getUrl(res.data)}`);
+        //     }
+        //   });
       });
   }
 
@@ -705,6 +784,7 @@ export class Right4Component implements OnInit, AfterViewInit, OnDestroy {
     this.applyBtnProperty2(this.$selectedEl);
     this.applyImgProperty2(this.$selectedEl);
     this.applyTableProperty(this.$selectedEl);
+    this.applySelectProperty(this.$selectedEl);
   }
 
   /**
@@ -738,7 +818,35 @@ export class Right4Component implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
+   * 셀렉트박스 속성 적용
+   * @param $el 엘리먼트
+   * @returns void
+   */
+  private applySelectProperty($el: JQuery<HTMLElement> | undefined): void {
+    if (undefined === $el) {
+      return;
+    }
+
+    if (!this.isTargetEl($el, [ElService.TAG_NAME_SELECT])) {
+      return;
+    }
+
+    //
+    const $select: JQuery<HTMLElement> | undefined = this.$selectedEl?.children().first();
+    if (undefined === $select) {
+      return;
+    }
+
+    // 선택된 부모공통코드
+    const prntsCmmnCode = $('table.property > tbody').find('select[name=prntsCmmnCode]').val();
+
+    // 설정
+    $select.attr('data-prnts-cmmn-code', prntsCmmnCode);
+  }
+
+  /**
    * 이미지
+   * TODO 구지 apply하지 않아도 이미 적용됨. 결함이지
    * @param $el
    * @returns
    */
@@ -759,14 +867,14 @@ export class Right4Component implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    // src에 값 없으면 data값도 삭제
-    if (-1 === src.indexOf('=')) {
-      $img.attr('data-atchmnfl-id', '');
-      return;
-    }
+    // // src에 값 없으면 data값도 삭제
+    // if (-1 === src.indexOf('=')) {
+    //   $img.attr('data-atchmnfl-id', '');
+    //   return;
+    // }
 
-    const athmnflId = src.split('=')[1];
-    $img.attr('data-atchmnfl-id', athmnflId);
+    // const athmnflId = src.split('=')[1];
+    // $img.attr('data-atchmnfl-id', athmnflId);
   }
 
   /**

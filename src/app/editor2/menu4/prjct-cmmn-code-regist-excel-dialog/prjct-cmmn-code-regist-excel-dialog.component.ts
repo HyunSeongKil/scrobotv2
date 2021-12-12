@@ -84,4 +84,11 @@ export class PrjctCmmnCodeRegistExcelDialogComponent implements OnInit {
       this.prjctCmmnCodes = res.data;
     });
   }
+
+  /**
+   * 템플릿 파일 다운로드
+   */
+  onTemplateDwldClick(): void {
+    location.href = './assets/data/공통코드엑셀템플릿.xlsx';
+  }
 }

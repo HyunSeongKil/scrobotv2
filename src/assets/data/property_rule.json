@@ -1,7 +1,7 @@
 {
   "attr": {
     "value": {
-      "target": ["input", "checkbox", "select"],
+      "target": ["input", "checkbox", "select", "calendar"],
       "name": "값",
       "valid": "text"
     },
@@ -20,13 +20,13 @@
   },
   "css": {
     "color": {
-      "target": ["input", "textarea", "checkbox", "file", "select", "button", "h1", "h2", "h3", "span", "div"],
+      "target": ["input", "textarea", "checkbox", "file", "select", "button", "calendar", "h1", "h2", "h3", "span", "div"],
       "name": "색상",
       "valid": "color",
       "defaultValue": "#000"
     },
     "background-color": {
-      "target": ["input", "textarea", "checkbox", "file", "select", "button", "h1", "h2", "h3", "span", "div"],
+      "target": ["input", "textarea", "checkbox", "file", "select", "button", "calendar", "h1", "h2", "h3", "span", "div"],
       "name": "배경색상",
       "valid": "color",
       "defaultValue": "#fff"
@@ -37,19 +37,19 @@
       "valid": "text"
     },
     "font-size": {
-      "target": ["input", "textarea", "button", "select", "h1", "h2", "h3", "span"],
+      "target": ["input", "textarea", "button", "select", "calendar", "h1", "h2", "h3", "span"],
       "name": "글꼴크기",
       "valid": "number",
       "unit": "px"
     },
     "width": {
-      "target": ["input", "textarea", "checkbox", "select", "file", "button", "h1", "h2", "h3", "span", "div"],
+      "target": ["input", "textarea", "checkbox", "select", "file", "button", "calendar", "h1", "h2", "h3", "span", "div"],
       "valid": "number",
       "name": "넓이",
       "unit": "px"
     },
     "height": {
-      "target": ["input", "textarea", "checkbox", "select", "file", "button", "h1", "h2", "h3", "span", "div"],
+      "target": ["input", "textarea", "checkbox", "select", "file", "button", "calendar", "h1", "h2", "h3", "span", "div"],
       "valid": "number",
       "name": "높이",
       "unit": "px"
@@ -63,7 +63,7 @@
     }
   },
   "wordDicary": {
-    "target": ["input", "checkbox", "file", "select", "textarea"],
+    "target": ["input", "checkbox", "file", "select", "textarea", "calendar"],
     "name": "단어사전",
     "valid": "text"
   },
@@ -75,5 +75,10 @@
     "target": ["img"],
     "name": "이미지"
   },
-  "data": {}
+  "data": {},
+
+  "select": {
+    "target": ["select"],
+    "name": "공통코드"
+  }
 }

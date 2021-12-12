@@ -192,6 +192,7 @@ export class Edit4Component implements OnInit, AfterViewInit, OnDestroy {
     this.elService.clearAllDraggable();
     this.elService.clearAllResizable();
     this.elService.clearAllBorder();
+    this.selectedElService.clearAll();
 
     // let $el = this.elService.createEl($elOrTagName, cn);
     let $el = $elOrTagName as JQuery<HTMLElement>;
@@ -210,11 +211,12 @@ export class Edit4Component implements OnInit, AfterViewInit, OnDestroy {
     this.selectedElService.add($el.attr('id'), $el);
     this.$selectedEl = $el;
 
-    // img이면
-    if ('img' === $el.attr('data-tag-name')) {
-      const $img = $el.children().first();
-      $img.attr('src', this.atchmnflService.getUrl($img.attr('data-atchmnfl-id')));
-    }
+    // 1212 이미지를 base64로 저장하기 때문에 구지 src 변경하지 않아도 됨
+    // // img이면
+    // if ('img' === $el.attr('data-tag-name')) {
+    //   const $img = $el.children().first();
+    //   $img.attr('src', this.atchmnflService.getUrl($img.attr('data-atchmnfl-id')));
+    // }
 
     this.elService.elSelectedEvent.emit({ e: '', tagName, $el });
 

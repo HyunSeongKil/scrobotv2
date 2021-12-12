@@ -78,12 +78,15 @@ export class PrjctCmmnCodeService {
    * @param size 사이즈. 10
    * @returns 목록
    */
-  findAll(dto: Scrobot.PrjctCmmnCode, page: number = 0, size: number = 10): Promise<any> {
+  findAll(dto: Scrobot.PrjctCmmnCode | undefined, page: number = 0, size: number = 10): Promise<any> {
     let p: string = `?page=${page}&size=${size}`;
-    const json: any = JSON.parse(JSON.stringify(dto));
-    Object.keys(json).forEach((k) => {
-      p += `&${k}=` + json[k];
-    });
+
+    if (undefined !== dto) {
+      const json: any = JSON.parse(JSON.stringify(dto));
+      Object.keys(json).forEach((k) => {
+        p += `&${k}=` + json[k];
+      });
+    }
 
     return this.http.get(`${this.BIZ_URI}` + p).toPromise();
   }

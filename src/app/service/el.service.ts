@@ -775,7 +775,7 @@ export class ElService {
     $wrapper.attr('data-tag-name', ElService.TAG_NAME_SELECT);
 
     const $el = $(`<select id="${id}" value="" style="width:140px; height:20px; padding:0.5em; background-color:#ffffff;" readonly focus   ></select>`);
-    $el.attr('data-eng-abrv-nm', '').attr('data-hngl-abrv-nm', '');
+    $el.attr('data-eng-abrv-nm', '').attr('data-hngl-abrv-nm', '').attr('data-prjct-cmmn-code', '');
 
     $wrapper.append($el);
     return $wrapper;
