@@ -17,9 +17,10 @@ import { PrjctCmmnCodeRegistDialogComponent } from './menu4/prjct-cmmn-code-regi
 import { PrjctCmmnCodeDetailDialogComponent } from './menu4/prjct-cmmn-code-detail-dialog/prjct-cmmn-code-detail-dialog.component';
 import { PrjctCmmnCodeUpdateDialogComponent } from './menu4/prjct-cmmn-code-update-dialog/prjct-cmmn-code-update-dialog.component';
 import { PrjctCmmnCodeRegistExcelDialogComponent } from './menu4/prjct-cmmn-code-regist-excel-dialog/prjct-cmmn-code-regist-excel-dialog.component';
+import { GuidanceMssageListDialogComponent } from './menu4/guidance-mssage-list-dialog/guidance-mssage-list-dialog.component';
 
 @NgModule({
-  declarations: [Scrin2Component, Menu2Component, Compn2Component, Property2Component, Edit2Component, Edit4Component, Menu4Component, Left4Component, Right4Component, PrjctCmmnCodeListDialogComponent, PrjctCmmnCodeRegistDialogComponent, PrjctCmmnCodeDetailDialogComponent, PrjctCmmnCodeUpdateDialogComponent, PrjctCmmnCodeRegistExcelDialogComponent],
+  declarations: [Scrin2Component, Menu2Component, Compn2Component, Property2Component, Edit2Component, Edit4Component, Menu4Component, Left4Component, Right4Component, PrjctCmmnCodeListDialogComponent, PrjctCmmnCodeRegistDialogComponent, PrjctCmmnCodeDetailDialogComponent, PrjctCmmnCodeUpdateDialogComponent, PrjctCmmnCodeRegistExcelDialogComponent, GuidanceMssageListDialogComponent],
   imports: [CommonModule, ReactiveFormsModule, FormsModule, CmmnModule],
   exports: [Edit4Component],
 })

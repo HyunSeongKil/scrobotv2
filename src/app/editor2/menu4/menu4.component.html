@@ -11,6 +11,7 @@
         <li><a href="javascript:;" (click)="onDeployClick()">서비스 시작</a></li>
         <li><a href="javascript:;" (click)="onOpenSharePrjctPopupClick(cmmnSharePrjctDialogRef)">공유</a></li>
         <li><a href="javascript:;" (click)="onOpenPrjctCmmnCodeListPopupClick(prjctCmmnCodeListDialog)">공통코드관리</a></li>
+        <li><a href="javascript:;" (click)="onOpenGuidanceMssageListPopupClick(guidanceMssageListDialog)">안내메시지관리</a></li>
 
         <li *ngIf="undefined !== selectedScrin">[{{ selectedScrin?.scrinNm }}화면 편집중...]</li>
         <li *ngIf="undefined !== selectedScrin"><a href="javascript:;" (click)="onSaveScrinClick()">저장</a></li>
@@ -156,3 +157,4 @@
 <app-cmmn-view-source-dialog #cmmnViewSourceDialogRef></app-cmmn-view-source-dialog>
 <app-cmmn-share-prjct-dialog #cmmnSharePrjctDialogRef></app-cmmn-share-prjct-dialog>
 <app-prjct-cmmn-code-list-dialog #prjctCmmnCodeListDialog></app-prjct-cmmn-code-list-dialog>
+<app-guidance-mssage-list-dialog #guidanceMssageListDialog></app-guidance-mssage-list-dialog>

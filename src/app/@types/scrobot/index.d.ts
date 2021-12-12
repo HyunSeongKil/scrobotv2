@@ -1,5 +1,18 @@
 export namespace Scrobot {
   /**
+   * 안내 메시지
+   */
+  export interface GuidanceMssage {
+    guidanceMssageId: number;
+    guidanceMssageNm: string;
+    guidanceMssageCn: string;
+    prjctId: string;
+    registerId: string;
+    registerNm: string;
+    registDt: string;
+  }
+
+  /**
    * 프로젝트 공통 코드
    */
   export interface PrjctCmmnCode {

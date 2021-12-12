@@ -16,6 +16,7 @@ import { TrgetSysService } from 'src/app/service/trget-sys.service';
 import { Edit4Component } from '../edit4/edit4.component';
 import { Edit4Service } from '../edit4/edit4.service';
 import { Left4Service } from '../left4/left4.service';
+import { GuidanceMssageListDialogComponent } from './guidance-mssage-list-dialog/guidance-mssage-list-dialog.component';
 import { PrjctCmmnCodeListDialogComponent } from './prjct-cmmn-code-list-dialog/prjct-cmmn-code-list-dialog.component';
 
 @Component({
@@ -397,5 +398,13 @@ export class Menu4Component implements OnInit, AfterViewInit, OnDestroy {
    */
   onOpenPrjctCmmnCodeListPopupClick(prjctCmmnCodeListDialog: PrjctCmmnCodeListDialogComponent): void {
     prjctCmmnCodeListDialog.open(this.prjctId);
+  }
+
+  /**
+   * 안내 메시지 팝업 실행
+   * @param a 인스턴스
+   */
+  onOpenGuidanceMssageListPopupClick(a: GuidanceMssageListDialogComponent): void {
+    a.open(this.prjctId);
   }
 }
