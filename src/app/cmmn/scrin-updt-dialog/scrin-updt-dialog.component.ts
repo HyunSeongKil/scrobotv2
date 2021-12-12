@@ -24,6 +24,7 @@ export class ScrinUpdtDialogComponent implements OnInit {
    * 화면 구분 공통 코드
    */
   scrinSeCodes: Scrobot.CmmnCode[] = [];
+  stdrDataNms: string[] = [];
 
   closeResult = '';
 
@@ -35,6 +36,7 @@ export class ScrinUpdtDialogComponent implements OnInit {
       menuId: new FormControl('', [Validators.required]),
       menuNm: new FormControl('', []),
       scrinSeCode: new FormControl('', [Validators.required]),
+      stdrDataNm: new FormControl('', [Validators.required]),
     });
   }
   ngOnInit(): void {
@@ -46,24 +48,29 @@ export class ScrinUpdtDialogComponent implements OnInit {
    * @param scrinId 원본 화면 아이디
    */
   async open(scrinId: string): Promise<void> {
+    this.form.reset();
+
     // 화면 구분 코드 목록 조회
     const p: any = await this.cmmnCodeService.listByPrntsCmmnCode('scrin_se');
     this.scrinSeCodes = p.data;
-    // .then((res: any) => {
-    //   this.scrinSeCodes = res.data;
-    // });
 
-    //
+    // 화면 정보 조회
     const p2: any = await this.service.get(scrinId);
     this.form.patchValue(p2.data);
-    // .then((res: any) => {
-    //   this.form.patchValue(res.data);
-    // });
+
+    // 이미 입력된 기준 데이터 목록 조회
+    this.service.findAllByPrjctId(this.form.controls.prjctId.value).then((res: any) => {
+      const scrins: Scrobot.Scrin[] = res.data;
+      const map: any = {};
+      scrins.forEach((x) => {
+        if (null !== x.stdrDataNm) {
+          map[x.stdrDataNm] = '';
+        }
+      });
+      this.stdrDataNms = Object.keys(map);
+    });
 
     //
-    const p3: any = await this.menuService.findById(this.form.controls.menuId.value);
-    this.form.controls.menuNm.setValue(p3.data.menuNm);
-
     this.modalService.open(this.content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
       (result: any) => {
         this.closeResult = `Closed with: ${result}`;
@@ -104,5 +111,9 @@ export class ScrinUpdtDialogComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  onStdrDataNmTmpChange(stdrDataNmTmp: string): void {
+    this.form.controls.stdrDataNm.setValue(stdrDataNmTmp);
   }
 }

@@ -63,7 +63,7 @@
     }
   },
   "wordDicary": {
-    "target": ["input", "checkbox", "file", "select"],
+    "target": ["input", "checkbox", "file", "select", "textarea"],
     "name": "단어사전",
     "valid": "text"
   },
