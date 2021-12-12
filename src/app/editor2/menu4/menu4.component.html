@@ -1,21 +1,26 @@
 <div class="top_menu">
   <div class="top_pc" [ngStyle]="{ 'background-color': undefined === selectedScrin ? '' : 'orange' }">
     <div class="left_top">
-      <ul>
+      <ul [ngClass]="undefined === selectedScrin ? '' : 'd-none'">
         <li><a href="javascript:;" (click)="onGotoIndexClick()">SC-ROBOT</a></li>
+
         <li class="add_btn7" *ngIf="undefined === selectedScrin"><a href="javascript:;" title="프로젝트열기" (click)="onOpenPrjctClick()">열기</a></li>
-        <li><a href="javascript:;" (click)="onCopyPrjctClick()">다른이름 저장</a></li>
+        <li><a href="javascript:;" [attr.data-prjct-id]="prjctId" (click)="onCopyPrjctClick()">다른이름 저장</a></li>
         <li><a href="javascript:alert('TODO')">미리보기</a></li>
-        <li><a href="javascript:;" (click)="openSourceEditDialog(cmmnViewSourceDialogRef)">소스보기</a></li>
         <li><a href="javascript:alert('TODO')">HTML 다운로드</a></li>
         <li><a href="javascript:;" (click)="onDeployClick()">서비스 시작</a></li>
         <li><a href="javascript:;" (click)="onOpenSharePrjctPopupClick(cmmnSharePrjctDialogRef)">공유</a></li>
         <li><a href="javascript:;" (click)="onOpenPrjctCmmnCodeListPopupClick(prjctCmmnCodeListDialog)">공통코드관리</a></li>
         <li><a href="javascript:;" (click)="onOpenGuidanceMssageListPopupClick(guidanceMssageListDialog)">안내메시지관리</a></li>
+      </ul>
 
-        <li *ngIf="undefined !== selectedScrin">[{{ selectedScrin?.scrinNm }}화면 편집중...]</li>
-        <li *ngIf="undefined !== selectedScrin"><a href="javascript:;" (click)="onSaveScrinClick()">저장</a></li>
-        <li *ngIf="undefined !== selectedScrin"><a href="javascript:;" (click)="onCloseScrinClick()">닫기</a></li>
+      <ul [ngClass]="undefined !== selectedScrin ? '' : 'd-none'">
+        <li><a href="javascript:;" (click)="onGotoIndexClick()">SC-ROBOT</a></li>
+
+        <li>[{{ selectedScrin?.scrinNm }}화면 편집중...]</li>
+        <li><a href="javascript:;" (click)="openSourceEditDialog(cmmnViewSourceDialogRef)">소스보기</a></li>
+        <li><a href="javascript:;" (click)="onSaveScrinClick()">저장</a></li>
+        <li><a href="javascript:;" (click)="onCloseScrinClick()">닫기</a></li>
       </ul>
     </div>
     <div class="right_top">
@@ -27,7 +32,7 @@
           <a href="javascript:alert('TODO')"><img src="./assets/images/editor/r_arrow_box.png" alt="다음으로가기" /></a>
         </li>
         <li><a href="javascript:alert('TODO')">모두제거</a></li>
-        <li><a href="../main_br.html">홈</a></li>
+        <li><a href="javascript:alert('TODO')">홈</a></li>
         <li>
           <a href="#" class="sch_button"><i class="fas fa-search"></i></a>
         </li>
@@ -50,7 +55,7 @@
       <div class="center">
         <ul class="fir_ul">
           <li class="leftz">
-            <a href="javascript:TODO('퍼블없음');">
+            <a href="javascript:alert('퍼블없음');">
               <img src="./assets/images/editor/add_new_icon.png" alt="플러스" />
               <div class="txt">
                 <h2>새 프로젝트 ({{ prjcts.length }})</h2>

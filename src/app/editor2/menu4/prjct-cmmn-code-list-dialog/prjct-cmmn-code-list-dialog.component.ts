@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { Scrobot } from 'src/app/@types/scrobot';
@@ -24,10 +24,9 @@ export class PrjctCmmnCodeListDialogComponent implements OnInit, OnDestroy {
   prjctCmmnCodeDeletedEventSub: Subscription = new Subscription();
   prjctCmmnCodeUploadedEventSub: Subscription = new Subscription();
 
-  cmmnPagerRef?: CmmnPagerComponent;
+  // cmmnPagerRef?: CmmnPagerComponent;
 
   closeResult: string = '';
-  prjctId: string = '';
   prjctCmmnCodes: Scrobot.PrjctCmmnCode[] = [];
 
   searchForm: FormGroup;
@@ -38,6 +37,7 @@ export class PrjctCmmnCodeListDialogComponent implements OnInit, OnDestroy {
       searchValue: new FormControl(''),
       cmmnCode: new FormControl(''),
       cmmnCodeNm: new FormControl(''),
+      prjctId: new FormControl('', [Validators.required]),
     });
   }
   ngOnDestroy(): void {
@@ -49,7 +49,9 @@ export class PrjctCmmnCodeListDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.onSearchClick();
+  }
 
   /**
    * 검색
@@ -64,10 +66,10 @@ export class PrjctCmmnCodeListDialogComponent implements OnInit, OnDestroy {
     }
 
     //
-    this.service.findAll(this.searchForm.value, page).then((res: any) => {
+    this.service.findAll(this.searchForm.value, page, Number.MAX_VALUE).then((res: any) => {
       this.prjctCmmnCodes = res.data;
 
-      this.cmmnPagerRef?.render(res.totalElements, res.number + 1, res.size);
+      // this.cmmnPagerRef?.render(res.totalElements, res.number + 1, res.size);
     });
   }
 
@@ -75,22 +77,22 @@ export class PrjctCmmnCodeListDialogComponent implements OnInit, OnDestroy {
    * 공통 페이저 완료됨 이벤트 처리
    * @param a 인스턴스
    */
-  cmmnPagerInited(a: CmmnPagerComponent): void {
-    this.cmmnPagerRef = a;
+  // cmmnPagerInited(a: CmmnPagerComponent): void {
+  //   this.cmmnPagerRef = a;
 
-    this.cmmnPagerRef?.pageClickEvent.subscribe((pageNo: number) => {
-      this.onSearchClick(pageNo - 1);
-    });
+  //   this.cmmnPagerRef?.pageClickEvent.subscribe((pageNo: number) => {
+  //     this.onSearchClick(pageNo - 1);
+  //   });
 
-    this.onSearchClick();
-  }
+  //   this.onSearchClick();
+  // }
 
   /**
    * 팝업 실행
    * @param prjctId 프로젝트아이디
    */
   open(prjctId: string): void {
-    this.prjctId = prjctId;
+    this.searchForm.controls.prjctId.setValue(prjctId);
 
     this.modalService.open(this.content, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then(
       (result: any) => {
@@ -120,7 +122,7 @@ export class PrjctCmmnCodeListDialogComponent implements OnInit, OnDestroy {
    * @param a 인스턴스
    */
   onOpenRegistPopupClick(a: PrjctCmmnCodeRegistDialogComponent): void {
-    a.open(this.prjctId);
+    a.open(this.searchForm.controls.prjctId.value);
   }
 
   /**
@@ -128,7 +130,7 @@ export class PrjctCmmnCodeListDialogComponent implements OnInit, OnDestroy {
    * @param a 인스턴스
    */
   onOpenRegistExcelPopupClick(a: PrjctCmmnCodeRegistExcelDialogComponent): void {
-    a.open(this.prjctId);
+    a.open(this.searchForm.controls.prjctId.value);
   }
 
   /**
